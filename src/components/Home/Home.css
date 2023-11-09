@@ -1,0 +1,34 @@
+.home {
+    text-align: center;
+    /* margin-top: 200px; */
+}
+
+.home-logo {
+    margin-top: 150px;
+    margin-bottom: 50px;
+}
+
+.input {
+    width: 500px;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    padding: 10px;
+    background-color: #e6f7ff;
+    font-size: 14px;
+}
+
+.input-btn {
+    margin-top: 20px;
+    text-align: center;
+    width: 200px;
+    background-color: var(--main-color);
+    height: 30px;
+    border-radius: 5px;
+    font-size: larger;
+    border: none;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    color: #fff;
+}
