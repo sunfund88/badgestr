@@ -11,14 +11,6 @@
   /* background-color: darkorchid; */
 }
 
-nav {
-  height: 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* background-color: rgb(26, 26, 36); */
-}
-
 footer {
   margin-top: 220px;
   border-top-right-radius: 12px;
@@ -32,24 +24,6 @@ footer {
 
 footer a {
   color: rgb(9, 243, 223);
-}
-
-.nav-btn {
-  text-align: center;
-  width: 80px;
-  background-color: var(--main-color);
-  height: 30px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-btn a {
-  color: #fff;
-  text-decoration: none;
-  display: inline-block;
-  align-items: center;
 }
 
 .logo {
