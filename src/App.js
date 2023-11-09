@@ -26,9 +26,9 @@ function App() {
         <div className="logo">
           <a href="/"><h1>Badge<span className="purple">Str</span></h1></a>
         </div>
-        {/* <div className="nav-btn">
+        <div className="nav-btn">
           <a href="#" className="login">Log in</a>
-        </div> */}
+        </div>
       </nav>
       <Router>
         <Routes>
