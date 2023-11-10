@@ -1,7 +1,9 @@
 const ProfileBadges = ({ badgesObj, diffObj }) => {
     return (
         <div className="badges">
-            <h3>Accepted Badges (on Profile)</h3>
+            {(badgesObj.length > 0)
+                ? (<h3>Accepted Badges</h3>)
+                : (<></>)}
             <div className="badges-container">
                 <div className="badges-list">
                     <ul>
@@ -19,7 +21,9 @@ const ProfileBadges = ({ badgesObj, diffObj }) => {
                     </ul>
                 </div>
             </div>
-            <h3>Recieved Badges</h3>
+            {(diffObj.length > 0)
+                ? (<h3>Unaccepted Badges</h3>)
+                : (<></>)}
             <div className="badges-container">
                 <div className="badges-list">
                     <ul>
