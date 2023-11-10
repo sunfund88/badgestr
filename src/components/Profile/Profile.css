@@ -112,7 +112,7 @@
 .badges-list ul {
     margin: 0 auto;
     width: 100%;
-    /* font-size: 0; */
+    font-size: 0;
     /* remove inline-block extra space */
     /* padding-left: 0; */
 }
