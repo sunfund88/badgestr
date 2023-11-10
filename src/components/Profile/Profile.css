@@ -5,7 +5,7 @@
 
 .header-banner {
     height: 150px;
-    width: 800px;
+    width: var(--width);
     /* background-position: bottom center; */
     /* background-position: center center; */
     background-repeat: no-repeat;
@@ -33,14 +33,14 @@
 .header-picture img {
     position: absolute;
     top: -32px;
-    left: 340px;
+    left: 436px;
     border-radius: 60px;
     border: 3px solid var(--sub-color);
 }
 
 .header-name {
     position: absolute;
-    width: 800px;
+    width: var(--width);
     text-align: center;
     top: 84px;
     color: #fff;
@@ -53,7 +53,7 @@
 }
 
 .header-address {
-    width: 800px;
+    width: var(--width);
     display: flex;
     justify-content: space-between;
     background-color: var(--main-color);
@@ -63,7 +63,7 @@
 .header-address ul {
     display: flex;
     list-style: none;
-    width: 800px;
+    width: var(--width);
     justify-content: space-around;
 }
 
@@ -82,7 +82,7 @@
 }
 
 .header-about {
-    width: 800px;
+    width: var(--width);
     text-align: center;
     background-color: var(--main-color);
     padding: 10px;
@@ -106,15 +106,15 @@
 .badges-container {}
 */
 .badges-list {
-    width: 800px;
+    width: var(--width);
 }
 
 .badges-list ul {
     margin: 0 auto;
     width: 100%;
-    font-size: 0;
+    /* font-size: 0; */
     /* remove inline-block extra space */
-    padding-left: 0;
+    /* padding-left: 0; */
 }
 
 .badges-list ul li {

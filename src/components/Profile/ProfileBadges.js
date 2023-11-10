@@ -22,7 +22,7 @@ const ProfileBadges = ({ badgesObj, diffObj }) => {
                 </div>
             </div>
             {(diffObj.length > 0)
-                ? (<h3>Unaccepted Badges</h3>)
+                ? (<h3>Unaccept Badges</h3>)
                 : (<></>)}
             <div className="badges-container">
                 <div className="badges-list">

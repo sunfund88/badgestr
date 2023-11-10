@@ -6,7 +6,7 @@
 }
 
 .container {
-  max-width: 800px;
+  max-width: var(--width);
   margin: 0 auto;
   /* background-color: darkorchid; */
 }
