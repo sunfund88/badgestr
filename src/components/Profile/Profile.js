@@ -11,6 +11,8 @@ function Profile() {
     const [profile, setProfile] = useState({});
     const [badges, setBadges] = useState([]);
     const [badgesObj, setBadgesObj] = useState([]);
+    const [diff, setDiff] = useState([]);
+    const [diffObj, setDiffObj] = useState([]);
 
     let { id } = useParams();
     const pubKeyRef = useRef(getPubKey(id))
@@ -21,14 +23,14 @@ function Profile() {
             shouldLog.current = false
             const fetchDataProfile = async () => {
                 const pf = await getProfile()
-                getAcceptedBadges()
+                await getAcceptedBadges()
+                // await getUnAcceptedBadges()
 
                 // console.log(pf)
                 setProfile(pf)
             }
             fetchDataProfile()
         }
-
     }, [])
 
     useEffect(() => {
@@ -37,10 +39,43 @@ function Profile() {
             return info
         })
 
+        // fetchDiffData()
+
         Promise.all(promises).then((updateData) => {
             setBadgesObj(updateData)
+            // console.log('setBadgesObj')
+            // setDiff(fetchDiffData)
         })
+            .then(async () => {
+                if (badges.length > 0) {
+                    const fetchDiffData = await getUnAcceptedBadges()
+                    // console.log('fdd ...', fetchDiffData)
+                    setDiff(fetchDiffData)
+                }
+            })
+
+
+
+
+        // const fetchDiffData = async () => {
+
+        //     const dd = await getUnAcceptedBadges()
+        // }
+
+        // Promise.all(fetchDiffData).then((fdiffData) => {
+        //     setDiff(fdiffData)
+        // })
     }, [badges]);
+
+    useEffect(() => {
+        const promises_diff = diff.map(async (b) => {
+            const d = await getBadgeInfo(b)
+            return d
+        })
+        Promise.all(promises_diff).then((diffData) => {
+            setDiffObj(diffData)
+        })
+    }, [diff]);
 
 
 
@@ -76,12 +111,12 @@ function Profile() {
 
     async function getProfile() {
         try {
-            console.log("try...", pubKeyRef.current)
+            // console.log("try...", pubKeyRef.current)
             const events = await window.pool.list(getReadRelays(), [{
                 kinds: [0],
                 authors: [pubKeyRef.current]
             }])
-            console.log(events)
+            // console.log(events)
 
 
             if (events.length > 0) {
@@ -89,7 +124,7 @@ function Profile() {
                 events.sort((a, b) => b.created_at - a.created_at)
 
                 p = JSON.parse(events[0].content)
-                console.log(p)
+                // console.log(p)
                 return p
             }
 
@@ -110,7 +145,7 @@ function Profile() {
             authors: [badgeId[1]],
             '#d': [badgeId[2]]
         }])
-        console.log(badgeId[2])
+        //console.log(badgeId[2])
 
         let badgeInfo = {
             'd': '',
@@ -119,14 +154,14 @@ function Profile() {
             'image': '',
             'thumb': ''
         }
-        console.log(events)
+        //console.log(events)
 
         if (events.length > 0) {
             events.sort((a, b) => b.created_at - a.created_at)
 
             let tags = events[0].tags
 
-            console.log(tags)
+            //console.log(tags)
 
             badgeInfo = {
                 'd': badgeId[2],
@@ -159,19 +194,53 @@ function Profile() {
             badges = event.tags.filter(t => t[0] === 'a').map(t => t[1])
         }
 
-        console.log(badges)
+        // console.log(badges)
         setBadges(badges)
+    }
+
+    async function getUnAcceptedBadges() {
+        let events = await window.pool.list(getAllRelays(), [{
+            kinds: [8],
+            '#p': [pubKeyRef.current],
+            // authors: [await window.nostr.getPublicKey()]
+        }])
+
+        const recieve_with_id = []
+
+        events.forEach(event => {
+            let a = event.id
+            let b = event.tags.filter(t => t[0] === 'a').map(t => t[1])
+            recieve_with_id.push([a, b[0]])
+        });
+
+        const recieve = recieve_with_id.map(b => b[1])
+        // console.log(recieve_with_id)
+
+        // const setBagdes = new Set(unbadges);
+        const unique = recieve.filter(onlyUnique)
+        const diff = unique.filter(x => !badges.includes(x));
+        // console.log(diff)
+
+        // setDiff(diff)
+
+        return diff
+
+        // const uniqueBadgesObj = uniqueBadges.map(b=>(b[1]))
+
+    }
+
+    function onlyUnique(value, index, array) {
+        return array.indexOf(value) === index;
     }
 
     return (
         <div>
-            {/* <h1>Profile :{pubKeyRef?.current}</h1> */}
+            {/* <button className="button" type="button" onClick={() => { getUnAcceptedBadges() }}>getUnAcceptedBadges()</button> */}
             <ProfileMetaData profile={profile} />
-            <ProfileBadges badgesObj={badgesObj} />
+            <ProfileBadges badgesObj={badgesObj} diffObj={diffObj} />
             <div>
                 {/* {profile?.displayName} */}
 
-                {/* <button className="button" type="button" onClick={() => { test() }}>test()</button> */}
                 {/* <button className="button" type="button" onClick={() => { getProfile() }}>getProfile()</button> */}
             </div>
         </div>
