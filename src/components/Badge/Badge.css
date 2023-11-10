@@ -1,0 +1,49 @@
+.b_badge {
+    display: flex;
+    width: var(--width);
+    padding: 20px;
+    background-color: var(--sub-color);
+    border-radius: 20px;
+}
+
+.b_badge_image {
+    border-radius: 15px;
+}
+
+.b_badge_info {
+    width: 100%;
+    margin-left: 20px;
+    position: relative;
+}
+
+.b_badge_name {
+    font-size: 60px;
+}
+
+.b_badge_description {
+    margin-top: 10px;
+}
+
+.b_badge_owner {
+    position: absolute;
+    display: flex;
+    right: 0px;
+    bottom: 0px;
+    align-items: center;
+}
+
+.b_badge_owner_span {
+    display: flex;
+    background-color: var(--grey-color);
+    padding: 10px;
+    height: 40px;
+    align-items: center;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.b_badge_owner_txt {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 18px;
+}

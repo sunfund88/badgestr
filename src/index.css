@@ -2,7 +2,10 @@
   --main-color: #a915ff;
   --sub-color: rgb(174, 140, 197);
   --bg-color: rgb(209, 202, 195);
+  --bg2-color: rgb(197, 187, 176);
   --text-color: #333131;
+  --grey-color: #bdbdbd;
+  --darkgrey-color: #5f5f5f;
   --width: 992px
 }
 
