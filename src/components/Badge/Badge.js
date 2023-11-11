@@ -130,7 +130,7 @@ function Badge() {
                                     height="25"
                                     alt={ownerData?.display_name}
                                 />
-                                <div className='b_badge_owner_txt'>{ownerData?.display_name}</div>
+                                <div className='b_badge_owner_txt'>{ownerData?.name}</div>
                             </div>
                         </div>
                     </div>
