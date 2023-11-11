@@ -106,7 +106,7 @@
 .badges-container {
     /* width: var(--width); */
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     margin-left: 7px;
 }
 
