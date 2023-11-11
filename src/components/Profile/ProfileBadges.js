@@ -10,7 +10,7 @@ const ProfileBadges = ({ badgesObj, diffObj }) => {
                         <h3>Accept Badges</h3>
                         <div className="badges-container">
                             <div className="badges-list">
-                                {badgesObj.map((b, i) => (
+                                {badgesObj.filter(f => (f.badge_id !== '')).map((b, i) => (
                                     <ProfileBadgeItem key={i} badgeItem={b} type={true} />
                                 ))}
                             </div>
@@ -24,7 +24,7 @@ const ProfileBadges = ({ badgesObj, diffObj }) => {
                         <h3>Unaccept Badges</h3>
                         <div className="badges-container">
                             <div className="badges-list">
-                                {diffObj.map((b, i) => (
+                                {diffObj.filter(f => (f.badge_id !== '')).map((b, i) => (
                                     <ProfileBadgeItem key={i} badgeItem={b} type={false} />
                                 ))}
                             </div>

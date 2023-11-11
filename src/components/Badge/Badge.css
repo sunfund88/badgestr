@@ -42,6 +42,20 @@
     margin-left: 10px;
 }
 
+.b_badge_owner_span_name {
+    display: flex;
+    background-color: var(--grey-color);
+    padding: 10px;
+    height: 40px;
+    align-items: center;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.b_badge_owner_span_name:hover {
+    background-color: var(--main-color);
+}
+
 .b_badge_owner_txt {
     margin-left: 5px;
     margin-right: 5px;

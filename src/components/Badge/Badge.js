@@ -122,8 +122,7 @@ function Badge() {
                             <div className='b_badge_owner_span'>
                                 <div className='b_badge_owner_txt'>{convertTime(badgeData?.created_at)}</div>
                             </div>
-
-                            <div className='b_badge_owner_span' onClick={() => clickedPubkey(badgeData?.owner)}>
+                            <div className='b_badge_owner_span_name' onClick={() => clickedPubkey(badgeData?.owner)}>
                                 <img
                                     className="b_badge_image"
                                     src={ownerData?.picture}

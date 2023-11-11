@@ -60,6 +60,10 @@ footer a {
   margin-bottom: 10px;
 }
 
+.back_btn:hover {
+  background-color: var(--main-color);
+}
+
 /* 
 .App {
   text-align: center;

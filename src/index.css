@@ -1,5 +1,6 @@
 :root {
   --main-color: #a915ff;
+  /* --main-color: linear-gradient(to right, #a915ff, rgb(174, 140, 197)); */
   --sub-color: rgb(174, 140, 197);
   --bg-color: rgb(209, 202, 195);
   --bg2-color: rgb(197, 187, 176);

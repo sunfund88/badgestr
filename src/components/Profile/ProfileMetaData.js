@@ -1,4 +1,7 @@
+import React, { useState, useEffect, useRef } from 'react';
+
 const ProfileMetaData = ({ profile: profile }) => {
+    // const [isLoading, setIsLoading] = useState(true);
     // {
     //     "picture": "https://nostr.build/i/nostr.build_15a5e334e4c30de7ee9055eaaf9547c435d014cbb1a82fd7bcb4387cc94ff4d4.png",
     //     "display_name": "Suntoshi⚡️",
@@ -17,13 +20,19 @@ const ProfileMetaData = ({ profile: profile }) => {
         <>
             <div className="header">
                 <div className="header-banner">
-                    <img src={profile?.banner} width="800" height="266" alt={profile?.name}></img>
+                    <img src={profile?.banner}
+                        width="800"
+                        height="266"
+                        alt={profile?.name}
+                        // onLoadStart={() => setIsLoading(true)}
+                        // onLoad={() => setIsLoading(false)}>
+                        img />
                 </div>
                 <div className="header-picture">
                     <img src={profile?.picture} width="120" height="120" alt={profile?.name}></img>
                 </div>
                 <div className="header-name">
-                    <h1>{profile?.display_name}</h1>
+                    <h1>{profile?.name}</h1>
                     <h4>{profile?.npub}</h4>
                 </div>
 
@@ -39,6 +48,9 @@ const ProfileMetaData = ({ profile: profile }) => {
                 {profile?.about}
             </div>
         </>
+        // !isLoading
+        // ? ()
+        // : (<></>)
     );
 }
 
