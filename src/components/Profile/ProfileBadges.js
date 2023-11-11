@@ -47,7 +47,7 @@ const ProfileBadges = ({ pubkey, badgesObj, diffObj }) => {
             {(badgesObj.length > 0)
                 ? (
                     <>
-                        <h3>Accept Badges</h3>
+                        <h3>Accepted Badges</h3>
 
                         {/* (window.nostr.getPublicKey()) */}
                         {(showEditBtn)
