@@ -4,7 +4,6 @@ import { nip19 } from "nostr-tools";
 import './Badge.css'
 import { getProfile, getReadRelays, convertTime } from '../BadgeStrFunction';
 
-
 function Badge() {
     let { id } = useParams();
     const navigate = useNavigate();

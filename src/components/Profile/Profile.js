@@ -242,7 +242,7 @@ function Profile() {
         <div>
             {/* <button className="button" type="button" onClick={() => { getUnAcceptedBadges() }}>getUnAcceptedBadges()</button> */}
             <ProfileMetaData profile={profile} />
-            <ProfileBadges badgesObj={badgesObj} diffObj={diffObj} />
+            <ProfileBadges pubkey={pubKeyRef.current} badgesObj={badgesObj} diffObj={diffObj} />
             <div>
                 {/* {profile?.displayName} */}
 

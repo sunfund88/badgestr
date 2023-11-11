@@ -24,9 +24,9 @@ const ProfileMetaData = ({ profile: profile }) => {
                         width="800"
                         height="266"
                         alt={profile?.name}
-                        // onLoadStart={() => setIsLoading(true)}
-                        // onLoad={() => setIsLoading(false)}>
-                        img />
+                    // onLoadStart={() => setIsLoading(true)}
+                    // onLoad={() => setIsLoading(false)}>
+                    />
                 </div>
                 <div className="header-picture">
                     <img src={profile?.picture} width="120" height="120" alt={profile?.name}></img>
