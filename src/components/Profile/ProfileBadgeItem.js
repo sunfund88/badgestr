@@ -4,6 +4,7 @@ import { nip19 } from "nostr-tools";
 
 const ProfileBadgeItem = ({ id, badgeItem, type }) => {
     const navigate = useNavigate();
+
     const handleClick = () => {
         // console.log("Image clicked!");
 
@@ -35,17 +36,18 @@ const ProfileBadgeItem = ({ id, badgeItem, type }) => {
 
     // console.log()
     return (
-        <>
-            <li key={id}>
-                <img className="image" src={badgeItem.thumb} width="120" height="120" title={badgeItem.name} alt={badgeItem.name}
-                    onError={event => {
-                        event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
-                        event.onerror = null
-                    }} onClick={handleClick} />{badgeItem.name}
+        <div className="badges-item" key={id} onClick={handleClick} >
+            <img className="image" src={badgeItem.thumb} width="120" height="120" title={badgeItem.name} alt={badgeItem.name}
+                onError={event => {
+                    event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+                    event.onerror = null
+                }} />
+            <div className="badges-item-name">
+                {badgeItem.name}
+            </div>
 
-                <div className="text"></div>
-            </li>
-        </>
+            {/* <div className="text"></div> */}
+        </div>
     );
 }
 
