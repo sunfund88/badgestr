@@ -67,6 +67,27 @@ footer a {
   color: var(--main-color);
 }
 
+.btn {
+  text-align: center;
+  width: 100px;
+  background-color: var(--grey-color);
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* color: var(--grey-color); */
+  font-size: medium;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.btn:hover {
+  background-color: var(--main-color);
+}
+
+
 .back_btn {
   text-align: center;
   width: 100px;

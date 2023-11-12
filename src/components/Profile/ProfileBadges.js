@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProfileBadgeItem from "./ProfileBadgeItem";
-import { getRemainTags } from '../BadgeStrFunction';
+import { getAcceptedBadges, getAcceptedBadgesId, getBadgeObj, getPubKey, getRemainTags, getUnAcceptedBadges } from '../BadgeStrFunction';
 
-const ProfileBadges = ({ pubkey, badges, badgesObj, diffObj }) => {
+const ProfileBadges = ({ id }) => {
+    const [badges, setBadges] = useState([]);
+    const [badgesObj, setBadgesObj] = useState([]);
+    const [diff, setDiff] = useState([]);
+    const [diffObj, setDiffObj] = useState([]);
+
     const [showEditBtn, setShowEditBtn] = useState(true);
     const [editMode, setEditMode] = useState(false);
     const [removeLength, setRemoveLength] = useState(0);
@@ -14,21 +19,58 @@ const ProfileBadges = ({ pubkey, badges, badgesObj, diffObj }) => {
 
     useEffect(() => {
         if (shouldLog.current) {
+            shouldLog.current = false
+
+            const fetchBadgesData = async () => {
+                const badge_tags = await getAcceptedBadges(getPubKey(id))
+                console.log('badge_id...', getAcceptedBadgesId(badge_tags))
+                setBadges(badge_tags)
+            }
+            fetchBadgesData()
+
             const login = (localStorage.getItem('login') === 'true')
             // console.log('login...', login)
-            shouldLog.current = false
 
             if (login) {
                 const fetchDataProfile = async () => {
                     const myPub = await window.nostr.getPublicKey()
                     console.log(myPub)
 
-                    setShowEditBtn(myPub === pubkey)
+                    setShowEditBtn(myPub === getPubKey(id))
                 }
                 fetchDataProfile()
             }
         }
     }, [])
+
+    useEffect(() => {
+        const promises = getAcceptedBadgesId(badges).map(async (b) => {
+            const obj = await getBadgeObj(b)
+            return obj
+        })
+
+        Promise.all(promises).then((objData) => {
+            setBadgesObj(objData)
+        })
+            .then(async () => {
+                if (getAcceptedBadgesId(badges).length > 0) {
+                    const fetchDiffData = await getUnAcceptedBadges(getPubKey(id), getAcceptedBadgesId(badges))
+                    // console.log('fdd ...', fetchDiffData)
+                    setDiff(fetchDiffData)
+                }
+            })
+    }, [badges]);
+
+
+    useEffect(() => {
+        const promises_diff = getAcceptedBadgesId(diff).map(async (b) => {
+            const d = await getBadgeObj(b)
+            return d
+        })
+        Promise.all(promises_diff).then((diffData) => {
+            setDiffObj(diffData)
+        })
+    }, [diff]);
 
     function handleRemoveLength() {
         setRemoveLength(removeBadges.current.length)
@@ -69,17 +111,21 @@ const ProfileBadges = ({ pubkey, badges, badgesObj, diffObj }) => {
                         {(showEditBtn)
                             ?
                             <div className='badges-edit-header'>
-                                <div>
-                                    Edit Mode:
-                                    <label className='switch'>
-                                        <input type="checkbox" checked={editMode} onChange={handleToggleEdit} />
-                                        <span className='slider round'></span>
-                                    </label>
+                                <div className='badges-edit-toggle'>
+                                    <h4>Edit Mode:</h4>
+                                    <div>
+                                        <label className='switch'>
+                                            <input type="checkbox" checked={editMode} onChange={handleToggleEdit} />
+                                            <span className='slider round'></span>
+                                        </label>
+                                    </div>
                                 </div>
                                 {(editMode)
-                                    ? <div>
-                                        <div>Remove {removeLength} Item(s) </div>
-                                        <button onClick={() => { handleClickUpdate() }}>handleClickUpdate</button>
+                                    ? <div className='badges-edit-update'>
+                                        <h4>Remove {removeLength} Item(s) </h4>
+                                        <div>
+                                            <button onClick={() => { handleClickUpdate() }}>Update</button>
+                                        </div>
                                     </div>
                                     : <></>
                                 }

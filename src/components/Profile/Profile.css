@@ -102,7 +102,6 @@
     color: var(--text-color);
 }
 
-
 .badges-container {
     /* width: var(--width); */
     display: flex;
@@ -113,6 +112,44 @@
 .badges-edit-header {
     display: flex;
     justify-content: space-between;
+    height: 40px;
+    align-items: center;
+}
+
+.badges-edit-toggle {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.badges-edit h4 {
+    align-items: center;
+    font-size: 18px;
+}
+
+.badges-edit-toggle label {
+    margin-left: 10px;
+}
+
+.badges-edit-update {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    width: 240px;
+    justify-content: space-between;
+}
+
+.badges-edit-update button {
+    text-align: center;
+    width: 100px;
+    background-color: var(--main-color);
+    height: 30px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    /* color: var(--grey-color); */
+    font-size: medium;
+    border: none;
 }
 
 .badges-container-edit {

@@ -1,3 +1,6 @@
+import { nip19 } from 'nostr-tools';
+
+// relays
 export const init_relays = [
     'wss://relay.damus.io',
     'wss://nostr-pub.wellorder.net',
@@ -45,6 +48,37 @@ export async function findRelays() {
     else return init_relays
 }
 
+export function getReadRelays() {
+    return window.relays.filter(r => r[1].read).map(r => r[0])
+}
+
+export function getWriteRelays() {
+    return window.relays.filter(r => r[1].write).map(r => r[0])
+}
+
+export function getAllRelays() {
+    return window.relays.map(r => r[0])
+}
+
+// profile
+export function getPubKey(id) {
+    if (id !== '') {
+        let pub = id
+
+        const regex = new RegExp(`^${'npub1'}`);
+
+        if (regex.test(id) && pub !== '') {
+            try {
+                pub = nip19.decode(id).data
+                return pub
+            } catch (error) {
+                console.error('NPUB is invalid.');
+            }
+        }
+        return pub
+    }
+}
+
 export async function getProfile(pubkey) {
     try {
         // console.log("try...", pubKeyRef.current)
@@ -74,18 +108,116 @@ export async function getProfile(pubkey) {
 
 }
 
-export function getReadRelays() {
-    return window.relays.filter(r => r[1].read).map(r => r[0])
+export async function getAcceptedBadges(pubkey) {
+    let events = await window.pool.list(getAllRelays(), [{
+        kinds: [30_008],
+        // p: [await window.nostr.getPublicKey()],
+        authors: [pubkey]
+    }])
+
+    let tags = []
+
+    if (events.length > 0) {
+        events.sort((a, b) => b.created_at - a.created_at)
+
+        let event = events[0]
+        // badges = event.tags.filter(t => t[0] === 'a').map(t => t[1])
+        tags = event.tags
+    }
+
+    // console.log(badges)
+    // setBadges(badges)
+    return tags
 }
 
-export function getWriteRelays() {
-    return window.relays.filter(r => r[1].write).map(r => r[0])
+export function getAcceptedBadgesId(badges) {
+    return badges.filter(t => t[0] === 'a').map(t => t[1])
 }
 
-export function getAllRelays() {
-    return window.relays.map(r => r[0])
+export async function getBadgeObj(badge) {
+    const bid = badge
+    badge = badge.split(':')
+    let events = await window.pool.list(getReadRelays(), [{
+        kinds: [30_009],
+        authors: [badge[1]],
+        '#d': [badge[2]]
+    }])
+    //console.log(badgeId[2])
+
+    let badgeInfo = {
+        'badge_id': '',
+        'd': '',
+        'created_at': '',
+        'name': '',
+        'description': '',
+        'image': '',
+        'thumb': ''
+    }
+    // console.log(events)
+
+    if (events.length > 0) {
+        events.sort((a, b) => b.created_at - a.created_at)
+
+        let tags = events[0].tags
+
+        //console.log(tags)
+
+        badgeInfo = {
+            'badge_id': bid,
+            'd': badge[2],
+            'created_at': events[0].created_at,
+            'name': tags.filter(t => t[0] === 'name').map(t => t[1])[0],
+            'description': tags.filter(t => t[0] === 'description').map(t => t[1])[0],
+            'image': tags.filter(t => t[0] === 'image').map(t => t[1])[0],
+            'thumb': tags.filter(t => t[0] === 'thumb').map(t => t[1])[0]
+        }
+
+        // console.log(badgeInfo)
+        // return tags
+
+    }
+    return badgeInfo
 }
 
+export async function getUnAcceptedBadges(pubkey, badges) {
+    let events = await window.pool.list(getAllRelays(), [{
+        kinds: [8],
+        '#p': [pubkey],
+        // authors: [await window.nostr.getPublicKey()]
+    }])
+
+    const recieve_with_id = []
+
+    events.forEach(event => {
+        let a = event.id
+        let b = event.tags.filter(t => t[0] === 'a').map(t => t[1])
+        recieve_with_id.push([a, b[0]])
+    });
+
+    const recieve = recieve_with_id.map(b => b[1]);
+    // console.log('recieve_with_id', recieve_with_id)
+
+    // const setBagdes = new Set(unbadges);
+    const unique = recieve.filter(onlyUnique);
+    const diff = unique.filter(x => !badges.includes(x));
+
+    const diff_with_id = []
+
+    diff.forEach(d => {
+        recieve_with_id.forEach(r => {
+            if (d === r[1]) {
+                diff_with_id.push(['a', r[1], r[0]])
+            }
+        })
+    })
+
+    console.log('diff ...', diff_with_id)
+
+    // // setDiff(diff)
+
+    return diff_with_id
+}
+//
 export function convertTime(timestamp) {
     if (timestamp !== undefined) {
         const date = new Date(timestamp * 1000);
