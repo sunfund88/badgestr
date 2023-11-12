@@ -49,7 +49,6 @@ const ProfileBadges = ({ pubkey, badgesObj, diffObj }) => {
                     <>
                         <h3>Accepted Badges</h3>
 
-                        {/* (window.nostr.getPublicKey()) */}
                         {(showEditBtn)
                             ?
                             <label className='switch'>
