@@ -3,7 +3,8 @@ import { nip19 } from 'nostr-tools';
 import { useParams } from "react-router-dom";
 import ProfileMetaData from './ProfileMetaData';
 import ProfileBadges from './ProfileBadges';
-import './Profile.css'
+import { onlyUnique } from '../BadgeStrFunction';
+import './Profile.css';
 
 
 function Profile() {
@@ -232,10 +233,6 @@ function Profile() {
 
         // const uniqueBadgesObj = uniqueBadges.map(b=>(b[1]))
 
-    }
-
-    function onlyUnique(value, index, array) {
-        return array.indexOf(value) === index;
     }
 
     return (
