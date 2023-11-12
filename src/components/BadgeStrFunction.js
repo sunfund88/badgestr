@@ -41,3 +41,7 @@ export function convertTime(timestamp) {
     }
     else return ''
 }
+
+export function onlyUnique(value, index, array) {
+    return array.indexOf(value) === index;
+}
