@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProfileBadgeItem from "./ProfileBadgeItem";
+import { getRemainTags } from '../BadgeStrFunction';
 
-const ProfileBadges = ({ pubkey, badgesObj, diffObj }) => {
+const ProfileBadges = ({ pubkey, badges, badgesObj, diffObj }) => {
     const [showEditBtn, setShowEditBtn] = useState(true);
     const [editMode, setEditMode] = useState(false);
+    const [removeLength, setRemoveLength] = useState(0);
     const [containerClassName, setContainerClassName] = useState("badges-container");
     // const [removeBadges, setRemoveBadges] = useState([])
 
     const shouldLog = useRef(true)
+    const removeBadges = useRef([])
 
     useEffect(() => {
         if (shouldLog.current) {
@@ -27,7 +30,11 @@ const ProfileBadges = ({ pubkey, badgesObj, diffObj }) => {
         }
     }, [])
 
-    function handleClick() {
+    function handleRemoveLength() {
+        setRemoveLength(removeBadges.current.length)
+    }
+
+    function handleToggleEdit() {
         // console.log(pubkey)
         // console.log(await window.nostr.getPublicKey())
         if (!editMode) {
@@ -38,9 +45,19 @@ const ProfileBadges = ({ pubkey, badgesObj, diffObj }) => {
             setContainerClassName("badges-container");
             setEditMode(!editMode)
         }
+        handleRemoveLength()
     }
 
-    const removeBadges = useRef([])
+    async function handleClickUpdate() {
+        console.log('handleClickUpdate')
+
+        const remains = badges.filter(x => !removeBadges.current.includes(x));
+        console.log(remains)
+
+        const tags = await getRemainTags()
+        console.log(tags)
+
+    }
 
     return (
         <div className="badges">
@@ -51,15 +68,28 @@ const ProfileBadges = ({ pubkey, badgesObj, diffObj }) => {
 
                         {(showEditBtn)
                             ?
-                            <label className='switch'>
-                                <input type="checkbox" checked={editMode} onChange={handleClick} />
-                                <span className='slider round'></span>
-                            </label>
+                            <div className='badges-edit-header'>
+                                <div>
+                                    Edit Mode:
+                                    <label className='switch'>
+                                        <input type="checkbox" checked={editMode} onChange={handleToggleEdit} />
+                                        <span className='slider round'></span>
+                                    </label>
+                                </div>
+                                {(editMode)
+                                    ? <div>
+                                        <div>Remove {removeLength} Item(s) </div>
+                                        <button onClick={() => { handleClickUpdate() }}>handleClickUpdate</button>
+                                    </div>
+                                    : <></>
+                                }
+
+                            </div>
                             : <></>}
                         <div className={containerClassName}>
                             <div className="badges-list">
                                 {badgesObj.filter(f => (f.badge_id !== '')).map((b, i) => (
-                                    <ProfileBadgeItem key={i} badgeItem={b} type={true} editMode={editMode} removeBadges={removeBadges} />
+                                    <ProfileBadgeItem key={i} badgeItem={b} type={true} editMode={editMode} removeBadges={removeBadges} handleRemoveLength={handleRemoveLength} />
                                 ))}
                             </div>
                         </div>

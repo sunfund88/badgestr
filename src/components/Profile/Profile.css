@@ -110,6 +110,11 @@
     /* margin-left: 8px; */
 }
 
+.badges-edit-header {
+    display: flex;
+    justify-content: space-between;
+}
+
 .badges-container-edit {
     background-color: var(--sub-color);
     /* margin-left: 8px; */

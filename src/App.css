@@ -11,6 +11,29 @@
   /* background-color: darkorchid; */
 }
 
+.relay {
+  position: relative;
+}
+
+.relay-list {
+  width: 350px;
+  position: absolute;
+  left: var(--width);
+  margin-left: 8px;
+  margin-top: 3px;
+  /* border: red solid; */
+}
+
+.relay-list ul li {
+  list-style-type: none;
+  /* margin-left: 10px; */
+}
+
+.relay-list ul li h5 {
+  font-weight: lighter;
+  font-style: italic;
+}
+
 footer {
   margin-top: 220px;
   border-top-right-radius: 12px;
