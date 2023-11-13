@@ -98,6 +98,7 @@
 .badges h3 {
     text-align: center;
     margin-top: 15px;
+    margin-bottom: 5px;
     font-size: 30px;
     color: var(--text-color);
 }
@@ -109,7 +110,14 @@
     /* margin-left: 8px; */
 }
 
+.badges-header {
+    position: absolute;
+    width: var(--width);
+    justify-content: space-between;
+}
+
 .badges-edit-header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     height: 40px;
@@ -132,11 +140,7 @@
 }
 
 .badges-edit-update {
-    display: flex;
-    align-items: center;
-    text-align: right;
-    width: 240px;
-    justify-content: space-between;
+    right: 0px;
 }
 
 .badges-edit-update button {
@@ -179,7 +183,7 @@
     text-align: center;
 }
 
-.badges-item-edit {
+.badges-item-edit-green {
     background-color: var(--green-color);
     border-radius: 15px;
     margin: 5.8px;
@@ -188,7 +192,7 @@
     text-align: center;
 }
 
-.badges-item-edit-removed {
+.badges-item-edit-red {
     background-color: var(--red-color);
     border-radius: 15px;
     margin: 5.8px;
@@ -202,8 +206,8 @@
 }
 
 .badges-item img,
-.badges-item-edit img,
-.badges-item-edit-removed img {
+.badges-item-edit-green img,
+.badges-item-edit-red img {
     margin-top: 5px;
     border-radius: 15px;
 }

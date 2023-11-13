@@ -190,7 +190,53 @@ export async function getBadgeObj(badge) {
     return badgeInfo
 }
 
-export async function getUnAcceptedBadges(pubkey, badges) {
+// export async function getUnAcceptedBadges(pubkey, badges) {
+//     let events = await window.pool.list(getReadRelays(), [{
+//         kinds: [8],
+//         '#p': [pubkey],
+//         // authors: [await window.nostr.getPublicKey()]
+//     }])
+
+//     const recieve_with_id = []
+
+//     events.forEach(event => {
+//         let a = event.id
+//         let b = event.tags.filter(t => t[0] === 'a').map(t => t[1])
+//         recieve_with_id.push([a, b[0]])
+//     });
+
+//     const recieve = recieve_with_id.map(b => b[1]);
+
+//     // const setBagdes = new Set(unbadges);
+//     const unique = recieve.filter(onlyUnique);
+//     // console.log('unique', unique)
+
+//     // const unique_with_event =[]
+
+//     // unique.forEach(u=>{
+
+//     // })
+
+//     const diff = unique.filter(x => !badges.includes(x));
+//     // console.log('diff', diff)
+
+//     const diff_with_id = []
+
+//     diff.forEach(d => {
+//         for (let i = 0; i < recieve_with_id.length; i++) {
+//             if (d === recieve_with_id[i][1]) {
+//                 diff_with_id.push([recieve_with_id[i][1], recieve_with_id[i][0]])
+//                 break;
+//             }
+//         }
+//     })
+
+//     // console.log('diff_with_id ...', diff_with_id)
+
+//     return diff_with_id
+// }
+
+export async function getAllRecievedBadges(pubkey) {
     let events = await window.pool.list(getReadRelays(), [{
         kinds: [8],
         '#p': [pubkey],
@@ -199,110 +245,54 @@ export async function getUnAcceptedBadges(pubkey, badges) {
 
     const recieve_with_id = []
 
+
     events.forEach(event => {
         let a = event.id
         let b = event.tags.filter(t => t[0] === 'a').map(t => t[1])
-        recieve_with_id.push([a, b[0]])
+        recieve_with_id.push([b[0], a])
     });
 
-    const recieve = recieve_with_id.map(b => b[1]);
-
-    // const setBagdes = new Set(unbadges);
+    const recieve = recieve_with_id.map(b => b[0]);
+    // console.log('r...', recieve)
     const unique = recieve.filter(onlyUnique);
-    // console.log('unique', unique)
+    // console.log(unique)
 
-    // const unique_with_event =[]
 
-    // unique.forEach(u=>{
+    const unique_with_id = []
 
-    // })
-
-    const diff = unique.filter(x => !badges.includes(x));
-    // console.log('diff', diff)
-
-    const diff_with_id = []
-
-    diff.forEach(d => {
+    unique.forEach(u => {
         for (let i = 0; i < recieve_with_id.length; i++) {
-            if (d === recieve_with_id[i][1]) {
-                diff_with_id.push([recieve_with_id[i][1], recieve_with_id[i][0]])
+            if (u === recieve_with_id[i][0]) {
+                unique_with_id.push([recieve_with_id[i][0], recieve_with_id[i][1]])
                 break;
             }
         }
-
-        // recieve_with_id.forEach(r => {
-        //     if (d === r[1]) {
-        //         throw new Error('Stop iteration');
-        //     }
-        // })
     })
 
-    // console.log('diff_with_id ...', diff_with_id)
-
-    return diff_with_id
+    return unique_with_id
 }
 
-export async function getUnAcceptedBadges2(pubkey) {
-    let events = await window.pool.list(getReadRelays(), [{
-        kinds: [8],
-        '#p': [pubkey],
-        // authors: [await window.nostr.getPublicKey()]
-    }])
+// export function findBadgeObj(badge_id, badgesData) {
+//     // console.log('badge_id',badge_id)
+//     return badgesData.filter(filterByKeyValue('badge_id', badge_id))
+// }
 
-    const recieve_with_id = []
-
-    events.forEach(event => {
-        let a = event.id
-        let b = event.tags.filter(t => t[0] === 'a').map(t => t[1])
-        recieve_with_id.push([a, b[0]])
-    });
-
-    const recieve = recieve_with_id.map(b => b[1]);
-    console.log('recieve_with_id', recieve_with_id)
-}
-
-export function getRemainTags(remove, badges) {
+export function getNewAcceptBadgesTags(newAcceptBadges) {
     // console.log('remove...', remove)
     // console.log('badges...', badges)
 
     let tags = [['d', 'profile_badges']]
 
-    badges.forEach(b => {
-        let this_badge_remove = true
-
-        for (let i = 0; i < remove.length; i++) {
-            if (b[0] === remove[i]) {
-                this_badge_remove = true
-                break
-            }
-            else {
-                this_badge_remove = false
-            }
-        }
-
-        console.log('this_badge_remove..', this_badge_remove)
-        if (!this_badge_remove) {
-            tags.push(['a', b[0]])
-            tags.push(['e', b[1]])
-        }
-    });
-
-
+    newAcceptBadges.forEach(b => {
+        tags.push(['a', b[0]])
+        tags.push(['e', b[1]])
+    })
 
     return tags
     // console.log(badges)
 }
 
 export async function sendNewEvent(kind, content, tags) {
-    let tags2 = [['d', 'profile_badges'],
-    ['a', '30009:58f5a23008ba5a8730a435f68f18da0b10ce538c6e2aa5a1b7812076304d59f7:siamstr'],
-    ['e', 'd34ce80ab2cf520127a5d863d6b5735110d1d5d292b82e335ed1ffe620248697'],
-    ['a', '30009:d830ee7b7c30a364b1244b779afbb4f156733ffb8c87235086e26b0b4e61cd62:Jakk'],
-    ['e', '1fac4c30c01924154ece306233e4c8a8c6e5bf5d0d0a1d54cd50f5909951ee07'],
-    ['a', '30009:f031d7551cc90a697461550cf916ac063daed6a3faeb3fd7b0cdf0b65e9e0d4d:i_badges_02'],
-    ['e', '38399b5b71f8fb2bfca364a1ef10d26b6e0ccb6240bd8013b12d79b18eb7c4fc']
-    ]
-
     let new_event = {
         kind: kind,
         created_at: Math.floor(Date.now() / 1000),
@@ -400,9 +390,38 @@ export function uniqueDiff(value, index, array) {
     return array.indexOf(value) === index;
 }
 
+export function arrayDiff(array1, array2) {
+    const diffArr = [];
+
+    array1.forEach((r) => {
+        let add = true
+        for (let i = 0; i < array2.length; i++) {
+            if (r[0] === array2[i][0]) {
+                add = false
+                break
+            }
+        }
+
+        if (add) {
+            diffArr.push(r)
+        }
+
+    })
+    // for (const object of array1) {
+    //     if (!array2.some(otherObject => object.id === otherObject.id)) {
+    //         diff.push(object);
+    //     }
+    // }
+    return diffArr;
+}
+
+function filterByKeyValue(obj, key, value) {
+    return obj[key] === value;
+}
+
 
 window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
-window.getUnAcceptedBadges2 = getUnAcceptedBadges2
+window.getAllRecievedBadges = getAllRecievedBadges
 window.test_sendNewEvent = test_sendNewEvent
