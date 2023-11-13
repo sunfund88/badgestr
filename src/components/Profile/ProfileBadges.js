@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import ProfileBadgeItem from "./ProfileBadgeItem";
-import { getAcceptedBadges, getAcceptedBadgesId, getBadgeObj, getPubKey, getRemainTags, getUnAcceptedBadges } from '../BadgeStrFunction';
+import { getAcceptedBadges, getBadgesId, getBadgeObj, getPubKey, getRemainTags, getUnAcceptedBadges, sendNewEvent } from '../BadgeStrFunction';
 
 const ProfileBadges = ({ id }) => {
     const [badges, setBadges] = useState([]);
@@ -17,13 +18,15 @@ const ProfileBadges = ({ id }) => {
     const shouldLog = useRef(true)
     const removeBadges = useRef([])
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (shouldLog.current) {
             shouldLog.current = false
 
             const fetchBadgesData = async () => {
                 const badge_tags = await getAcceptedBadges(getPubKey(id))
-                console.log('badge_id...', getAcceptedBadgesId(badge_tags))
+                // console.log('badge_id...', getAcceptedBadgesId(badge_tags))
                 setBadges(badge_tags)
             }
             fetchBadgesData()
@@ -44,7 +47,7 @@ const ProfileBadges = ({ id }) => {
     }, [])
 
     useEffect(() => {
-        const promises = getAcceptedBadgesId(badges).map(async (b) => {
+        const promises = getBadgesId(badges).map(async (b) => {
             const obj = await getBadgeObj(b)
             return obj
         })
@@ -53,8 +56,8 @@ const ProfileBadges = ({ id }) => {
             setBadgesObj(objData)
         })
             .then(async () => {
-                if (getAcceptedBadgesId(badges).length > 0) {
-                    const fetchDiffData = await getUnAcceptedBadges(getPubKey(id), getAcceptedBadgesId(badges))
+                if (getBadgesId(badges).length > 0) {
+                    const fetchDiffData = await getUnAcceptedBadges(getPubKey(id), getBadgesId(badges))
                     // console.log('fdd ...', fetchDiffData)
                     setDiff(fetchDiffData)
                 }
@@ -63,7 +66,7 @@ const ProfileBadges = ({ id }) => {
 
 
     useEffect(() => {
-        const promises_diff = getAcceptedBadgesId(diff).map(async (b) => {
+        const promises_diff = getBadgesId(diff).map(async (b) => {
             const d = await getBadgeObj(b)
             return d
         })
@@ -93,11 +96,19 @@ const ProfileBadges = ({ id }) => {
     async function handleClickUpdate() {
         console.log('handleClickUpdate')
 
-        const remains = badges.filter(x => !removeBadges.current.includes(x));
-        console.log(remains)
+        // const remains = getAcceptedBadgesId(badges).filter(x => !removeBadges.current.includes(x));
+        // console.log(remains)
 
-        const tags = await getRemainTags()
+        const tags = getRemainTags(removeBadges.current, badges)
         console.log(tags)
+
+        const e = await sendNewEvent(30_008, '', tags)
+        console.log(e)
+
+        // const url = '/p/' + id
+        // console.log(url)
+
+        // navigate(url)
 
     }
 

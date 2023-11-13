@@ -1,4 +1,4 @@
-import { nip19 } from 'nostr-tools';
+import { nip19, getEventHash } from 'nostr-tools';
 
 // relays
 export const init_relays = [
@@ -17,7 +17,7 @@ export async function findRelays() {
 
     if (events.length > 0) {
         events.sort((a, b) => b.created_at - a.created_at)
-        console.log(events)
+        // console.log(events)
         let event
         if (events[0].kind === 3 && (events[0].content !== '{}' && events[0].content !== '')) {
             event = events[0]
@@ -38,8 +38,8 @@ export async function findRelays() {
                 .map(t => [t[1], !t[2]
                     ? { read: true, write: true }
                     : { read: t[2] === 'read', write: t[2] === 'write' }])
-        console.log(new_relays)
-        console.log(event)
+        // console.log(new_relays)
+        // console.log(event)
 
         return new_relays
         // setRelays(new_relays)
@@ -125,13 +125,24 @@ export async function getAcceptedBadges(pubkey) {
         tags = event.tags
     }
 
-    // console.log(badges)
+    tags.forEach((t, i) => {
+        if (t[0] === 'a') {
+            tags[i].push(tags[i + 1][1])
+        }
+    })
+
+    const tags_a = tags.filter(t => t[0] === 'a')
+    console.log('tags_a', tags_a)
+
+    tags_a.map(t => t.splice(0, 1))
+
+    // console.log(events)
     // setBadges(badges)
-    return tags
+    return tags_a
 }
 
-export function getAcceptedBadgesId(badges) {
-    return badges.filter(t => t[0] === 'a').map(t => t[1])
+export function getBadgesId(badges) {
+    return badges.map(t => t[0])
 }
 
 export async function getBadgeObj(badge) {
@@ -180,7 +191,7 @@ export async function getBadgeObj(badge) {
 }
 
 export async function getUnAcceptedBadges(pubkey, badges) {
-    let events = await window.pool.list(getAllRelays(), [{
+    let events = await window.pool.list(getReadRelays(), [{
         kinds: [8],
         '#p': [pubkey],
         // authors: [await window.nostr.getPublicKey()]
@@ -195,28 +206,120 @@ export async function getUnAcceptedBadges(pubkey, badges) {
     });
 
     const recieve = recieve_with_id.map(b => b[1]);
-    // console.log('recieve_with_id', recieve_with_id)
 
     // const setBagdes = new Set(unbadges);
     const unique = recieve.filter(onlyUnique);
+    // console.log('unique', unique)
+
+    // const unique_with_event =[]
+
+    // unique.forEach(u=>{
+
+    // })
+
     const diff = unique.filter(x => !badges.includes(x));
+    // console.log('diff', diff)
 
     const diff_with_id = []
 
     diff.forEach(d => {
-        recieve_with_id.forEach(r => {
-            if (d === r[1]) {
-                diff_with_id.push(['a', r[1], r[0]])
+        for (let i = 0; i < recieve_with_id.length; i++) {
+            if (d === recieve_with_id[i][1]) {
+                diff_with_id.push([recieve_with_id[i][1], recieve_with_id[i][0]])
+                break;
+            }
+        }
+
+        // recieve_with_id.forEach(r => {
+        //     if (d === r[1]) {
+        //         throw new Error('Stop iteration');
+        //     }
+        // })
+    })
+
+    console.log('diff_with_id ...', diff_with_id)
+
+    return diff_with_id
+}
+
+// export async function getUnAcceptedBadges2(pubkey) {
+//     let events = await window.pool.list(getReadRelays(), [{
+//         kinds: [8],
+//         '#p': [pubkey],
+//         // authors: [await window.nostr.getPublicKey()]
+//     }])
+
+//     const recieve_with_id = []
+
+//     events.forEach(event => {
+//         let a = event.id
+//         let b = event.tags.filter(t => t[0] === 'a').map(t => t[1])
+//         recieve_with_id.push([a, b[0]])
+//     });
+
+//     const recieve = recieve_with_id.map(b => b[1]);
+//     console.log('recieve_with_id', recieve_with_id)
+// }
+
+export function getRemainTags(remove, badges) {
+    // console.log(badges)
+    // let tmp_badges = badges
+
+    remove.forEach(r => {
+        badges.forEach((b, i) => {
+            if (r === b[1]) {
+                badges.splice(i, 2)
             }
         })
     })
 
-    console.log('diff ...', diff_with_id)
-
-    // // setDiff(diff)
-
-    return diff_with_id
+    return badges
+    // console.log(badges)
 }
+
+export async function sendNewEvent(kind, content, tags) {
+    let tags2 = [['d', 'profile_badges'],
+    ['a', '30009:58f5a23008ba5a8730a435f68f18da0b10ce538c6e2aa5a1b7812076304d59f7:siamstr'],
+    ['e', 'd34ce80ab2cf520127a5d863d6b5735110d1d5d292b82e335ed1ffe620248697'],
+    ['a', '30009:d830ee7b7c30a364b1244b779afbb4f156733ffb8c87235086e26b0b4e61cd62:Jakk'],
+    ['e', '1fac4c30c01924154ece306233e4c8a8c6e5bf5d0d0a1d54cd50f5909951ee07'],
+    ['a', '30009:f031d7551cc90a697461550cf916ac063daed6a3faeb3fd7b0cdf0b65e9e0d4d:i_badges_02'],
+    ['e', '38399b5b71f8fb2bfca364a1ef10d26b6e0ccb6240bd8013b12d79b18eb7c4fc']
+    ]
+
+    let new_event = {
+        kind: kind,
+        created_at: Math.floor(Date.now() / 1000),
+        tags: tags2,
+        content: content,
+        pubkey: await window.nostr.getPublicKey(),
+    }
+
+    new_event.id = getEventHash(new_event)
+    new_event = await window.nostr.signEvent(new_event)
+    console.log(new_event)
+
+    let pubs = await window.pool.publish(getWriteRelays(), new_event)
+
+    try {
+        await Promise.all(pubs).then(() => {
+            return true
+        }
+        )
+        // .then((data) => {
+        //     console.log('data...', data)
+        //     // return data
+        // });
+
+        // const ev = await window.pool.get(getAllRelays(), { ids: [new_event.id], });
+        // console.log(ev)
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+
 //
 export function convertTime(timestamp) {
     if (timestamp !== undefined) {
@@ -233,37 +336,13 @@ export function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
 }
 
-export async function getRemainTags(remains) {
-    let events = await window.pool.list(getReadRelays(), [{
-        kinds: [30_008],
-        authors: [await window.nostr.getPublicKey()],
-        // authors: []
-    }])
-
-    let tags = []
-
-    if (events.length > 0) {
-        events.sort((a, b) => b.created_at - a.created_at)
-
-        let event = events[0]
-        // console.log(event)
-        tags = event.tags
-
-        // remains.forEach((b, i) => {
-        //     if (b === tags[i][1]) {
-        //         tags.splice(i, 2)
-        //     }
-        // });
-
-    }
-    return tags
-
-    // console.log(badges)
-    // setBadges(badges)
-    // return events.sort((a, b) => b.created_at - a.created_at)
+export function uniqueDiff(value, index, array) {
+    return array.indexOf(value) === index;
 }
+
 
 window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
-window.getAcceptedBadges_2 = getRemainTags
+// window.getUnAcceptedBadges2 = getUnAcceptedBadges2
+window.sendNewEvent = sendNewEvent
