@@ -16,6 +16,7 @@ const ProfileBadges = ({ id }) => {
     // const [removeBadges, setRemoveBadges] = useState([])
 
     const shouldLog = useRef(true)
+    const shouldLog_diff = useRef(true)
     const removeBadges = useRef([])
 
     const navigate = useNavigate();
@@ -64,7 +65,6 @@ const ProfileBadges = ({ id }) => {
             })
     }, [badges]);
 
-
     useEffect(() => {
         const promises_diff = getBadgesId(diff).map(async (b) => {
             const d = await getBadgeObj(b)
@@ -75,8 +75,13 @@ const ProfileBadges = ({ id }) => {
         })
     }, [diff]);
 
-    function handleRemoveLength() {
+    function handleRemove(type, index) {
         setRemoveLength(removeBadges.current.length)
+
+        console.log('from accepted...', type)
+        // setBadges(badges.slice(index, 1))
+
+
     }
 
     function handleToggleEdit() {
@@ -90,7 +95,7 @@ const ProfileBadges = ({ id }) => {
             setContainerClassName("badges-container");
             setEditMode(!editMode)
         }
-        handleRemoveLength()
+        handleRemove()
     }
 
     async function handleClickUpdate() {
@@ -105,11 +110,12 @@ const ProfileBadges = ({ id }) => {
         const e = await sendNewEvent(30_008, '', tags)
         console.log(e)
 
-        // const url = '/p/' + id
-        // console.log(url)
-
-        // navigate(url)
-
+        const fetchBadgesData = async () => {
+            const badge_tags = await getAcceptedBadges(getPubKey(id))
+            // console.log('badge_id...', getAcceptedBadgesId(badge_tags))
+            setBadges(badge_tags)
+        }
+        fetchBadgesData()
     }
 
     return (
@@ -146,7 +152,7 @@ const ProfileBadges = ({ id }) => {
                         <div className={containerClassName}>
                             <div className="badges-list">
                                 {badgesObj.filter(f => (f.badge_id !== '')).map((b, i) => (
-                                    <ProfileBadgeItem key={i} badgeItem={b} type={true} editMode={editMode} removeBadges={removeBadges} handleRemoveLength={handleRemoveLength} />
+                                    <ProfileBadgeItem key={i} badgeItem={b} type={true} editMode={editMode} removeBadges={removeBadges} handleRemove={handleRemove} />
                                 ))}
                             </div>
                         </div>

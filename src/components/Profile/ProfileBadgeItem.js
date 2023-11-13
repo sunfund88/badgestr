@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { nip19 } from "nostr-tools";
 
-const ProfileBadgeItem = ({ id, badgeItem, type, editMode, removeBadges, handleRemoveLength }) => {
+const ProfileBadgeItem = ({ id, badgeItem, type, editMode, removeBadges, handleRemove }) => {
     const [removed, setRemoved] = useState(false)
     const [cssItem, setCssItem] = useState(editMode ? 'badges-item-edit' : 'badges-item')
 
@@ -60,7 +60,7 @@ const ProfileBadgeItem = ({ id, badgeItem, type, editMode, removeBadges, handleR
                 }
                 setRemoved(!removed)
             }
-            handleRemoveLength()
+            handleRemove(type, id)
             // console.log(removeBadges.current)
         }
 

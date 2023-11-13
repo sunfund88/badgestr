@@ -132,7 +132,7 @@ export async function getAcceptedBadges(pubkey) {
     })
 
     const tags_a = tags.filter(t => t[0] === 'a')
-    console.log('tags_a', tags_a)
+    // console.log('tags_a', tags_a)
 
     tags_a.map(t => t.splice(0, 1))
 
@@ -237,43 +237,59 @@ export async function getUnAcceptedBadges(pubkey, badges) {
         // })
     })
 
-    console.log('diff_with_id ...', diff_with_id)
+    // console.log('diff_with_id ...', diff_with_id)
 
     return diff_with_id
 }
 
-// export async function getUnAcceptedBadges2(pubkey) {
-//     let events = await window.pool.list(getReadRelays(), [{
-//         kinds: [8],
-//         '#p': [pubkey],
-//         // authors: [await window.nostr.getPublicKey()]
-//     }])
+export async function getUnAcceptedBadges2(pubkey) {
+    let events = await window.pool.list(getReadRelays(), [{
+        kinds: [8],
+        '#p': [pubkey],
+        // authors: [await window.nostr.getPublicKey()]
+    }])
 
-//     const recieve_with_id = []
+    const recieve_with_id = []
 
-//     events.forEach(event => {
-//         let a = event.id
-//         let b = event.tags.filter(t => t[0] === 'a').map(t => t[1])
-//         recieve_with_id.push([a, b[0]])
-//     });
+    events.forEach(event => {
+        let a = event.id
+        let b = event.tags.filter(t => t[0] === 'a').map(t => t[1])
+        recieve_with_id.push([a, b[0]])
+    });
 
-//     const recieve = recieve_with_id.map(b => b[1]);
-//     console.log('recieve_with_id', recieve_with_id)
-// }
+    const recieve = recieve_with_id.map(b => b[1]);
+    console.log('recieve_with_id', recieve_with_id)
+}
 
 export function getRemainTags(remove, badges) {
-    // console.log(badges)
-    // let tmp_badges = badges
+    // console.log('remove...', remove)
+    // console.log('badges...', badges)
 
-    remove.forEach(r => {
-        badges.forEach((b, i) => {
-            if (r === b[1]) {
-                badges.splice(i, 2)
+    let tags = [['d', 'profile_badges']]
+
+    badges.forEach(b => {
+        let this_badge_remove = true
+
+        for (let i = 0; i < remove.length; i++) {
+            if (b[0] === remove[i]) {
+                this_badge_remove = true
+                break
             }
-        })
-    })
+            else {
+                this_badge_remove = false
+            }
+        }
 
-    return badges
+        console.log('this_badge_remove..', this_badge_remove)
+        if (!this_badge_remove) {
+            tags.push(['a', b[0]])
+            tags.push(['e', b[1]])
+        }
+    });
+
+
+
+    return tags
     // console.log(badges)
 }
 
@@ -290,7 +306,7 @@ export async function sendNewEvent(kind, content, tags) {
     let new_event = {
         kind: kind,
         created_at: Math.floor(Date.now() / 1000),
-        tags: tags2,
+        tags: tags,
         content: content,
         pubkey: await window.nostr.getPublicKey(),
     }
@@ -320,6 +336,50 @@ export async function sendNewEvent(kind, content, tags) {
 }
 
 
+export async function test_sendNewEvent() {
+    let kind = 30_008
+    let content = ''
+    let tags = [['d', 'profile_badges'],
+    ['a', '30009:58f5a23008ba5a8730a435f68f18da0b10ce538c6e2aa5a1b7812076304d59f7:siamstr'],
+    ['e', 'd34ce80ab2cf520127a5d863d6b5735110d1d5d292b82e335ed1ffe620248697'],
+    ['a', '30009:d830ee7b7c30a364b1244b779afbb4f156733ffb8c87235086e26b0b4e61cd62:Jakk'],
+    ['e', '1fac4c30c01924154ece306233e4c8a8c6e5bf5d0d0a1d54cd50f5909951ee07'],
+    ['a', '30009:f031d7551cc90a697461550cf916ac063daed6a3faeb3fd7b0cdf0b65e9e0d4d:i_badges_02'],
+    ['e', '38399b5b71f8fb2bfca364a1ef10d26b6e0ccb6240bd8013b12d79b18eb7c4fc']
+    ]
+
+    let new_event = {
+        kind: kind,
+        created_at: Math.floor(Date.now() / 1000),
+        tags: tags,
+        content: content,
+        pubkey: await window.nostr.getPublicKey(),
+    }
+
+    new_event.id = getEventHash(new_event)
+    new_event = await window.nostr.signEvent(new_event)
+    console.log(new_event)
+
+    let pubs = await window.pool.publish(getWriteRelays(), new_event)
+
+    try {
+        await Promise.all(pubs).then(() => {
+            return true
+        }
+        )
+        // .then((data) => {
+        //     console.log('data...', data)
+        //     // return data
+        // });
+
+        // const ev = await window.pool.get(getAllRelays(), { ids: [new_event.id], });
+        // console.log(ev)
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
 //
 export function convertTime(timestamp) {
     if (timestamp !== undefined) {
@@ -344,5 +404,5 @@ export function uniqueDiff(value, index, array) {
 window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
-// window.getUnAcceptedBadges2 = getUnAcceptedBadges2
-window.sendNewEvent = sendNewEvent
+window.getUnAcceptedBadges2 = getUnAcceptedBadges2
+window.test_sendNewEvent = test_sendNewEvent
