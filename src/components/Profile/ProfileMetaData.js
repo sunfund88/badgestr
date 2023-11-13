@@ -1,6 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getPubKey, getProfile } from '../BadgeStrFunction';
 
-const ProfileMetaData = ({ profile: profile }) => {
+const ProfileMetaData = ({ id }) => {
+    const [profile, setProfile] = useState({});
+    const shouldLog = useRef(true)
+
+    useEffect(() => {
+        if (shouldLog.current) {
+            shouldLog.current = false
+            const fetchDataProfile = async () => {
+                const pf = await getProfile(getPubKey(id))
+                setProfile(pf)
+            }
+            fetchDataProfile()
+        }
+    }, [])
     // const [isLoading, setIsLoading] = useState(true);
     // {
     //     "picture": "https://nostr.build/i/nostr.build_15a5e334e4c30de7ee9055eaaf9547c435d014cbb1a82fd7bcb4387cc94ff4d4.png",
@@ -41,7 +55,6 @@ const ProfileMetaData = ({ profile: profile }) => {
                 <ul>
                     <li>🟣 {profile?.nip05}</li>
                     <li>⚡ {profile?.lud16}</li>
-                    {/* <li></li> */}
                 </ul>
             </div>
             <div className="header-about">

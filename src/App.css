@@ -11,6 +11,29 @@
   /* background-color: darkorchid; */
 }
 
+.relay {
+  position: relative;
+}
+
+.relay-list {
+  width: 350px;
+  position: absolute;
+  left: var(--width);
+  margin-left: 8px;
+  margin-top: 3px;
+  /* border: red solid; */
+}
+
+.relay-list ul li {
+  list-style-type: none;
+  /* margin-left: 10px; */
+}
+
+.relay-list ul li h5 {
+  font-weight: lighter;
+  font-style: italic;
+}
+
 footer {
   margin-top: 220px;
   border-top-right-radius: 12px;
@@ -43,6 +66,27 @@ footer a {
 .purple {
   color: var(--main-color);
 }
+
+.btn {
+  text-align: center;
+  width: 100px;
+  background-color: var(--grey-color);
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* color: var(--grey-color); */
+  font-size: medium;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.btn:hover {
+  background-color: var(--main-color);
+}
+
 
 .back_btn {
   text-align: center;

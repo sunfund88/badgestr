@@ -98,16 +98,62 @@
 .badges h3 {
     text-align: center;
     margin-top: 15px;
+    margin-bottom: 5px;
     font-size: 30px;
     color: var(--text-color);
 }
-
 
 .badges-container {
     /* width: var(--width); */
     display: flex;
     /* justify-content: center; */
     /* margin-left: 8px; */
+}
+
+.badges-header {
+    position: absolute;
+    width: var(--width);
+    justify-content: space-between;
+}
+
+.badges-edit-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    align-items: center;
+}
+
+.badges-edit-toggle {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.badges-edit h4 {
+    align-items: center;
+    font-size: 18px;
+}
+
+.badges-edit-toggle label {
+    margin-left: 10px;
+}
+
+.badges-edit-update {
+    right: 0px;
+}
+
+.badges-edit-update button {
+    text-align: center;
+    width: 100px;
+    background-color: var(--main-color);
+    height: 30px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    /* color: var(--grey-color); */
+    font-size: medium;
+    border: none;
 }
 
 .badges-container-edit {
@@ -137,7 +183,7 @@
     text-align: center;
 }
 
-.badges-item-edit {
+.badges-item-edit-green {
     background-color: var(--green-color);
     border-radius: 15px;
     margin: 5.8px;
@@ -146,7 +192,7 @@
     text-align: center;
 }
 
-.badges-item-edit-removed {
+.badges-item-edit-red {
     background-color: var(--red-color);
     border-radius: 15px;
     margin: 5.8px;
@@ -160,8 +206,8 @@
 }
 
 .badges-item img,
-.badges-item-edit img,
-.badges-item-edit-removed img {
+.badges-item-edit-green img,
+.badges-item-edit-red img {
     margin-top: 5px;
     border-radius: 15px;
 }
