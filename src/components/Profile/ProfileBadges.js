@@ -217,34 +217,35 @@ const ProfileBadges = ({ id }) => {
 
     return (
         <div className="badges">
+            <div className='badges-header'>
+                {(showEditBtn)
+                    ?
+                    <div className='badges-edit-header'>
+                        <div className='badges-edit-toggle'>
+                            <h4>Edit Mode:</h4>
+                            <div>
+                                <label className='switch'>
+                                    <input type="checkbox" checked={editMode} onChange={handleToggleEdit} />
+                                    <span className='slider round'></span>
+                                </label>
+                            </div>
+                        </div>
+                        {(editMode)
+                            ? <div className='badges-edit-update'>
+                                <div>
+                                    <button onClick={() => { handleClickUpdate() }}>Update</button>
+                                </div>
+                            </div>
+                            : <></>
+                        }
+
+                    </div>
+                    : <></>}
+            </div>
             {(acceptedBadges.length > 0)
                 ? (
                     <>
-                        <div className='badges-header'>
-                            {(showEditBtn)
-                                ?
-                                <div className='badges-edit-header'>
-                                    <div className='badges-edit-toggle'>
-                                        <h4>Edit Mode:</h4>
-                                        <div>
-                                            <label className='switch'>
-                                                <input type="checkbox" checked={editMode} onChange={handleToggleEdit} />
-                                                <span className='slider round'></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    {(editMode)
-                                        ? <div className='badges-edit-update'>
-                                            <div>
-                                                <button onClick={() => { handleClickUpdate() }}>Update</button>
-                                            </div>
-                                        </div>
-                                        : <></>
-                                    }
 
-                                </div>
-                                : <></>}
-                        </div>
                         <h3>Accepted Badges</h3>
                         <div className={containerClassName}>
                             <div className="badges-list">
