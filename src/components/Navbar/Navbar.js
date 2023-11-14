@@ -7,7 +7,7 @@ import { relayInit } from 'nostr-tools';
 function Navbar() {
     const [login, setLogin] = useState(false);
     const [userLogin, setUserLogin] = useState({});
-    const [relays, setRelays] = useState(getAllRelays);
+    const [relays, setRelays] = useState(getAllRelays());
 
     const init_LoadPage = useRef(true)
 
@@ -19,6 +19,7 @@ function Navbar() {
             setLogin(localStorage.getItem('login') === 'true');
 
             setUserLogin(JSON.parse(localStorage.getItem('user')));
+            setRelays(getAllRelays())
 
         }
     }, []);

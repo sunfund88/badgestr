@@ -9,6 +9,7 @@ const ProfileBadges = ({ id }) => {
     const [diffBadges, setDiffBadges] = useState([]);
     const [badgesData, setBadgesData] = useState([]);
 
+    const init_LoadFinish = useRef(false)
     const init_recievedBadges = useRef(true)
     const init_acceptedBadges = useRef(true)
     const oldBadges = useRef([])
@@ -34,6 +35,7 @@ const ProfileBadges = ({ id }) => {
                 const badge_tags = await getAcceptedBadges(getPubKey(id))
                 // console.log('badge_id...', getAcceptedBadgesId(badge_tags))
                 setAcceptedBadges(badge_tags)
+                init_LoadFinish.current = true
             }
             fetchAcceptedBadges()
 
@@ -216,62 +218,64 @@ const ProfileBadges = ({ id }) => {
     }
 
     return (
-        <div className="badges">
-            <div className='badges-header'>
-                {(showEditBtn)
-                    ?
-                    <div className='badges-edit-header'>
-                        <div className='badges-edit-toggle'>
-                            <h4>Edit Mode:</h4>
-                            <div>
-                                <label className='switch'>
-                                    <input type="checkbox" checked={editMode} onChange={handleToggleEdit} />
-                                    <span className='slider round'></span>
-                                </label>
-                            </div>
-                        </div>
-                        {(editMode)
-                            ? <div className='badges-edit-update'>
+        (init_LoadFinish.current)
+            ? <div className="badges">
+                <div className='badges-header'>
+                    {(showEditBtn)
+                        ?
+                        <div className='badges-edit-header'>
+                            <div className='badges-edit-toggle'>
+                                <h4>Edit Mode:</h4>
                                 <div>
-                                    <button onClick={() => { handleClickUpdate() }}>Update</button>
+                                    <label className='switch'>
+                                        <input type="checkbox" checked={editMode} onChange={handleToggleEdit} />
+                                        <span className='slider round'></span>
+                                    </label>
                                 </div>
                             </div>
-                            : <></>
-                        }
+                            {(editMode)
+                                ? <div className='badges-edit-update'>
+                                    <div>
+                                        <button onClick={() => { handleClickUpdate() }}>Update</button>
+                                    </div>
+                                </div>
+                                : <></>
+                            }
 
-                    </div>
-                    : <></>}
+                        </div>
+                        : <></>}
+                </div>
+                {(acceptedBadges.length > 0)
+                    ? (
+                        <>
+
+                            <h3>Accepted Badges</h3>
+                            <div className={containerClassName}>
+                                <div className="badges-list">
+                                    {acceptedBadges.filter(f => (f.badge_id !== '')).map((b, i) => (
+                                        <ProfileBadgeItem key={i} index={i} badgeItem={findDataObj(b[0])[0]} type={true} editMode={editMode} handleEdit={handleEdit} />
+                                    ))}
+                                </div>
+                            </div>
+                        </>
+                    )
+                    : (<></>)}
+                {(diffBadges.length > 0)
+                    ? (
+                        <>
+                            <h3>Unaccept Badges</h3>
+                            <div className={containerClassName}>
+                                <div className="badges-list">
+                                    {diffBadges.filter(f => (f.badge_id !== '')).map((b, i) => (
+                                        <ProfileBadgeItem key={i} index={i} badgeItem={findDataObj(b[0])[0]} type={false} editMode={editMode} handleEdit={handleEdit} />
+                                    ))}
+                                </div>
+                            </div>
+                        </>
+                    )
+                    : (<></>)}{/* */}
             </div>
-            {(acceptedBadges.length > 0)
-                ? (
-                    <>
-
-                        <h3>Accepted Badges</h3>
-                        <div className={containerClassName}>
-                            <div className="badges-list">
-                                {acceptedBadges.filter(f => (f.badge_id !== '')).map((b, i) => (
-                                    <ProfileBadgeItem key={i} index={i} badgeItem={findDataObj(b[0])[0]} type={true} editMode={editMode} handleEdit={handleEdit} />
-                                ))}
-                            </div>
-                        </div>
-                    </>
-                )
-                : (<></>)}
-            {(diffBadges.length > 0)
-                ? (
-                    <>
-                        <h3>Unaccept Badges</h3>
-                        <div className={containerClassName}>
-                            <div className="badges-list">
-                                {diffBadges.filter(f => (f.badge_id !== '')).map((b, i) => (
-                                    <ProfileBadgeItem key={i} index={i} badgeItem={findDataObj(b[0])[0]} type={false} editMode={editMode} handleEdit={handleEdit} />
-                                ))}
-                            </div>
-                        </div>
-                    </>
-                )
-                : (<></>)}{/* */}
-        </div>
+            : <></>
     );
 }
 
