@@ -16,12 +16,9 @@ window.relays = init_relays
 
 function App() {
   return (
-    // <Badge />
-    // <Profile />
     <div className="container">
-      <Navbar />
-      {/* <Relays /> */}
       <Router>
+        <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/p/:id' element={<Profile />} />
