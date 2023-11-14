@@ -23,13 +23,18 @@ function Badge() {
 
             const fetchData = async () => {
                 const badge_data = await getBadgeInfo(badge_id)
-                setBadgeData(badge_data)
 
-                const owner = await getProfile(badge_data.owner)
-                setOwnrData(owner)
+
+                setBadgeData(badge_data)
 
             }
             fetchData()
+
+            const fetchOwner = async () => {
+                const owner = await getProfile(badge_obj.data.pubkey)
+                setOwnrData(owner)
+            }
+            fetchOwner()
         }
     }, [])
 
