@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import ProfileBadgeItem from "./ProfileBadgeItem";
-import { getAcceptedBadges, getBadgesId, getBadgeObj, getPubKey, getAllRecievedBadges, getNewAcceptBadgesTags, sendNewEvent, arrayDiff } from '../BadgeStrFunction';
+import { getAcceptedBadges, getBadgesId, getBadgeObj, getPubKey, getAllRecievedBadges, getNewAcceptBadgesTags, sendNewEvent, arrayDiff, getWindowPubkey } from '../BadgeStrFunction';
 
 const ProfileBadges = ({ id }) => {
     const [recievedBadges, setRecievedBadges] = useState([]);
@@ -183,22 +183,30 @@ const ProfileBadges = ({ id }) => {
         handleEdit()
     }
 
-
     async function handleClickUpdate() {
         console.log('handleClickUpdate')
 
-        const tags = getNewAcceptBadgesTags(acceptedBadges)
-        console.log(tags)
+        // console.log(id)
+        // console.log(await getWindowPubkey())
 
-        await sendNewEvent(30_008, '', tags)
+        if (id === await getWindowPubkey()) {
+            const tags = getNewAcceptBadgesTags(acceptedBadges)
+            console.log(tags)
 
-        setEditMode(false)
-        setContainerClassName("badges-container")
+            await sendNewEvent(30_008, '', tags)
 
-        updatePush.current = true
+            setEditMode(false)
+            setContainerClassName("badges-container")
 
-        // const newEmptyObj = {}
-        oldBadges.current = acceptedBadges
+            updatePush.current = true
+
+            // const newEmptyObj = {}
+            oldBadges.current = acceptedBadges
+        }
+        else {
+
+            window.location.reload()
+        }
 
         // // const remains = getAcceptedBadgesId(badges).filter(x => !removeBadges.current.includes(x));
         // // console.log(remains)
