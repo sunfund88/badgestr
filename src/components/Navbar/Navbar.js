@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Navbar.css'
 import { findRelays, getAllRelays, getReadRelays, init_relays, getProfile } from '../BadgeStrFunction';
 import { useNavigate } from "react-router-dom";
+import logo_image from '../../images/BadgeStr-Logo2.svg'
 import { relayInit } from 'nostr-tools';
 
 function Navbar() {
@@ -79,7 +80,10 @@ function Navbar() {
         <>
             <nav>
                 <div className="logo">
-                    <a href="/"><h1>Badge<span className="purple">Str</span></h1></a>
+                    <div><img src={logo_image} width="45" height="45" /></div>
+                    <a href="/">
+                        <h1>Badge<span className="purple">Str</span></h1>
+                    </a>
                 </div>
 
                 {(login === true)

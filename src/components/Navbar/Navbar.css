@@ -6,6 +6,10 @@ nav {
     /* background-color: rgb(26, 26, 36); */
 }
 
+.logo {
+    display: flex;
+}
+
 .nav-btn {
     cursor: pointer;
     text-align: center;
