@@ -4,8 +4,15 @@
 }
 
 .home-logo {
-    margin-top: 150px;
+    margin-top: 70px;
     margin-bottom: 50px;
+}
+
+.home-logo h1 {
+    color: var(--text-color);
+    font-size: 90px;
+    font-style: italic;
+    margin-top: -20px;
 }
 
 .input {

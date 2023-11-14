@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Home.css'
+import logo_image from '../../images/BadgeStr-Logo2.svg'
 
 function Home() {
     const navigate = useNavigate();
@@ -20,7 +21,8 @@ function Home() {
     return (
         <div className='home'>
             <div className='home-logo'>
-                <img src='https://user-images.githubusercontent.com/99301796/219719339-5eff628c-3470-4cc3-81eb-404f8902de9f.gif' width="300" height="300" alt='nostr-logo'></img>
+                <img src={logo_image} width="450" height="450" alt='nostr-logo'></img>
+                <h1>Badge<span className="purple">Str</span></h1>
             </div>
             <form onSubmit={onSubmit}>
                 <input className='input' ref={key} type='text' id='key' placeholder='Enter ... npub or pubkey(hex)'></input><br></br>
