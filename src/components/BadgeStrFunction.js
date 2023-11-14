@@ -69,6 +69,10 @@ export function getAllRelays() {
 }
 
 // profile
+export async function getWindowPubkey() {
+    return await window.nostr.getPublicKey()
+}
+
 export function getPubKey(id) {
     if (id !== '') {
         let pub = id
