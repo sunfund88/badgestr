@@ -9,6 +9,7 @@ export const init_relays = [
     'wss://offchain.pub'
 ].map(r => [r, { read: true, write: true }])
 
+// relays
 export async function findRelays() {
     let events = await window.pool.list(getAllRelays(), [{
         kinds: [3, 10_002],
@@ -17,18 +18,25 @@ export async function findRelays() {
 
     if (events.length > 0) {
         events.sort((a, b) => b.created_at - a.created_at)
-        // console.log(events)
+
+        console.log('relays ...', events)
+
         let event
-        if (events[0].kind === 3 && (events[0].content !== '{}' && events[0].content !== '')) {
+        if (events[0].kind === 10_002) {
             event = events[0]
         }
-        else if (events[1].kind === 10_002) {
-            event = events[1]
-        }
         else {
-            console.log('Use init relays')
+            if (events[0].kind === 3 && (events[0].content !== '{}' && events[0].content !== '')) {
+                event = events[0]
+            }
+            else if (events[1].kind === 10_002) {
+                event = events[1]
+            }
+            else {
+                console.log('Use init relays')
 
-            return init_relays
+                return init_relays
+            }
         }
 
         let new_relays = event.kind === 3
@@ -423,5 +431,5 @@ function filterByKeyValue(obj, key, value) {
 window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
-window.getAllRecievedBadges = getAllRecievedBadges
-window.test_sendNewEvent = test_sendNewEvent
+// window.getAllRecievedBadges = getAllRecievedBadges
+// window.test_sendNewEvent = test_sendNewEvent

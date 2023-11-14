@@ -6,12 +6,13 @@ import { getProfile, getReadRelays, convertTime } from '../BadgeStrFunction';
 
 function Badge() {
     let { id } = useParams();
-    const navigate = useNavigate();
 
     const [badgeData, setBadgeData] = useState({});
     const [ownerData, setOwnrData] = useState({});
     // const badge_data = useRef({})
     const shouldLog = useRef(true)
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (shouldLog.current) {

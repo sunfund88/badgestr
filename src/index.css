@@ -12,6 +12,9 @@
   --green-color: #acfa63;
   --red-color: #ee5a5a;
 
+  --btn-bg-color: var(--main-color);
+  --btn-txt-color: #fff;
+
   --width: 992px
 }
 
