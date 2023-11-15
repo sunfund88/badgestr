@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getPubKey, getProfile } from '../BadgeStrFunction';
+import { getPubKey, getProfile, getUserName } from '../BadgeStrFunction';
 
 const ProfileMetaData = ({ id }) => {
     const [profile, setProfile] = useState(null);
@@ -30,10 +30,10 @@ const ProfileMetaData = ({ id }) => {
                         />
                     </div>
                     <div className="header-picture">
-                        <img src={profile?.picture} width="120" height="120" alt={profile?.name}></img>
+                        <img src={profile?.picture} alt={getUserName(profile)}></img>
                     </div>
                     <div className="header-name">
-                        <h1>{profile?.name}</h1>
+                        <h1>{getUserName(profile)}</h1>
                         <h4>{profile?.npub}</h4>
                     </div>
 

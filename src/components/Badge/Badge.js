@@ -8,9 +8,10 @@ import BadgeUserItem from './BadgeUserItem';
 function Badge() {
     let { id } = useParams();
 
-    const [badgeData, setBadgeData] = useState({});
-    const [ownerData, setOwnrData] = useState({});
+    const [badgeData, setBadgeData] = useState(undefined);
+    const [ownerData, setOwnrData] = useState(undefined);
     const [recieve, setRecieve] = useState(undefined);
+
     // const badge_data = useRef({})
     const shouldLog = useRef(true)
 
@@ -111,56 +112,58 @@ function Badge() {
             {/* <h1>BADGE</h1> */}
             {/* <h2>{id}</h2> */}
             <div>
-                <div>
-                    <button className='back_btn' onClick={() => { pushBack() }}> Back </button>
-                </div>
-                <div className='b_badge'>
-                    <div>
-                        <img
-                            className="b_badge_image"
-                            src={badgeData.thumb}
-                            width="300"
-                            height="300"
-                            title={badgeData.name}
-                            alt={badgeData.name}
-                            onError={event => {
-                                event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
-                                event.onerror = null
-                            }} />
-                    </div>
-                    <div className='b_badge_info'>
-                        <div className='b_badge_name'>{badgeData?.name}</div>
-                        <div className='b_badge_description'>{badgeData?.description}</div>
-                        <div className='b_badge_owner'>
-                            Created at:
-                            <div className='b_badge_owner_span'>
-                                <div className='b_badge_owner_txt'>{convertTime(badgeData?.created_at)}</div>
-                            </div>
-                            <div className='b_badge_owner_span_name' onClick={() => clickedPubkey(badgeData?.owner)}>
-                                <img
-                                    className="b_badge_image"
-                                    src={ownerData?.picture}
-                                    width="25"
-                                    height="25"
-                                    alt={ownerData?.display_name}
-                                />
-                                <div className='b_badge_owner_txt'>{ownerData?.name}</div>
-                            </div>
+                {(badgeData !== undefined)
+                    ? <>
+                        <div>
+                            <button className='back_btn' onClick={() => { pushBack() }}> Back </button>
                         </div>
-                    </div>
+                        <div className='b_badge'>
+                            <img
+                                src={badgeData.image}
+                                title={badgeData.name}
+                                alt={badgeData.name}
+                                onError={event => {
+                                    event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+                                    event.onerror = null
+                                }} />
+                            <div className='b_badge_info'>
+                                <div className='b_badge_name'>{badgeData?.name}</div>
+                                <div className='b_badge_description'>{badgeData?.description}</div>
+                                <div className='b_badge_owner'>
+                                    Created at:
+                                    <div className='b_badge_owner_span'>
+                                        <div className='b_badge_owner_txt'>{convertTime(badgeData?.created_at)}</div>
+                                    </div>
+                                    <div className='b_badge_owner_span_name' onClick={() => clickedPubkey(badgeData?.owner)}>
+                                        <img
+                                            src={ownerData?.picture}
+                                            alt={ownerData?.display_name}
+                                        />
+                                        <div className='b_badge_owner_txt'>{ownerData?.name}</div>
+                                    </div>
+                                </div>
+                            </div>
 
-                </div>
+                        </div>
+                    </>
+                    : <></>}
+
                 {(recieve !== undefined)
                     ? <>
                         <h4>Awarded {recieve.length} User(s):</h4>
-                        <div className='b-badge-recieved'>
-                            {recieve.map((r, i) =>
-                                (r !== undefined)
-                                    ?
-                                    <BadgeUserItem key={i} user={r} />
-                                    : <></>
-                            )}
+                        <div className='b-badge-recieved-container'>
+                            <div className='b-badge-recieved'>
+                                {recieve.map((r, i) =>
+                                    (r !== undefined)
+                                        ?
+                                        <BadgeUserItem key={i} user={r} />
+                                        : <></>
+                                )}
+                            </div>
                         </div>
+                        {/* {(recieve.length > 70)
+                            ? <></>
+                            : <></>} */}
                     </>
                     : <></>}
             </div>
