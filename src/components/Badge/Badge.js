@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { nip19 } from "nostr-tools";
 import './Badge.css'
-import { getProfile, getReadRelays, convertTime } from '../BadgeStrFunction';
+import { getProfile, getReadRelays, convertTime, getUsersRecievedBadge } from '../BadgeStrFunction';
+import BadgeUserItem from './BadgeUserItem';
 
 function Badge() {
     let { id } = useParams();
 
     const [badgeData, setBadgeData] = useState({});
     const [ownerData, setOwnrData] = useState({});
+    const [recieve, setRecieve] = useState(undefined);
     // const badge_data = useRef({})
     const shouldLog = useRef(true)
 
@@ -24,7 +26,6 @@ function Badge() {
             const fetchData = async () => {
                 const badge_data = await getBadgeInfo(badge_id)
 
-
                 setBadgeData(badge_data)
 
             }
@@ -35,6 +36,14 @@ function Badge() {
                 setOwnrData(owner)
             }
             fetchOwner()
+
+            const fetchRecieve = async () => {
+                const r = await getUsersRecievedBadge(badge_id)
+
+                console.log(r)
+                setRecieve(r)
+            }
+            fetchRecieve()
         }
     }, [])
 
@@ -139,7 +148,21 @@ function Badge() {
                             </div>
                         </div>
                     </div>
+
                 </div>
+                {(recieve !== undefined)
+                    ? <>
+                        <h4>Awarded {recieve.length} User(s):</h4>
+                        <div className='b-badge-recieved'>
+                            {recieve.map((r, i) =>
+                                (r !== undefined)
+                                    ?
+                                    <BadgeUserItem key={i} user={r} />
+                                    : <></>
+                            )}
+                        </div>
+                    </>
+                    : <></>}
             </div>
         </div>
     )

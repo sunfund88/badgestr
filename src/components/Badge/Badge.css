@@ -61,3 +61,33 @@
     margin-right: 5px;
     font-size: 18px;
 }
+
+.b-badge-recieved {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 5px;
+    width: var(--width);
+}
+
+.b-badge-item {
+    display: flex;
+    background-color: var(--grey-color);
+    margin: 2px;
+    padding: 3px;
+    border-radius: 15px;
+}
+
+.b-badge-item-name {
+    display: flex;
+    align-items: center;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.b-badge-item img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 15px;
+}

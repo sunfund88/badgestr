@@ -336,7 +336,7 @@ export function getNewAcceptBadgesTags(newAcceptBadges) {
 }
 
 // badge
-export async function getUsersBadgeEvents(badge_id) {
+export async function getUsersRecievedBadge(badge_id) {
     try {
         // console.log("try...", pubKeyRef.current)
         const events = await window.pool.list(getReadRelays(), [{
@@ -346,6 +346,8 @@ export async function getUsersBadgeEvents(badge_id) {
         }])
 
         let p = []
+
+        events.sort((a, b) => b.created_at - a.created_at)
 
         // console.log(events)
 
@@ -368,11 +370,19 @@ export async function getUsersBadgeEvents(badge_id) {
             let obj = [p.pubkey, JSON.parse(p.content)]
             pfarray.push(obj)
         })
-        console.log(pfarray)
+        // console.log(pfarray)
+        // console.log('u......', unique[0])
+
+        const findProfile = (pk) => pfarray.filter(pfa => pk === pfa[0])[0]
+
+        // console.log(findProfile(unique[0]))
+
+        const unique_pf = unique.map(pk => findProfile(pk))
 
 
-        // const unique_pf = pfarray.filter((value, index, array) => array.indexOf(value) === index);
+        //  pfarray.filter((value, index, array) => array.indexOf(value) === index);
         // console.log(unique_pf)
+        return unique_pf
     }
     catch (error) {
         // check what is logging here
@@ -460,6 +470,15 @@ export async function test_sendNewEvent() {
 }
 
 //
+export function getUserName(profile) {
+    let name = ''
+    name = (profile?.name) ? (profile.name !== '' ? profile.name : name) : name
+    name = (profile?.displayName) ? (profile.displayName !== '' ? profile.displayName : name) : name
+    name = (profile?.display_name) ? (profile.display_name !== '' ? profile.display_name : name) : name
+
+    return name
+}
+
 export function convertTime(timestamp) {
     if (timestamp !== undefined) {
         const date = new Date(timestamp * 1000);
@@ -504,15 +523,15 @@ export function arrayDiff(array1, array2) {
     return diffArr;
 }
 
-function filterByKeyValue(obj, key, value) {
-    return obj[key] === value;
-}
+// function filterByKeyValue(obj, key, value) {
+//     return obj[key] === value;
+// }
 
 
 window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
-window.getUsersBadgeEvents = getUsersBadgeEvents
+window.getUsersRecievedBadge = getUsersRecievedBadge
 window.getProfileArray = getProfileArray
 // window.getAllRecievedBadges = getAllRecievedBadges
 // window.test_sendNewEvent = test_sendNewEvent
