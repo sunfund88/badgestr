@@ -90,7 +90,7 @@ function Navbar() {
                     ?
                     <div className="nav-user">
                         <div className='nav-user-name' onClick={() => { handleMyProfile() }}>
-                            {userLogin?.display_name} <img src={userLogin?.picture} width="30" height="30" alt={userLogin?.name} onError={event => {
+                            {userLogin?.display_name} <img src={userLogin?.picture} alt={userLogin?.name} onError={event => {
                                 event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
                                 event.onerror = null
                             }} />

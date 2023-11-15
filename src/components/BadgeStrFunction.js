@@ -120,6 +120,37 @@ export async function getProfile(pubkey) {
 
 }
 
+export async function getProfileArray(pubkey_arr) {
+    try {
+        // console.log("try...", pubKeyRef.current)
+        const events = await window.pool.list(getReadRelays(), [{
+            kinds: [0],
+            authors: pubkey_arr
+        }])
+
+        return events
+        // console.log(events)
+
+
+        // if (events.length > 0) {
+        //     let p = {}
+        //     events.sort((a, b) => b.created_at - a.created_at)
+
+        //     p = JSON.parse(events[0].content)
+        //     // console.log(p)
+        //     return p
+        // }
+
+        // console.log(events.length)
+    }
+    catch (error) {
+        // check what is logging here
+        console.log("error in fetchLogin", error)
+        return error.response;
+    }
+
+}
+
 export async function getAcceptedBadges(pubkey) {
     let events = await window.pool.list(getAllRelays(), [{
         kinds: [30_008],
@@ -304,6 +335,62 @@ export function getNewAcceptBadgesTags(newAcceptBadges) {
     // console.log(badges)
 }
 
+// badge
+export async function getUsersRecievedBadge(badge_id) {
+    try {
+        // console.log("try...", pubKeyRef.current)
+        const events = await window.pool.list(getReadRelays(), [{
+            kinds: [8],
+            // authors: [pubkey]
+            '#a': [badge_id]
+        }])
+
+        let p = []
+
+        events.sort((a, b) => b.created_at - a.created_at)
+
+        // console.log(events)
+
+        events.forEach(e => {
+            e.tags.forEach(t => {
+                if (t[0] === 'p')
+                    p.push(t[1])
+            })
+        })
+
+        const unique = p.filter((value, index, array) => array.indexOf(value) === index);
+        // console.log(unique)
+        // // 
+
+        const pf = await getProfileArray(unique)
+        // console.log(pf)
+
+        let pfarray = []
+        pf.forEach(p => {
+            let obj = [p.pubkey, JSON.parse(p.content)]
+            pfarray.push(obj)
+        })
+        // console.log(pfarray)
+        // console.log('u......', unique[0])
+
+        const findProfile = (pk) => pfarray.filter(pfa => pk === pfa[0])[0]
+
+        // console.log(findProfile(unique[0]))
+
+        const unique_pf = unique.map(pk => findProfile(pk))
+
+
+        //  pfarray.filter((value, index, array) => array.indexOf(value) === index);
+        // console.log(unique_pf)
+        return unique_pf
+    }
+    catch (error) {
+        // check what is logging here
+        console.log("error in fetchLogin", error)
+        return error.response;
+    }
+}
+
 export async function sendNewEvent(kind, content, tags) {
     let new_event = {
         kind: kind,
@@ -383,6 +470,15 @@ export async function test_sendNewEvent() {
 }
 
 //
+export function getUserName(profile) {
+    let name = ''
+    name = (profile?.name) ? (profile.name !== '' ? profile.name : name) : name
+    name = (profile?.displayName) ? (profile.displayName !== '' ? profile.displayName : name) : name
+    name = (profile?.display_name) ? (profile.display_name !== '' ? profile.display_name : name) : name
+
+    return name
+}
+
 export function convertTime(timestamp) {
     if (timestamp !== undefined) {
         const date = new Date(timestamp * 1000);
@@ -427,13 +523,15 @@ export function arrayDiff(array1, array2) {
     return diffArr;
 }
 
-function filterByKeyValue(obj, key, value) {
-    return obj[key] === value;
-}
+// function filterByKeyValue(obj, key, value) {
+//     return obj[key] === value;
+// }
 
 
 window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
+window.getUsersRecievedBadge = getUsersRecievedBadge
+window.getProfileArray = getProfileArray
 // window.getAllRecievedBadges = getAllRecievedBadges
 // window.test_sendNewEvent = test_sendNewEvent

@@ -43,6 +43,9 @@ nav {
 }
 
 .nav-user img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
     border-radius: 15px;
     margin-right: 5px;
 }

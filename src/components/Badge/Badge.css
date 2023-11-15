@@ -6,7 +6,10 @@
     border-radius: 20px;
 }
 
-.b_badge_image {
+.b_badge img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
     border-radius: 15px;
 }
 
@@ -52,6 +55,14 @@
     margin-left: 10px;
 }
 
+.b_badge_owner_span_name img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+
 .b_badge_owner_span_name:hover {
     background-color: var(--main-color);
 }
@@ -60,4 +71,62 @@
     margin-left: 5px;
     margin-right: 5px;
     font-size: 18px;
+}
+
+.b-badge-recieved-container {
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: solid 2px var(--darkgrey-color);
+    border-radius: 15px;
+}
+
+.b-badge-recieved {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 5px;
+    width: var(--width)-40px;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #b3b4b4;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #818181;
+}
+
+.b-badge-item {
+    display: flex;
+    background-color: var(--grey-color);
+    margin: 2px;
+    padding: 3px;
+    border-radius: 15px;
+}
+
+.b-badge-item-name {
+    display: flex;
+    align-items: center;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.b-badge-item img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 15px;
 }

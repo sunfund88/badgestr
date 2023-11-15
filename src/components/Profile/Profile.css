@@ -31,6 +31,9 @@
 }
 
 .header-picture img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
     position: absolute;
     top: -32px;
     left: 436px;
