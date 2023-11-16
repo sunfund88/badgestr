@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Navbar.css'
-import { findRelays, getAllRelays, getReadRelays, init_relays, getProfile, getWindowPubkey } from '../BadgeStrFunction';
+import { findRelays, getAllRelays, init_relays, getProfile, getWindowPubkey } from '../BadgeStrFunction';
 import { useNavigate } from "react-router-dom";
 import logo_image from '../../images/BadgeStr-Logo2.svg'
-import { relayInit } from 'nostr-tools';
+// import { relayInit } from 'nostr-tools';
 
 function Navbar() {
     const [login, setLogin] = useState(false);
@@ -35,17 +35,11 @@ function Navbar() {
             const fetchWindowPubKey = async () => {
                 const win_pubkey = await getWindowPubkey()
 
-                // console.log(win_pubkey.current)
-                // console.log(userLogin.pubkey)
-
-                if (win_pubkey === userLogin.pubkey) {
-                    console.log('same pubkey...')
-                } else {
-                    console.log('load new pubkey...')
+                if (win_pubkey !== userLogin.pubkey) {
+                    console.log('load new profile...')
                     const u = await getProfile(win_pubkey)
                     setUserLogin(u)
                     localStorage.setItem('user', JSON.stringify(u));
-
                 }
             }
 
