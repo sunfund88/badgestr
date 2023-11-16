@@ -424,6 +424,15 @@ export async function sendNewEvent(kind, content, tags) {
     }
 }
 
+export async function test_query(kind) {
+    let events = await window.pool.list(getReadRelays(), [{
+        kinds: [kind],
+        // '#p': [pubkey],
+        authors: [await window.nostr.getPublicKey()]
+    }])
+
+    console.log(events)
+}
 
 export async function test_sendNewEvent() {
     let kind = 30_008
@@ -527,11 +536,10 @@ export function arrayDiff(array1, array2) {
 //     return obj[key] === value;
 // }
 
-
 window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
-window.getUsersRecievedBadge = getUsersRecievedBadge
-window.getProfileArray = getProfileArray
+window.test_query = test_query
+// window.getProfileArray = getProfileArray
 // window.getAllRecievedBadges = getAllRecievedBadges
 // window.test_sendNewEvent = test_sendNewEvent
