@@ -11,7 +11,6 @@ function Navbar() {
     const [relays, setRelays] = useState(getAllRelays());
 
     const init_Load = useRef(true)
-    const win_pubkey = useRef('')
 
     const navigate = useNavigate();
 
@@ -34,16 +33,16 @@ function Navbar() {
             fetchRelays()
 
             const fetchWindowPubKey = async () => {
-                win_pubkey.current = await getWindowPubkey()
+                const win_pubkey = await getWindowPubkey()
 
                 // console.log(win_pubkey.current)
                 // console.log(userLogin.pubkey)
 
-                if (win_pubkey.current === userLogin.pubkey) {
+                if (win_pubkey === userLogin.pubkey) {
                     console.log('same pubkey...')
                 } else {
-                    console.log('reload pubkey...')
-                    const u = await getProfile(win_pubkey.current)
+                    console.log('load new pubkey...')
+                    const u = await getProfile(win_pubkey)
                     setUserLogin(u)
                     localStorage.setItem('user', JSON.stringify(u));
 
@@ -51,8 +50,6 @@ function Navbar() {
             }
 
             fetchWindowPubKey()
-
-
         }
         else {
             window.relays = init_relays
