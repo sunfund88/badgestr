@@ -8,6 +8,7 @@ import Profile from "./components/Profile/Profile";
 import Navbar from "./components/Navbar/Navbar";
 import { SimplePool, getEventHash, getSignature, nip19 } from 'nostr-tools';
 import { init_relays } from "./components/BadgeStrFunction";
+import BadgeNew from "./components/Badge/BadgeNew";
 
 
 const pool = new SimplePool()
@@ -23,6 +24,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/p/:id' element={<Profile />} />
           <Route path='/b/:id' element={<Badge />} />
+          <Route path='/new' element={<BadgeNew />} />
         </Routes>
       </Router>
 

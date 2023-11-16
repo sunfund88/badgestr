@@ -130,3 +130,34 @@
     object-fit: cover;
     border-radius: 15px;
 }
+
+/* -------------------- new badge -------------------- */
+
+.newbadge-container {
+    display: flex;
+    justify-content: center;
+}
+
+.newbadge-row {
+    margin-top: 15px;
+}
+
+.newbadge-row input {
+    width: 700px;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    padding: 10px;
+    background-color: #e6f7ff;
+    font-size: 14px;
+}
+
+.newbadge-row textarea {
+    width: 700px;
+    height: 100px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    padding: 10px;
+    background-color: #e6f7ff;
+    font-size: 14px;
+}

@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { getUserName } from '../BadgeStrFunction';
 
 const BadgeUserItem = ({ user }) => {
