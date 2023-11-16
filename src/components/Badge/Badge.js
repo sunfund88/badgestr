@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { nip19 } from "nostr-tools";
 import './Badge.css'
-import { getProfile, getReadRelays, convertTime, getUsersRecievedBadge } from '../BadgeStrFunction';
+import { getProfile, getReadRelays, convertTime, getUsersRecievedBadge, getUserName } from '../BadgeStrFunction';
 import BadgeUserItem from './BadgeUserItem';
 
 function Badge() {
@@ -139,7 +139,7 @@ function Badge() {
                                             src={ownerData?.picture}
                                             alt={ownerData?.display_name}
                                         />
-                                        <div className='b_badge_owner_txt'>{ownerData?.name}</div>
+                                        <div className='b_badge_owner_txt'>{getUserName(ownerData)}</div>
                                     </div>
                                 </div>
                             </div>
