@@ -297,7 +297,7 @@ export async function getAllRecievedBadges(pubkey) {
 
     const recieve = recieve_with_id.map(b => b[0]);
     // console.log('r...', recieve)
-    const unique = recieve.filter(onlyUnique);
+    const unique = recieve.filter(uniqueDiff);
     // console.log(unique)
 
 
@@ -391,6 +391,63 @@ export async function getUsersRecievedBadge(badge_id) {
     }
 }
 
+export async function getCreatedBadges() {
+    try {
+        let events = await window.pool.list(getReadRelays(), [{
+            kinds: [30_009],
+            // '#p': [pubkey],
+            // authors: [await getPubKey('npub1l2cp3t052ljhqnt2emsq5py30qqppj3pytprppc4ygjznhv6lzws99ye04')]
+            authors: [await getWindowPubkey()]
+        }])
+
+        events.sort((a, b) => b.created_at - a.created_at)
+
+        const unique_id = (events) => {
+            const seenValues = {};
+            const uniqueValues = [];
+
+            for (const e of events) {
+                const value = e.tags.filter(t => t[0] === 'd').map(m => m[1])[0]
+                // console.log(value)
+                if (!seenValues.hasOwnProperty(value)) {
+                    seenValues[value] = true;
+                    uniqueValues.push(e);
+                }
+            }
+
+            return uniqueValues
+        }
+
+        const created = unique_id(events)
+
+        console.log(created)
+
+        return created
+
+    } catch (error) {
+        console.log("error in getCreatedBadges...", error)
+        return error.response;
+    }
+}
+
+export function getBadgeItem(badgeObj) {
+    const bid = badgeObj.kind + ':' + badgeObj + ':' + badgeObj.tags.filter(t => t[0] === 'd').map(t => t[1])[0]
+
+    const badgeInfo = {
+        'badge_id': bid,
+        'd': badgeObj.tags.filter(t => t[0] === 'd').map(t => t[1])[0],
+        'owner': badgeObj.pubkey,
+        'created_at': badgeObj.created_at,
+        'name': badgeObj.tags.filter(t => t[0] === 'name').map(t => t[1])[0],
+        'description': badgeObj.tags.filter(t => t[0] === 'description').map(t => t[1])[0],
+        'image': badgeObj.tags.filter(t => t[0] === 'image').map(t => t[1])[0],
+        'thumb': badgeObj.tags.filter(t => t[0] === 'thumb').map(t => t[1])[0]
+    }
+
+    return badgeInfo
+}
+
+
 export async function sendNewEvent(kind, content, tags) {
     let new_event = {
         kind: kind,
@@ -424,6 +481,8 @@ export async function sendNewEvent(kind, content, tags) {
     }
 }
 
+
+// test
 export async function test_query(kind) {
     let events = await window.pool.list(getReadRelays(), [{
         kinds: [kind],
@@ -435,15 +494,33 @@ export async function test_query(kind) {
 }
 
 export async function test_sendNewEvent() {
-    let kind = 30_008
+    let kind = 8
     let content = ''
-    let tags = [['d', 'profile_badges'],
-    ['a', '30009:58f5a23008ba5a8730a435f68f18da0b10ce538c6e2aa5a1b7812076304d59f7:siamstr'],
-    ['e', 'd34ce80ab2cf520127a5d863d6b5735110d1d5d292b82e335ed1ffe620248697'],
-    ['a', '30009:d830ee7b7c30a364b1244b779afbb4f156733ffb8c87235086e26b0b4e61cd62:Jakk'],
-    ['e', '1fac4c30c01924154ece306233e4c8a8c6e5bf5d0d0a1d54cd50f5909951ee07'],
-    ['a', '30009:f031d7551cc90a697461550cf916ac063daed6a3faeb3fd7b0cdf0b65e9e0d4d:i_badges_02'],
-    ['e', '38399b5b71f8fb2bfca364a1ef10d26b6e0ccb6240bd8013b12d79b18eb7c4fc']
+    // let tags = [
+    //     [
+    //         "d",
+    //         "badgestr-friends"
+    //     ],
+    //     [
+    //         "name",
+    //         "BadgeStr Friends"
+    //     ],
+    //     [
+    //         "description",
+    //         "Created by BadgeStr for best friends"
+    //     ],
+    //     [
+    //         "image",
+    //         "https://i.imgur.com/ofFIeXY.gif"
+    //     ],
+    //     [
+    //         "thumb",
+    //         "https://i.imgur.com/ofFIeXY.gif"
+    //     ]
+    // ]
+    let tags = [
+        ['a', '30009:50e8ee3108cdfde4adefe93093cd38bd8692f59f250d3ee4294ef46dc102f370:badgestr-friends'],
+        ['p', '50e8ee3108cdfde4adefe93093cd38bd8692f59f250d3ee4294ef46dc102f370']
     ]
 
     let new_event = {
@@ -499,9 +576,9 @@ export function convertTime(timestamp) {
     else return ''
 }
 
-export function onlyUnique(value, index, array) {
-    return array.indexOf(value) === index;
-}
+// export function onlyUnique(value, index, array) {
+//     return array.indexOf(value) === index;
+// }
 
 export function uniqueDiff(value, index, array) {
     return array.indexOf(value) === index;
@@ -540,6 +617,6 @@ window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
 window.test_query = test_query
-// window.getProfileArray = getProfileArray
+window.getCreatedBadges = getCreatedBadges
 // window.getAllRecievedBadges = getAllRecievedBadges
-// window.test_sendNewEvent = test_sendNewEvent
+window.test_sendNewEvent = test_sendNewEvent

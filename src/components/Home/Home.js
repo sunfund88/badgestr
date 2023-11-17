@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Home.css'
-import logo_image from '../../images/BadgeStr-Logo2.svg'
+import logo_image from '../../images/BadgeStr-Logo.gif'
 
 function Home() {
     const navigate = useNavigate();

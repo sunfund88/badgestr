@@ -59,12 +59,10 @@ function Navbar() {
     // }, [relays]);
 
     async function handleMyProfile() {
-        const mypub = await window.nostr.getPublicKey()
-        const url = '/p/' + mypub
+        const url = '/manage'
 
         navigate(url)
         window.location.reload()
-
     }
 
     function handleAddNewBadge() {

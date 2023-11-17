@@ -161,3 +161,90 @@
     background-color: #e6f7ff;
     font-size: 14px;
 }
+
+.badge-manage-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.badge-manage-profile img {
+    cursor: pointer;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 60px;
+    border: 3px solid var(--sub-color);
+}
+
+.badge-manage h3 {
+    text-align: center;
+    cursor: pointer;
+}
+
+.badge-manage h2 {
+    text-align: center;
+}
+
+.badge-created {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge-created-item {
+    /* height: 50px; */
+    display: flex;
+    padding: 10px;
+    margin: 5px;
+    width: 500px;
+    background-color: var(--grey-color);
+    border-radius: 5px;
+}
+
+.badge-created-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.badge-created-text {
+    width: 400px;
+    margin-left: 10px;
+}
+
+.badge-created-description {
+    margin-top: 5px;
+    overflow: hidden;
+    word-wrap: normal;
+    height: 55px;
+}
+
+.badge-created-btn {
+    display: flex;
+    margin-top: 10px;
+}
+
+.badge-created-btn button {
+    margin-right: 5px;
+    cursor: pointer;
+    text-align: center;
+    width: 80px;
+    background-color: var(--darkgrey-color);
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--btn-txt-color);
+    font-size: medium;
+    border: none;
+}
+
+.badge-created-btn button:hover {
+    background-color: var(--main-color);
+}
