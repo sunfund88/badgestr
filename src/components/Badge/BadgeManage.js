@@ -4,6 +4,7 @@ import { getCreatedBadges, getProfile, getUserName, getWindowPubkey } from '../B
 import BadgeManageCreatedItem from './BadgeManageCreatedItem';
 
 const BadgeManage = () => {
+    const [login, setLogin] = useState(false);
     const [profile, setProfile] = useState(null);
     const [createdBadges, setCreatedBadges] = useState([]);
 
@@ -14,6 +15,7 @@ const BadgeManage = () => {
     useEffect(() => {
         if (init_Load) {
             init_Load.current = false;
+
             const fetchDataProfile = async () => {
                 const pf = await getProfile(await getWindowPubkey())
                 setProfile(pf)
@@ -47,8 +49,8 @@ const BadgeManage = () => {
                         <label onClick={() => handleClickProfile()}>Click to Profile</label>
                     </div>
                 </>
-                : <></>}
-
+                : <></>
+            }
 
             {(createdBadges.length > 0)
                 ? <>
@@ -61,7 +63,6 @@ const BadgeManage = () => {
                 </>
                 : <></>
             }
-
         </div>
     );
 }

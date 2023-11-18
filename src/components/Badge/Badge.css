@@ -136,6 +136,8 @@
 .newbadge-container {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .newbadge-row {
@@ -143,8 +145,23 @@
 }
 
 .newbadge-row input {
-    width: 700px;
+    width: 600px;
     height: 40px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    padding: 10px;
+    /* background-color: #e6f7ff; */
+    font-size: 14px;
+}
+
+.newbadge-row input:disabled {
+    background-color: var(--grey-color);
+    border: 2px solid var(--darkgrey-color);
+}
+
+.newbadge-row textarea {
+    width: 600px;
+    height: 100px;
     border-radius: 5px;
     border: 2px solid var(--main-color);
     padding: 10px;
@@ -152,14 +169,14 @@
     font-size: 14px;
 }
 
-.newbadge-row textarea {
-    width: 700px;
-    height: 100px;
-    border-radius: 5px;
-    border: 2px solid var(--main-color);
-    padding: 10px;
-    background-color: #e6f7ff;
-    font-size: 14px;
+.newbadge-row textarea:disabled {
+    background-color: var(--grey-color);
+    border: 2px solid var(--darkgrey-color);
+}
+
+
+.badge-manage h2 {
+    text-align: center;
 }
 
 .badge-manage-profile {
@@ -179,13 +196,13 @@
     border: 3px solid var(--sub-color);
 }
 
-.badge-manage h3 {
+.badge-manage-profile h2 {
     text-align: center;
     cursor: pointer;
 }
 
-.badge-manage h2 {
-    text-align: center;
+.badge-manage-profile label {
+    cursor: pointer;
 }
 
 .badge-created {
@@ -230,7 +247,7 @@
 }
 
 .badge-created-btn button {
-    margin-right: 5px;
+    margin: 5px;
     cursor: pointer;
     text-align: center;
     width: 80px;
