@@ -430,8 +430,56 @@ export async function getCreatedBadges() {
     }
 }
 
+
+export async function fetchBadgeInfoById(badgeId) {
+    const bid = badgeId
+    badgeId = badgeId.split(':')
+    let events = await window.pool.list(getReadRelays(), [{
+        kinds: [30_009],
+        authors: [badgeId[1]],
+        '#d': [badgeId[2]]
+    }])
+    //console.log(badgeId[2])
+
+    let badgeInfo = {
+        'badge_id': '',
+        'd': '',
+        'owner': '',
+        'created_at': '',
+        'name': '',
+        'description': '',
+        'image': '',
+        'thumb': ''
+    }
+    //console.log(events)
+
+    if (events.length > 0) {
+        events.sort((a, b) => b.created_at - a.created_at)
+
+        let tags = events[0].tags
+
+        //console.log(tags)
+
+        badgeInfo = {
+            'badge_id': bid,
+            'd': badgeId[2],
+            'owner': badgeId[1],
+            'created_at': events[0].created_at,
+            'name': tags.filter(t => t[0] === 'name').map(t => t[1])[0],
+            'description': tags.filter(t => t[0] === 'description').map(t => t[1])[0],
+            'image': tags.filter(t => t[0] === 'image').map(t => t[1])[0],
+            'thumb': tags.filter(t => t[0] === 'thumb').map(t => t[1])[0]
+        }
+
+        // console.log(badgeInfo)
+        // return tags
+
+    }
+    return badgeInfo
+}
+
 export function getBadgeItem(badgeObj) {
-    const bid = badgeObj.kind + ':' + badgeObj + ':' + badgeObj.tags.filter(t => t[0] === 'd').map(t => t[1])[0]
+    const bid = badgeObj.kind + ':' + badgeObj.pubkey + ':' + badgeObj.tags.filter(t => t[0] === 'd').map(t => t[1])[0]
 
     const badgeInfo = {
         'badge_id': bid,

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
+import { sendNewEvent } from '../BadgeStrFunction';
 
 const BadgeNew = () => {
     const [isDisabled, setIsDisabled] = useState(false);
@@ -23,21 +24,9 @@ const BadgeNew = () => {
             setIsDisabled(!isDisabled)
             console.log(isDisabled)
         }
-
-
-
-        // ,
-        // ,
-        // ,
-
-        // console.log({ id: key.current.value })
-
-        // const url = '/p/' + key.current.value
-
-        // navigate(url)
     }
 
-    function onConfirm(e) {
+    async function onConfirm(e) {
 
         e.preventDefault()
         console.log('handleConfirm')
@@ -50,11 +39,23 @@ const BadgeNew = () => {
         tags.push(["thumb", badge_thumb.current.value, "256x256"])
 
         console.log(tags)
+
+        await sendNewEvent(30_009, '', tags)
+
+        navigate('/manage')
+    }
+
+    function pushBack() {
+        // Prevent the back button from working
+        window.history.back()
     }
 
     return (
-        <>
-            <h3>Create New Badge</h3>
+        <div className='badge-manage'>
+            <div className='badge-manage-header'>
+                <button className='back_btn' onClick={() => { pushBack() }}> Back </button>
+            </div>
+            <h2>Create New Badge</h2>
 
             <div className='newbadge-container'>
                 <form onSubmit={onSubmit}>
@@ -80,13 +81,14 @@ const BadgeNew = () => {
                     </div>
                     {(!isDisabled)
                         ?
-                        <div>
-                            <button className='input-btn' type='submit'>Create</button>
-                            <input className='input-btn' type="reset" value="Reset" />
+                        <div className='div-button'>
+                            <button className='main-btn' type='submit'>Create</button>
+                            <input className='darkgrey-btn' type="reset" value="Reset" />
                         </div>
-                        : <>
-                            <button className='input-btn' type='submit'>Edit</button>
-                        </>}
+                        :
+                        <div className='div-button'>
+                            <button className='darkgrey-btn' type='submit'>Edit</button>
+                        </div>}
                 </form>
 
                 <form onSubmit={onConfirm}>
@@ -105,7 +107,9 @@ const BadgeNew = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button className='input-btn' type='submit'>Confirm</button>
+                                <div className='div-button'>
+                                    <button className='darkgreen-btn' type='submit'>Confirm</button>
+                                </div>
                             </div>
                             : <>
                             </>}
@@ -114,7 +118,7 @@ const BadgeNew = () => {
             </div>
 
 
-        </>
+        </div>
     );
 }
 

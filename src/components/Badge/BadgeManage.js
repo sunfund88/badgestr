@@ -37,8 +37,6 @@ const BadgeManage = () => {
         navigate(url)
     }
 
-
-
     return (
         <div className='badge-manage'>
             {(profile !== null)

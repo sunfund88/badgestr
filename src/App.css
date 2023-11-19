@@ -67,6 +67,16 @@ footer a {
   color: var(--main-color);
 }
 
+.div-button {
+  display: flex;
+  margin-top: 30px;
+}
+
+.div-button2 {
+  display: flex;
+  height: 40px;
+}
+
 .btn {
   text-align: center;
   width: 100px;
@@ -89,9 +99,10 @@ footer a {
 
 
 .back_btn {
+  cursor: pointer;
   text-align: center;
   width: 100px;
-  background-color: var(--grey-color);
+  background-color: var(--darkgrey-color);
   height: 30px;
   border-radius: 5px;
   display: flex;
@@ -102,10 +113,72 @@ footer a {
   border: none;
   margin-top: 5px;
   margin-bottom: 10px;
+  color: #fff;
 }
 
-.back_btn:hover {
+/* .back_btn:hover {
   background-color: var(--main-color);
+} */
+
+.darkgrey-btn {
+  cursor: pointer;
+  margin: 5px;
+  text-align: center;
+  width: 150px;
+  background-color: var(--darkgrey-color);
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* color: var(--grey-color); */
+  font-size: medium;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+/* .darkgrey-btn:hover {
+  background-color: var(--main-color);
+} */
+
+.main-btn {
+  cursor: pointer;
+  margin: 5px;
+  text-align: center;
+  width: 150px;
+  background-color: var(--main-color);
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* color: var(--grey-color); */
+  font-size: medium;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.darkgreen-btn {
+  cursor: pointer;
+  margin: 5px;
+  text-align: center;
+  width: 150px;
+  background-color: var(--darkgreen-color);
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* color: var(--grey-color); */
+  font-size: medium;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #fff;
 }
 
 /* 

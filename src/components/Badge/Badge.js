@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { nip19 } from "nostr-tools";
 import './Badge.css'
-import { getProfile, getReadRelays, convertTime, getUsersRecievedBadge, getUserName } from '../BadgeStrFunction';
+import { getProfile, getReadRelays, convertTime, getUsersRecievedBadge, getUserName, fetchBadgeInfoById } from '../BadgeStrFunction';
 import BadgeUserItem from './BadgeUserItem';
 
 function Badge() {
@@ -25,7 +25,7 @@ function Badge() {
             console.log(badge_obj)
 
             const fetchData = async () => {
-                const badge_data = await getBadgeInfo(badge_id)
+                const badge_data = await fetchBadgeInfoById(badge_id)
 
                 setBadgeData(badge_data)
 
@@ -48,53 +48,6 @@ function Badge() {
         }
     }, [])
 
-
-    async function getBadgeInfo(badgeId) {
-        const bid = badgeId
-        badgeId = badgeId.split(':')
-        let events = await window.pool.list(getReadRelays(), [{
-            kinds: [30_009],
-            authors: [badgeId[1]],
-            '#d': [badgeId[2]]
-        }])
-        //console.log(badgeId[2])
-
-        let badgeInfo = {
-            'badge_id': '',
-            'd': '',
-            'owner': '',
-            'created_at': '',
-            'name': '',
-            'description': '',
-            'image': '',
-            'thumb': ''
-        }
-        //console.log(events)
-
-        if (events.length > 0) {
-            events.sort((a, b) => b.created_at - a.created_at)
-
-            let tags = events[0].tags
-
-            //console.log(tags)
-
-            badgeInfo = {
-                'badge_id': bid,
-                'd': badgeId[2],
-                'owner': badgeId[1],
-                'created_at': events[0].created_at,
-                'name': tags.filter(t => t[0] === 'name').map(t => t[1])[0],
-                'description': tags.filter(t => t[0] === 'description').map(t => t[1])[0],
-                'image': tags.filter(t => t[0] === 'image').map(t => t[1])[0],
-                'thumb': tags.filter(t => t[0] === 'thumb').map(t => t[1])[0]
-            }
-
-            // console.log(badgeInfo)
-            // return tags
-
-        }
-        return badgeInfo
-    }
 
     function pushBack() {
         // Prevent the back button from working
