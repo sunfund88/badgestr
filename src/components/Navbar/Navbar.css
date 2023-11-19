@@ -25,6 +25,22 @@ nav {
     border: none;
 }
 
+.nav-btn-newbadge {
+    cursor: pointer;
+    text-align: center;
+    width: 80px;
+    background-color: var(--darkgreen-color);
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--btn-txt-color);
+    font-size: medium;
+    border: none;
+    margin-right: 5px;
+}
+
 .nav-user {
     display: flex;
 }

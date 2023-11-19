@@ -1,27 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Navbar.css'
-import { findRelays, getAllRelays, getReadRelays, init_relays, getProfile } from '../BadgeStrFunction';
+import { findRelays, getAllRelays, init_relays, getProfile, getWindowPubkey } from '../BadgeStrFunction';
 import { useNavigate } from "react-router-dom";
 import logo_image from '../../images/BadgeStr-Logo2.svg'
-import { relayInit } from 'nostr-tools';
+// import { relayInit } from 'nostr-tools';
 
 function Navbar() {
     const [login, setLogin] = useState(false);
     const [userLogin, setUserLogin] = useState({});
     const [relays, setRelays] = useState(getAllRelays());
 
-    const init_LoadPage = useRef(true)
+    const init_Load = useRef(true)
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (init_LoadPage) {
-            init_LoadPage.current = false;
+        if (init_Load) {
+            init_Load.current = false;
             setLogin(localStorage.getItem('login') === 'true');
-
             setUserLogin(JSON.parse(localStorage.getItem('user')));
             setRelays(getAllRelays())
-
         }
     }, []);
 
@@ -33,6 +31,19 @@ function Navbar() {
             }
 
             fetchRelays()
+
+            const fetchWindowPubKey = async () => {
+                const win_pubkey = await getWindowPubkey()
+
+                if (win_pubkey !== userLogin.pubkey) {
+                    console.log('load new profile...')
+                    const u = await getProfile(win_pubkey)
+                    setUserLogin(u)
+                    localStorage.setItem('user', JSON.stringify(u));
+                }
+            }
+
+            fetchWindowPubKey()
         }
         else {
             window.relays = init_relays
@@ -48,12 +59,15 @@ function Navbar() {
     // }, [relays]);
 
     async function handleMyProfile() {
-        const mypub = await window.nostr.getPublicKey()
-        const url = '/p/' + mypub
+        const url = '/manage'
 
         navigate(url)
         window.location.reload()
+    }
 
+    function handleAddNewBadge() {
+        console.log('handleAddNewBadge...')
+        navigate('/new')
     }
 
     async function handleLogin() {
@@ -65,7 +79,6 @@ function Navbar() {
             const u = await getProfile(await window.nostr.getPublicKey())
             setUserLogin(u)
             localStorage.setItem('user', JSON.stringify(u));
-
         }
         else {
             localStorage.setItem('login', 'false');
@@ -95,6 +108,7 @@ function Navbar() {
                                 event.onerror = null
                             }} />
                         </div>
+                        <button className="nav-btn-newbadge" type="button" onClick={() => { handleAddNewBadge() }}>+ Badge</button>
                         <button className="nav-btn" type="button" onClick={() => { handleLogin() }}>Log out</button>
                     </div>
                     : <button className="nav-btn" type="button" onClick={() => { handleLogin() }}>Log in</button>}
