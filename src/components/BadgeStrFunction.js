@@ -398,7 +398,7 @@ export async function getCreatedBadges() {
             kinds: [30_009],
             // '#p': [pubkey],
             // authors: [await getPubKey('npub1l2cp3t052ljhqnt2emsq5py30qqppj3pytprppc4ygjznhv6lzws99ye04')]
-            authors: [await getWindowPubkey()]
+            authors: [await window.nostr.getPublicKey()]
         }])
 
         events.sort((a, b) => b.created_at - a.created_at)
