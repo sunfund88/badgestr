@@ -33,20 +33,21 @@ function Navbar() {
                 // check same user in cookie
                 const fetchWindowUser = async () => {
                     const win_pubkey = await getWindowPubkey()
+                    console.log('win_pubkey...', win_pubkey)
 
-                    if (win_pubkey !== cookies.user.pubkey) {
-                        console.log('Fetch new profile...')
+                    // if (win_pubkey !== cookies.user.pubkey) {
+                    //     console.log('Fetch new profile...')
 
-                        let u = await getProfile(win_pubkey)
-                        u.pubkey = win_pubkey
-                        setCookie('user', JSON.stringify(u))
-                        setUserLogin(u)
-                        window.relays = await findRelays();
-                        setRelays(getAllRelays)
-                    }
-                    else {
-                        setUserLogin(cookies.user)
-                    }
+                    //     let u = await getProfile(win_pubkey)
+                    //     u.pubkey = win_pubkey
+                    //     setCookie('user', JSON.stringify(u))
+                    //     setUserLogin(u)
+                    //     window.relays = await findRelays();
+                    //     setRelays(getAllRelays)
+                    // }
+                    // else {
+                    //     setUserLogin(cookies.user)
+                    // }
                 }
                 fetchWindowUser()
             }
