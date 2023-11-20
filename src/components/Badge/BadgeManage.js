@@ -13,7 +13,7 @@ const BadgeManage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (init_Load) {
+        if (init_Load.current) {
             init_Load.current = false;
 
             const fetchDataProfile = async () => {
