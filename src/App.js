@@ -30,7 +30,6 @@ function App() {
           <Route path='/edit/:id' element={<BadgeEdit />} />
           <Route path='/new' element={<BadgeNew />} />
           <Route path='/manage' element={<BadgeManage />} />
-          <Route path='/test' element={<Test />} />
         </Routes>
       </Router>
 
