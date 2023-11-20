@@ -70,7 +70,8 @@ export function getAllRelays() {
 
 // profile
 export async function getWindowPubkey() {
-    return await window.nostr.getPublicKey()
+    const wpk = await window.nostr.getPublicKey()
+    return wpk
 }
 
 export function getPubKey(id) {
