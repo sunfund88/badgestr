@@ -32,7 +32,7 @@ function Navbar() {
 
                 // check same user in cookie
                 const fetchWindowUser = async () => {
-                    const win_pubkey = await getWindowPubkey()
+                    const win_pubkey = await window.nostr.getPublicKey()
 
                     if (win_pubkey !== cookies.user.pubkey) {
                         console.log('Fetch new profile...')
