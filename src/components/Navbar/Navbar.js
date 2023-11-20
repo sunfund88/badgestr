@@ -138,6 +138,7 @@ function Navbar() {
         if (!tlogin) {
             // localStorage.setItem('login', 'true');
             const pk = await getWindowPubkey()
+            console.log(pk)
             const u = await getProfile(pk)
             u.pubkey = pk
 
