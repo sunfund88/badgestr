@@ -3,54 +3,114 @@ import './Navbar.css'
 import { findRelays, getAllRelays, init_relays, getProfile, getWindowPubkey } from '../BadgeStrFunction';
 import { useNavigate } from "react-router-dom";
 import logo_image from '../../images/BadgeStr-Logo2.svg'
+import { useCookies } from 'react-cookie';
+
 // import { relayInit } from 'nostr-tools';
 
 function Navbar() {
+    const [cookies, setCookie] = useCookies(['user']);
     const [login, setLogin] = useState(false);
-    const [userLogin, setUserLogin] = useState({});
+    const [userLogin, setUserLogin] = useState(undefined);
     const [relays, setRelays] = useState(getAllRelays());
 
-    const init_Load = useRef(true)
+    const init_load = useRef(true)
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (init_Load) {
-            init_Load.current = false;
-            setLogin(localStorage.getItem('login') === 'true');
-            setUserLogin(JSON.parse(localStorage.getItem('user')));
-            setRelays(getAllRelays())
+        if (init_load.current) {
+            init_load.current = false
+
+            console.log('init......', cookies.user)
+            if (cookies.user === '' || cookies.user === undefined) {
+                console.log('Not Login')
+                // setLogin(false)
+            }
+            else {
+                console.log('Login')
+                setLogin(true)
+
+                // check same user in cookie
+                const fetchWindowUser = async () => {
+                    const win_pubkey = await getWindowPubkey()
+
+                    if (win_pubkey !== cookies.user.pubkey) {
+                        console.log('Fetch new profile...')
+
+                        let u = await getProfile(win_pubkey)
+                        u.pubkey = win_pubkey
+                        setCookie('user', JSON.stringify(u))
+                        setUserLogin(u)
+                        window.relays = await findRelays();
+                        setRelays(getAllRelays)
+                    }
+                    else {
+                        setUserLogin(cookies.user)
+                    }
+                }
+                fetchWindowUser()
+            }
         }
     }, []);
 
-    useEffect(() => {
-        if (login) {
-            const fetchRelays = async () => {
-                window.relays = await findRelays();
-                setRelays(getAllRelays)
-            }
+    // useEffect(() => {
+    //     if (init_Load) {
+    //         init_Load.current = false;
+    //         // setCookie('name', 'newName');
 
-            fetchRelays()
+    //         console.log('init......', cookies.user)
 
-            const fetchWindowPubKey = async () => {
-                const win_pubkey = await getWindowPubkey()
+    //         if (cookies.user === 'undefined') {
+    //             setLogin(false)
+    //             setUserLogin(undefined)
+    //             console.log('ff')
+    //         }
+    //         else {
+    //             setLogin(true)
+    //             setUserLogin(cookies.user)
+    //             console.log('userLogin', userLogin)
+    //         }
 
-                if (win_pubkey !== userLogin.pubkey) {
-                    console.log('load new profile...')
-                    const u = await getProfile(win_pubkey)
-                    setUserLogin(u)
-                    localStorage.setItem('user', JSON.stringify(u));
-                }
-            }
+    //         // setLogin(localStorage.getItem('login') === 'true');
+    //         // setUserLogin(JSON.parse(localStorage.getItem('user')));
+    //         setRelays(getAllRelays())
+    //     }
+    // }, []);
 
-            fetchWindowPubKey()
-        }
-        else {
-            window.relays = init_relays
-            setRelays(getAllRelays)
-        }
+    // useEffect(() => {
+    //     if (login) {
+    //         const fetchRelays = async () => {
+    //             window.relays = await findRelays();
+    //             setRelays(getAllRelays)
+    //         }
 
-    }, [login]);
+    //         fetchRelays()
+
+    //         const fetchWindowPubKey = async () => {
+    //             const win_pubkey = await getWindowPubkey()
+    //             // console.log(win_pubkey)
+    //             // console.log(userLogin.pubkey)
+
+    //             if (win_pubkey !== userLogin?.pubkey) {
+    //                 console.log('load new profile...')
+    //                 const u = await getProfile(win_pubkey)
+    //                 u.pubkey = win_pubkey
+    //                 console.log('u', u)
+    //                 setUserLogin(u)
+    //                 // localStorage.setItem('user', JSON.stringify(u));
+    //                 setCookie('user', JSON.stringify(u))
+    //             }
+    //         }
+
+    //         fetchWindowPubKey()
+    //     }
+    //     else {
+    //         window.relays = init_relays
+    //         setRelays(getAllRelays)
+    //         setCookie('user', undefined)
+    //     }
+
+    // }, [login]);
 
     // useEffect(() => {
     //     let r = relayInit(relays[0])
@@ -75,15 +135,23 @@ function Navbar() {
         setLogin(!login)
 
         if (!tlogin) {
-            localStorage.setItem('login', 'true');
-            const u = await getProfile(await window.nostr.getPublicKey())
+            // localStorage.setItem('login', 'true');
+            const pk = await getWindowPubkey()
+            const u = await getProfile(pk)
+            u.pubkey = pk
+
             setUserLogin(u)
-            localStorage.setItem('user', JSON.stringify(u));
+            setCookie('user', JSON.stringify(u))
+            window.relays = await findRelays();
+            setRelays(getAllRelays)
+            // localStorage.setItem('user', JSON.stringify(u));
         }
         else {
             localStorage.setItem('login', 'false');
-            setUserLogin({})
-            localStorage.setItem('user', JSON.stringify({}));
+            setUserLogin(undefined)
+            setCookie('user', JSON.stringify(''))
+            window.relays = init_relays;
+            setRelays(getAllRelays)
         }
 
         // console.log(login)
