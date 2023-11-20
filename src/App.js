@@ -11,6 +11,7 @@ import { init_relays } from "./components/BadgeStrFunction";
 import BadgeNew from "./components/Badge/BadgeNew";
 import BadgeEdit from "./components/Badge/BadgeEdit";
 import BadgeManage from "./components/Badge/BadgeManage";
+import Test from "./components/test";
 
 
 const pool = new SimplePool()
@@ -29,6 +30,7 @@ function App() {
           <Route path='/edit/:id' element={<BadgeEdit />} />
           <Route path='/new' element={<BadgeNew />} />
           <Route path='/manage' element={<BadgeManage />} />
+          <Route path='/test' element={<Test />} />
         </Routes>
       </Router>
 

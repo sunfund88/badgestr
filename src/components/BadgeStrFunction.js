@@ -543,8 +543,8 @@ export async function test_query(kind) {
 }
 
 export async function test_sendNewEvent() {
-    let kind = 8
-    let content = ''
+    let kind = 1
+    let content = 'Test'
     // let tags = [
     //     [
     //         "d",
@@ -567,17 +567,15 @@ export async function test_sendNewEvent() {
     //         "https://i.imgur.com/ofFIeXY.gif"
     //     ]
     // ]
-    let tags = [
-        ['a', '30009:50e8ee3108cdfde4adefe93093cd38bd8692f59f250d3ee4294ef46dc102f370:badgestr-friends'],
-        ['p', '50e8ee3108cdfde4adefe93093cd38bd8692f59f250d3ee4294ef46dc102f370']
-    ]
+    let tags = []
+    const pubkey = 'b55f6bfd7c61e4059be61d5fe1b8ed45652f26ede54098ee30a051466d751662'
 
     let new_event = {
         kind: kind,
         created_at: Math.floor(Date.now() / 1000),
         tags: tags,
         content: content,
-        pubkey: await window.nostr.getPublicKey(),
+        pubkey: pubkey,
     }
 
     new_event.id = getEventHash(new_event)
