@@ -542,7 +542,7 @@ export async function test_query(kind) {
     console.log(events)
 }
 
-export async function test_sendNewEvent() {
+export async function test_sendNewEvent(pubkey) {
     let kind = 1
     let content = 'Test'
     // let tags = [
@@ -568,7 +568,7 @@ export async function test_sendNewEvent() {
     //     ]
     // ]
     let tags = []
-    const pubkey = 'b55f6bfd7c61e4059be61d5fe1b8ed45652f26ede54098ee30a051466d751662'
+    // const pubkey = 'b55f6bfd7c61e4059be61d5fe1b8ed45652f26ede54098ee30a051466d751662'
 
     let new_event = {
         kind: kind,
