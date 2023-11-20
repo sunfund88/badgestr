@@ -53,7 +53,7 @@ function Navbar() {
 
                 setUserLogin(cookies.user)
 
-                const fetchRelays = async () => {
+                async function fetchRelays() {
                     window.relays = await findRelays();
                     setRelays(getAllRelays)
                 }
