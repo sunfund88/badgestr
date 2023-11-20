@@ -31,25 +31,35 @@ function Navbar() {
                 setLogin(true)
 
                 // check same user in cookie
-                const fetchWindowUser = async () => {
-                    const win_pubkey = await getWindowPubkey()
-                    console.log('win_pubkey...', win_pubkey)
+                // const fetchWindowUser = async () => {
+                //     const win_pubkey = await getWindowPubkey()
+                //     console.log('win_pubkey...', win_pubkey)
 
-                    // if (win_pubkey !== cookies.user.pubkey) {
-                    //     console.log('Fetch new profile...')
+                //     // if (win_pubkey !== cookies.user.pubkey) {
+                //     //     console.log('Fetch new profile...')
 
-                    //     let u = await getProfile(win_pubkey)
-                    //     u.pubkey = win_pubkey
-                    //     setCookie('user', JSON.stringify(u))
-                    //     setUserLogin(u)
-                    //     window.relays = await findRelays();
-                    //     setRelays(getAllRelays)
-                    // }
-                    // else {
-                    //     setUserLogin(cookies.user)
-                    // }
+                //     //     let u = await getProfile(win_pubkey)
+                //     //     u.pubkey = win_pubkey
+                //     //     setCookie('user', JSON.stringify(u))
+                //     //     setUserLogin(u)
+                //     //     window.relays = await findRelays();
+                //     //     setRelays(getAllRelays)
+                //     // }
+                //     // else {
+                //     //     setUserLogin(cookies.user)
+                //     // }
+                // }
+                // fetchWindowUser()
+
+                setUserLogin(cookies.user)
+
+                const fetchRelays = async () => {
+                    window.relays = await findRelays();
+                    setRelays(getAllRelays)
                 }
-                fetchWindowUser()
+
+                fetchRelays()
+
             }
         }
     }, []);
@@ -138,7 +148,7 @@ function Navbar() {
         if (!tlogin) {
             // localStorage.setItem('login', 'true');
             const pk = await getWindowPubkey()
-            console.log(pk)
+            // console.log(pk)
             const u = await getProfile(pk)
             u.pubkey = pk
 
