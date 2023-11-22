@@ -38,29 +38,31 @@ const BadgeManage = () => {
     }
 
     return (
-        <div className='badge-manage'>
-            {(profile !== null)
-                ? <>
-                    <div className="badge-manage-profile">
-                        <img src={profile?.picture} alt={getUserName(profile)} onClick={() => handleClickProfile()}></img>
-                        <h2 onClick={() => handleClickProfile()}>{getUserName(profile)}</h2>
-                        <label onClick={() => handleClickProfile()}>Click to Profile</label>
-                    </div>
-                </>
-                : <></>
-            }
+        <div className='main'>
+            <div className='badge-manage'>
+                {(profile !== null)
+                    ? <>
+                        <div className="badge-manage-profile">
+                            <img src={profile?.picture} alt={getUserName(profile)} onClick={() => handleClickProfile()}></img>
+                            <h2 onClick={() => handleClickProfile()}>{getUserName(profile)}</h2>
+                            <label onClick={() => handleClickProfile()}>Click to Profile</label>
+                        </div>
+                    </>
+                    : <></>
+                }
 
-            {(createdBadges.length > 0)
-                ? <>
-                    <h2>Created Badge</h2>
-                    <div className='badge-created'>
-                        {createdBadges.map((b, i) =>
-                            <BadgeManageCreatedItem key={i} badge={b} />
-                        )}
-                    </div>
-                </>
-                : <></>
-            }
+                {(createdBadges.length > 0)
+                    ? <>
+                        <h2>Created Badge</h2>
+                        <div className='badge-created'>
+                            {createdBadges.map((b, i) =>
+                                <BadgeManageCreatedItem key={i} badge={b} />
+                            )}
+                        </div>
+                    </>
+                    : <></>
+                }
+            </div>
         </div>
     );
 }

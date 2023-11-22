@@ -6,10 +6,18 @@
 }
 
 .container {
-  max-width: var(--width);
+  max-width: var(--root-width);
   margin: 0 auto;
   /* background-color: darkorchid; */
 }
+
+.gap {
+  gap: 0.25rem;
+}
+
+/* .main {
+  height: 100vh;
+} */
 
 .relay {
   position: relative;
@@ -18,7 +26,7 @@
 .relay-list {
   width: 350px;
   position: absolute;
-  left: var(--width);
+  left: var(--root-width);
   margin-left: 8px;
   margin-top: 3px;
   /* border: red solid; */

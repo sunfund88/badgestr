@@ -1,0 +1,109 @@
+@media (max-width: 1200px) {}
+
+@media (max-width: 992px) {}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 678px) {}
+
+@media (max-width: 480px) {
+
+    /* body {
+        background-color: brown;
+    } */
+    body {
+        width: 100%;
+        /* overflow: hidden; */
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    nav {
+        position: -webkit-sticky;
+        /* Safari */
+        position: sticky;
+        top: 0;
+        width: 100%;
+        background-color: var(--text-color);
+        padding: 5px;
+        z-index: 999;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    nav .logo h1 {
+        color: var(--bg-color);
+        font-size: xx-large;
+    }
+
+    nav .nav-user-name label {
+        color: #fff;
+    }
+
+    nav .nav-btn-div,
+    nav .logo img {
+        display: none;
+    }
+
+    .home-logo img {
+        width: 90%;
+    }
+
+    .home-text h1 {
+        font-size: 20vw;
+    }
+
+    .header-banner {
+        margin: 5px;
+    }
+
+    .header-address,
+    .header-about {
+        width: unset;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .header-address ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        width: 80%;
+    }
+
+    .header-address ul li {
+        width: 80%;
+    }
+
+
+    .main .header-picture img {
+        width: 80px;
+        height: 80px;
+        top: 10px;
+    }
+
+    .relay {
+        display: none;
+    }
+
+    .main .home .home-input {
+        width: 90%;
+    }
+
+    .main .badge-created-item {
+        width: 90%;
+    }
+
+
+    .main .badge-created-item button {
+        width: 100px;
+    }
+
+    /* Hide scrollbar for iOS and Safari (Webkit) */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@media (max-width: 380px) {}

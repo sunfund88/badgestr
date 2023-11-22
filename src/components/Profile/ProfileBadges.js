@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import ProfileBadgeItem from "./ProfileBadgeItem";
+import { useCookies } from 'react-cookie';
 import { getAcceptedBadges, getBadgesId, getBadgeObj, getPubKey, getAllRecievedBadges, getNewAcceptBadgesTags, sendNewEvent, arrayDiff, getWindowPubkey } from '../BadgeStrFunction';
 
 const ProfileBadges = ({ id }) => {
@@ -15,6 +16,7 @@ const ProfileBadges = ({ id }) => {
     const oldBadges = useRef([])
     const updatePush = useRef(false)
     // const badgesData = useRef([])
+    const [cookies, setCookie] = useCookies(['user']);
 
     useEffect(() => {
         if (init_recievedBadges.current) {
@@ -39,7 +41,7 @@ const ProfileBadges = ({ id }) => {
             }
             fetchAcceptedBadges()
 
-            const login = (localStorage.getItem('login') === 'true')
+            const login = (cookies.user !== '' && cookies.user !== undefined)
             // console.log('login...', login)
 
             if (login) {

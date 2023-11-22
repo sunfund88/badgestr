@@ -8,7 +8,7 @@ function Profile() {
     let { id } = useParams();
 
     return (
-        <div>
+        <div className='main'>
             <ProfileMetaData id={id} />
             <ProfileBadges id={id} />
         </div>
