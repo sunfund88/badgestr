@@ -46,7 +46,7 @@ const ProfileBadges = ({ id }) => {
 
             if (login) {
                 const fetchDataProfile = async () => {
-                    const myPub = await window.nostr.getPublicKey()
+                    const myPub = cookies.user.pubkey
                     console.log(myPub)
 
                     setShowEditBtn(myPub === getPubKey(id))
