@@ -159,7 +159,7 @@ function Navbar() {
             // localStorage.setItem('user', JSON.stringify(u));
         }
         else {
-            localStorage.setItem('login', 'false');
+            // localStorage.setItem('login', 'false');
             setUserLogin(undefined)
             setCookie('user', JSON.stringify(''))
             window.relays = init_relays;

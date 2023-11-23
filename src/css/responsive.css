@@ -104,6 +104,53 @@
     ::-webkit-scrollbar {
         display: none;
     }
+
+    .badge-manage-profile img {
+        margin-top: 15px;
+    }
+
+    .main .badge-manage-header,
+    .main .newbadge-container,
+    .main form,
+    .main .newbadge-row input,
+    .main .newbadge-row textarea {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .main .b_badge {
+        flex-direction: column;
+    }
+
+
+    .main .b_badge img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 15px;
+    }
+
+    .main .badges h3 {
+        margin-top: 5px;
+    }
+
+    .main .badges-header {
+        position: unset;
+        width: 100%;
+        padding: 5px;
+    }
+
+    /* .main .badges-edit-header {
+    } */
+
+    /* .newbadge-row h3 {
+        width: 100%;
+    }
+
+    .newbadge-row input,
+    .newbadge-row textarea {
+        width: 100%;
+    } */
 }
 
 @media (max-width: 380px) {}

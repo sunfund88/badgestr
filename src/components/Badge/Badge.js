@@ -61,7 +61,7 @@ function Badge() {
     }
 
     return (
-        <div>
+        <div className='main'>
             {/* <h1>BADGE</h1> */}
             {/* <h2>{id}</h2> */}
             <div>

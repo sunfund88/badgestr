@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getCreatedBadges, getProfile, getUserName, getWindowPubkey } from '../BadgeStrFunction';
+import { getCreatedBadges, getProfile, getUserName, getWindowPubkey, init_relays } from '../BadgeStrFunction';
 import BadgeManageCreatedItem from './BadgeManageCreatedItem';
+import { useCookies } from 'react-cookie';
 
 const BadgeManage = () => {
-    const [login, setLogin] = useState(false);
+    // const [login, setLogin] = useState(false);
     const [profile, setProfile] = useState(null);
     const [createdBadges, setCreatedBadges] = useState([]);
+    const [cookies, setCookie] = useCookies(['user']);
 
     const init_Load = useRef(true)
 
@@ -16,18 +18,25 @@ const BadgeManage = () => {
         if (init_Load.current) {
             init_Load.current = false;
 
-            const fetchDataProfile = async () => {
-                const pf = await getProfile(await getWindowPubkey())
-                setProfile(pf)
+            if (cookies.user === '' || cookies.user === undefined) {
+                console.log('Not Login')
+                navigate('/')
+                window.location.reload()
             }
-            fetchDataProfile()
+            else {
+                const fetchDataProfile = async () => {
+                    const pf = await getProfile(await getWindowPubkey())
+                    setProfile(pf)
+                }
+                fetchDataProfile()
 
-            const fetchCreatedBadges = async () => {
-                const created = await getCreatedBadges();
-                setCreatedBadges(created)
+                const fetchCreatedBadges = async () => {
+                    const created = await getCreatedBadges();
+                    setCreatedBadges(created)
+                }
+
+                fetchCreatedBadges()
             }
-
-            fetchCreatedBadges()
         }
     }, []);
 
@@ -35,6 +44,20 @@ const BadgeManage = () => {
         const url = '/p/' + await getWindowPubkey()
 
         navigate(url)
+    }
+
+    function handleLogout() {
+
+        setCookie('user', JSON.stringify(''))
+        // window.relays = init_relays;
+        // setRelays(getAllRelays)
+        navigate('/')
+        window.location.reload()
+    }
+
+    function handleAddNewBadge() {
+        console.log('handleAddNewBadge...')
+        navigate('/new')
     }
 
     return (
@@ -46,6 +69,11 @@ const BadgeManage = () => {
                             <img src={profile?.picture} alt={getUserName(profile)} onClick={() => handleClickProfile()}></img>
                             <h2 onClick={() => handleClickProfile()}>{getUserName(profile)}</h2>
                             <label onClick={() => handleClickProfile()}>Click to Profile</label>
+                        </div>
+                        <div className='badge-manage-button'>
+                            <button className="nav-btn-newbadge" type="button" onClick={() => { handleAddNewBadge() }}>+ Badge</button>
+                            <button className="nav-btn" type="button" onClick={() => { handleLogout() }}>Log out</button>
+
                         </div>
                     </>
                     : <></>

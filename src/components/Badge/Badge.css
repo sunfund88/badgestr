@@ -186,7 +186,7 @@
 
 .badge-manage-header {
     width: 600px;
-    height: 30px;
+    height: 45px;
 }
 
 .badge-manage-profile {
@@ -194,7 +194,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: 40px;
+}
+
+.badge-manage-button {
+    margin: 20px;
+}
+
+.badge-manage-button button {
+    margin: 5px;
+    width: 300px;
 }
 
 .badge-manage-profile img {

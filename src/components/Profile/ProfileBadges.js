@@ -258,7 +258,6 @@ const ProfileBadges = ({ id }) => {
                 {(acceptedBadges.length > 0)
                     ? (
                         <>
-
                             <h3>Accepted Badges</h3>
                             <div className={containerClassName}>
                                 <div className="badges-list">
