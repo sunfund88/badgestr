@@ -31,7 +31,7 @@ const BadgeManage = () => {
                 fetchDataProfile()
 
                 const fetchCreatedBadges = async () => {
-                    const created = await getCreatedBadges();
+                    const created = await getCreatedBadges(cookies.user.pubkey);
                     setCreatedBadges(created)
                 }
 

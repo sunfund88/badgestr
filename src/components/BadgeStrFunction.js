@@ -392,13 +392,13 @@ export async function getUsersRecievedBadge(badge_id) {
     }
 }
 
-export async function getCreatedBadges() {
+export async function getCreatedBadges(pubkey) {
     try {
         let events = await window.pool.list(getReadRelays(), [{
             kinds: [30_009],
             // '#p': [pubkey],
             // authors: [await getPubKey('npub1l2cp3t052ljhqnt2emsq5py30qqppj3pytprppc4ygjznhv6lzws99ye04')]
-            authors: [await window.nostr.getPublicKey()]
+            authors: [pubkey]
         }])
 
         events.sort((a, b) => b.created_at - a.created_at)
