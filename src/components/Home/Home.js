@@ -19,15 +19,19 @@ function Home() {
     }
 
     return (
-        <div className='home'>
-            <div className='home-logo'>
-                <img src={logo_image} width="450" height="450" alt='nostr-logo'></img>
-                <h1>Badge<span className="purple">Str</span></h1>
+        <div className='main'>
+            <div className='home'>
+                <div className='home-logo'>
+                    <img src={logo_image} alt='nostr-logo'></img>
+                    <div className='home-text'>
+                        <h1>Badge<span className="purple">Str</span></h1>
+                    </div>
+                </div>
+                <form onSubmit={onSubmit}>
+                    <input className='home-input' ref={key} type='text' id='key' placeholder='Enter ... npub or pubkey(hex)'></input><br></br>
+                    <button className='input-btn' type='submit'>Submit</button>
+                </form>
             </div>
-            <form onSubmit={onSubmit}>
-                <input className='input' ref={key} type='text' id='key' placeholder='Enter ... npub or pubkey(hex)'></input><br></br>
-                <button className='input-btn' type='submit'>Submit</button>
-            </form>
         </div>
     )
 }

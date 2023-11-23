@@ -159,7 +159,7 @@ function Navbar() {
             // localStorage.setItem('user', JSON.stringify(u));
         }
         else {
-            localStorage.setItem('login', 'false');
+            // localStorage.setItem('login', 'false');
             setUserLogin(undefined)
             setCookie('user', JSON.stringify(''))
             window.relays = init_relays;
@@ -181,16 +181,28 @@ function Navbar() {
 
                 {(login === true)
                     ?
-                    <div className="nav-user">
-                        <div className='nav-user-name' onClick={() => { handleMyProfile() }}>
-                            {userLogin?.display_name} <img src={userLogin?.picture} alt={userLogin?.name} onError={event => {
+                    <div className="nav-user gap">
+                        <div className='nav-user-name gap' onClick={() => { handleMyProfile() }}>
+                            <label>{userLogin?.display_name} </label>
+                            <img src={userLogin?.picture} alt={userLogin?.name} onError={event => {
                                 event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
                                 event.onerror = null
                             }} />
                         </div>
-                        <button className="nav-btn-newbadge" type="button" onClick={() => { handleAddNewBadge() }}>+ Badge</button>
-                        <button className="nav-btn" type="button" onClick={() => { handleLogin() }}>Log out</button>
+                        <div className='nav-btn-div gap'>
+                            <button className="nav-btn-newbadge" type="button" onClick={() => { handleAddNewBadge() }}>+ Badge</button>
+                            <button className="nav-btn" type="button" onClick={() => { handleLogin() }}>Log out</button>
+                        </div>
+                        {/* <button id="menuButton">Open Menu</button>
+                        <div>
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">About</a></li>
+                                <li><a href="#">Contact</a></li>
+                            </ul>
+                        </div> */}
                     </div>
+
                     : <button className="nav-btn" type="button" onClick={() => { handleLogin() }}>Log in</button>}
 
 

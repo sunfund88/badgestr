@@ -16,7 +16,7 @@
   --btn-bg-color: var(--main-color);
   --btn-txt-color: #fff;
 
-  --width: 992px
+  --root-width: 992px
 }
 
 body {

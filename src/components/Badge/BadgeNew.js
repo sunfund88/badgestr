@@ -51,73 +51,74 @@ const BadgeNew = () => {
     }
 
     return (
-        <div className='badge-manage'>
-            <div className='badge-manage-header'>
-                <button className='back_btn' onClick={() => { pushBack() }}> Back </button>
-            </div>
-            <h2>Create New Badge</h2>
+        <div className='main'>
+            <div className='badge-manage'>
+                <div className='badge-manage-header'>
+                    <button className='back_btn' onClick={() => { pushBack() }}> Back </button>
+                </div>
+                <h2>Create New Badge</h2>
 
-            <div className='newbadge-container'>
-                <form onSubmit={onSubmit}>
-                    <div className='newbadge-row'>
-                        <h3>ID</h3>
-                        <input ref={badge_id} type='text' id='badge_id' placeholder='Badge ID for identifying the badge. (e.g. happy-nostrich)' disabled={isDisabled}></input>
-                    </div>
-                    <div className='newbadge-row'>
-                        <h3>Name</h3>
-                        <input ref={badge_name} type='text' id='badge_name' placeholder='Badge Name (e.g. Happy Nostrich)' disabled={isDisabled}></input>
-                    </div>
-                    <div className='newbadge-row'>
-                        <h3>Description</h3>
-                        <textarea ref={badge_description} type='text' id='badge_description' placeholder='Description here.' disabled={isDisabled}></textarea>
-                    </div>
-                    <div className='newbadge-row'>
-                        <h3>Image</h3>
-                        <input ref={badge_image} type='url' id='badge_image' placeholder='Image url' disabled={isDisabled}></input>
-                    </div>
-                    <div className='newbadge-row'>
-                        <h3>Thumbnail</h3>
-                        <input ref={badge_thumb} type='url' id='badge_thumb' placeholder='Thumbnail url' disabled={isDisabled}></input>
-                    </div>
-                    {(!isDisabled)
-                        ?
-                        <div className='div-button'>
-                            <button className='main-btn' type='submit'>Create</button>
-                            <input className='darkgrey-btn' type="reset" value="Reset" />
+                <div className='newbadge-container'>
+                    <form onSubmit={onSubmit}>
+                        <div className='newbadge-row'>
+                            <h3>ID</h3>
+                            <input ref={badge_id} type='text' id='badge_id' placeholder='Badge ID for identifying the badge. (e.g. happy-nostrich)' disabled={isDisabled}></input>
                         </div>
-                        :
-                        <div className='div-button'>
-                            <button className='darkgrey-btn' type='submit'>Edit</button>
-                        </div>}
-                </form>
-
-                <form onSubmit={onConfirm}>
-                    <div className='newbadge-row'>
-                        {(isDisabled)
+                        <div className='newbadge-row'>
+                            <h3>Name</h3>
+                            <input ref={badge_name} type='text' id='badge_name' placeholder='Badge Name (e.g. Happy Nostrich)' disabled={isDisabled}></input>
+                        </div>
+                        <div className='newbadge-row'>
+                            <h3>Description</h3>
+                            <textarea ref={badge_description} type='text' id='badge_description' placeholder='Description here.' disabled={isDisabled}></textarea>
+                        </div>
+                        <div className='newbadge-row'>
+                            <h3>Image</h3>
+                            <input ref={badge_image} type='url' id='badge_image' placeholder='Image url' disabled={isDisabled}></input>
+                        </div>
+                        <div className='newbadge-row'>
+                            <h3>Thumbnail</h3>
+                            <input ref={badge_thumb} type='url' id='badge_thumb' placeholder='Thumbnail url' disabled={isDisabled}></input>
+                        </div>
+                        {(!isDisabled)
                             ?
-                            <div className='badge-created'>
-                                <div className='badge-created-item'>
-                                    <div>
-                                        <img src={badge_thumb.current.value} alt={badge_name.current.value} />
-                                    </div>
-                                    <div className='badge-created-text'>
-                                        <h4>{badge_name.current.value}</h4>
-                                        <div className='badge-created-description'>
-                                            {badge_description.current.value}
+                            <div className='div-button'>
+                                <button className='main-btn' type='submit'>Create</button>
+                                <input className='darkgrey-btn' type="reset" value="Reset" />
+                            </div>
+                            :
+                            <div className='div-button'>
+                                <button className='darkgrey-btn' type='submit'>Edit</button>
+                            </div>}
+                    </form>
+
+                    <form onSubmit={onConfirm}>
+                        <div className='newbadge-row'>
+                            {(isDisabled)
+                                ?
+                                <div className='badge-created'>
+                                    <div className='badge-created-item'>
+                                        <div>
+                                            <img src={badge_thumb.current.value} alt={badge_name.current.value} />
+                                        </div>
+                                        <div className='badge-created-text'>
+                                            <h4>{badge_name.current.value}</h4>
+                                            <div className='badge-created-description'>
+                                                {badge_description.current.value}
+                                            </div>
                                         </div>
                                     </div>
+                                    <div className='div-button'>
+                                        <button className='darkgreen-btn' type='submit'>Confirm</button>
+                                    </div>
                                 </div>
-                                <div className='div-button'>
-                                    <button className='darkgreen-btn' type='submit'>Confirm</button>
-                                </div>
-                            </div>
-                            : <>
-                            </>}
-                    </div>
-                </form>
+                                : <>
+                                </>}
+                        </div>
+                    </form>
+                </div>
+
             </div>
-
-
         </div>
     );
 }

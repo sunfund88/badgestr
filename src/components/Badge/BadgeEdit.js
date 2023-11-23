@@ -67,38 +67,40 @@ const BadgeEdit = () => {
     }
 
     return (
-        <div className='badge-manage'>
-            <div className='badge-manage-header'>
-                <button className='back_btn' onClick={() => { pushBack() }}> Back </button>
-            </div>
-            <h2>Edit Badge</h2>
-            <div className='newbadge-container'>
-                <form onSubmit={onSubmit}>
-                    <div className='newbadge-row'>
-                        <h3>ID</h3>
-                        <input className='newbadge-input' ref={badge_id} type='text' id='badge_id' defaultValue={badgeData?.d} placeholder='Badge ID for identifying the badge. (e.g. happy-nostrich)' disabled></input>
-                    </div>
-                    <div className='newbadge-row'>
-                        <h3>Name</h3>
-                        <input className='newbadge-input' ref={badge_name} type='text' id='badge_name' defaultValue={badgeData?.name} placeholder='Badge Name (e.g. Happy Nostrich) '></input>
-                    </div>
-                    <div className='newbadge-row'>
-                        <h3>Description</h3>
-                        <textarea className='input' ref={badge_description} type='text' id='badge_description' defaultValue={badgeData?.description} placeholder='Description here.'></textarea>
-                    </div>
-                    <div className='newbadge-row'>
-                        <h3>Image</h3>
-                        <input className='newbadge-input' ref={badge_image} type='text' id='badge_image' defaultValue={badgeData?.image} placeholder='Image url'></input>
-                    </div>
-                    <div className='newbadge-row'>
-                        <h3>Thumbnail</h3>
-                        <input className='newbadge-input' ref={badge_thumb} type='text' id='badge_thumb' defaultValue={badgeData?.thumb} placeholder='Thumbnail url'></input>
-                    </div>
-                    <div className='div-button'>
-                        <button className='darkgreen-btn' type='submit'>Edit</button>
-                        <input className='darkgrey-btn' type="reset" value="Reset" />
-                    </div>
-                </form>
+        <div className='main'>
+            <div className='badge-manage'>
+                <div className='badge-manage-header'>
+                    <button className='back_btn' onClick={() => { pushBack() }}> Back </button>
+                </div>
+                <h2>Edit Badge</h2>
+                <div className='newbadge-container'>
+                    <form onSubmit={onSubmit}>
+                        <div className='newbadge-row'>
+                            <h3>ID</h3>
+                            <input className='newbadge-input' ref={badge_id} type='text' id='badge_id' defaultValue={badgeData?.d} placeholder='Badge ID for identifying the badge. (e.g. happy-nostrich)' disabled></input>
+                        </div>
+                        <div className='newbadge-row'>
+                            <h3>Name</h3>
+                            <input className='newbadge-input' ref={badge_name} type='text' id='badge_name' defaultValue={badgeData?.name} placeholder='Badge Name (e.g. Happy Nostrich) '></input>
+                        </div>
+                        <div className='newbadge-row'>
+                            <h3>Description</h3>
+                            <textarea className='input' ref={badge_description} type='text' id='badge_description' defaultValue={badgeData?.description} placeholder='Description here.'></textarea>
+                        </div>
+                        <div className='newbadge-row'>
+                            <h3>Image</h3>
+                            <input className='newbadge-input' ref={badge_image} type='text' id='badge_image' defaultValue={badgeData?.image} placeholder='Image url'></input>
+                        </div>
+                        <div className='newbadge-row'>
+                            <h3>Thumbnail</h3>
+                            <input className='newbadge-input' ref={badge_thumb} type='text' id='badge_thumb' defaultValue={badgeData?.thumb} placeholder='Thumbnail url'></input>
+                        </div>
+                        <div className='div-button'>
+                            <button className='darkgreen-btn' type='submit'>Edit</button>
+                            <input className='darkgrey-btn' type="reset" value="Reset" />
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );

@@ -10,6 +10,10 @@ nav {
     display: flex;
 }
 
+.nav-btn-div {
+    display: flex;
+}
+
 .nav-btn {
     cursor: pointer;
     text-align: center;
@@ -38,7 +42,6 @@ nav {
     color: var(--btn-txt-color);
     font-size: medium;
     border: none;
-    margin-right: 5px;
 }
 
 .nav-user {
@@ -49,8 +52,8 @@ nav {
     display: flex;
     cursor: pointer;
     align-items: center;
-    margin-right: 3px;
     padding-left: 5px;
+    padding-right: 5px;
     border-radius: 5px;
 }
 
@@ -63,5 +66,4 @@ nav {
     height: 30px;
     object-fit: cover;
     border-radius: 15px;
-    margin-right: 5px;
 }
