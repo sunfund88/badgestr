@@ -6,8 +6,8 @@ import { useCookies } from 'react-cookie';
 
 const BadgeManage = () => {
     // const [login, setLogin] = useState(false);
-    const [profile, setProfile] = useState(null);
-    const [createdBadges, setCreatedBadges] = useState([]);
+    const [profile, setProfile] = useState(undefined);
+    const [createdBadges, setCreatedBadges] = useState(undefined);
     const [cookies, setCookie] = useCookies(['user']);
 
     const init_Load = useRef(true)
@@ -63,7 +63,7 @@ const BadgeManage = () => {
     return (
         <div className='main'>
             <div className='badge-manage'>
-                {(profile !== null)
+                {(profile !== undefined)
                     ? <>
                         <div className="badge-manage-profile">
                             <img src={profile?.picture} alt={getUserName(profile)} onClick={() => handleClickProfile()}></img>
@@ -79,7 +79,7 @@ const BadgeManage = () => {
                     : <></>
                 }
 
-                {(createdBadges.length > 0)
+                {(createdBadges !== undefined)
                     ? <>
                         <h2>Created Badge</h2>
                         <div className='badge-created'>
