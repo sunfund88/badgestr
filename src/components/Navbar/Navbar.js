@@ -54,7 +54,7 @@ function Navbar() {
                 setUserLogin(cookies.user)
 
                 async function fetchRelays() {
-                    window.relays = await findRelays();
+                    window.relays = await findRelays(cookies.user.pubkey);
                     setRelays(getAllRelays)
                 }
 
@@ -154,7 +154,7 @@ function Navbar() {
 
             setUserLogin(u)
             setCookie('user', JSON.stringify(u))
-            window.relays = await findRelays();
+            window.relays = await findRelays(cookies.user.pubkey);
             setRelays(getAllRelays)
             // localStorage.setItem('user', JSON.stringify(u));
         }
