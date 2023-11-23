@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getCreatedBadges, getProfile, getUserName, getWindowPubkey, init_relays } from '../BadgeStrFunction';
+import { getCreatedBadges, getProfile, getUserName } from '../BadgeStrFunction';
 import BadgeManageCreatedItem from './BadgeManageCreatedItem';
 import { useCookies } from 'react-cookie';
 
@@ -25,7 +25,7 @@ const BadgeManage = () => {
             }
             else {
                 const fetchDataProfile = async () => {
-                    const pf = await getProfile(await getWindowPubkey())
+                    const pf = await getProfile(cookies.user.pubkey)
                     setProfile(pf)
                 }
                 fetchDataProfile()
@@ -41,7 +41,7 @@ const BadgeManage = () => {
     }, []);
 
     async function handleClickProfile() {
-        const url = '/p/' + await getWindowPubkey()
+        const url = '/p/' + cookies.user.pubkey
 
         navigate(url)
     }
