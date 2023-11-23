@@ -5,12 +5,12 @@ import { getAllRelays } from '../BadgeStrFunction';
 
 const ProfileBadgeItem = ({ id, index, badgeItem, type, editMode, handleEdit }) => {
     // const [removed, setRemoved] = useState(false)
-    const [cssItem, setCssItem] = useState(editMode ? (type ? 'badges-item-edit-green' : 'badges-item-edit-red') : 'badges-item')
+    const [cssItem, setCssItem] = useState(editMode ? (type ? 'badges-item edit-green' : 'badges-item edit-red') : 'badges-item')
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        setCssItem(editMode ? (type ? 'badges-item-edit-green' : 'badges-item-edit-red') : 'badges-item')
+        setCssItem(editMode ? (type ? 'badges-item edit-green' : 'badges-item edit-red') : 'badges-item')
         // console.log(removeBadges)
         // if (removed) {
         //     const index = removeBadges.current.indexOf(badgeItem.badge_id);
@@ -74,7 +74,7 @@ const ProfileBadgeItem = ({ id, index, badgeItem, type, editMode, handleEdit }) 
     return (
         (badgeItem !== undefined)
             ? <div className={cssItem} key={id} onClick={handleClick} >
-                <img className="image" src={badgeItem?.thumb} width="120" height="120" title={badgeItem?.name} alt={badgeItem?.name}
+                <img class="image" src={badgeItem?.thumb} title={badgeItem?.name} alt={badgeItem?.name}
                     onError={event => {
                         event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
                         event.onerror = null
