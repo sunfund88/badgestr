@@ -62,32 +62,32 @@ function Badge() {
 
     return (
         <div className='main'>
-            {/* <h1>BADGE</h1> */}
-            {/* <h2>{id}</h2> */}
-            <div>
+            <div className='b-badge-container'>
                 {(badgeData !== undefined)
                     ? <>
                         <div>
                             <button className='back_btn' onClick={() => { pushBack() }}> Back </button>
                         </div>
-                        <div className='b_badge'>
-                            <img
-                                src={badgeData.image}
-                                title={badgeData.name}
-                                alt={badgeData.name}
-                                onError={event => {
-                                    event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
-                                    event.onerror = null
-                                }} />
-                            <div className='b_badge_info'>
-                                <div className='b_badge_name'>{badgeData?.name}</div>
-                                <div className='b_badge_description'>{badgeData?.description}</div>
-                                <div className='b_badge_owner'>
+                        <div className='b-badge'>
+                            <div className='b-badge-profile'>
+                                <img
+                                    src={badgeData.image}
+                                    title={badgeData.name}
+                                    alt={badgeData.name}
+                                    onError={event => {
+                                        event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+                                        event.onerror = null
+                                    }} />
+                            </div>
+                            <div className='b-badge-info'>
+                                <div className='b-badge-name'>{badgeData?.name}</div>
+                                <div className='b-badge-description'>{badgeData?.description}</div>
+                                <div className='b-badge-owner gap'>
                                     Created at:
-                                    <div className='b_badge_owner_span'>
+                                    <div className='b-badge-owner-span'>
                                         <div className='b_badge_owner_txt'>{convertTime(badgeData?.created_at)}</div>
                                     </div>
-                                    <div className='b_badge_owner_span_name' onClick={() => clickedPubkey(badgeData?.owner)}>
+                                    <div className='b-badge-owner-span-name' onClick={() => clickedPubkey(badgeData?.owner)}>
                                         <img
                                             src={ownerData?.picture}
                                             alt={ownerData?.display_name}
@@ -96,13 +96,12 @@ function Badge() {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </>
                     : <></>}
 
                 {(recieve !== undefined)
-                    ? <>
+                    ? <div className='b-badge-recieved-header'>
                         <h4>Awarded {recieve.length} User(s):</h4>
                         <div className='b-badge-recieved-container'>
                             <div className='b-badge-recieved'>
@@ -117,7 +116,7 @@ function Badge() {
                         {/* {(recieve.length > 70)
                             ? <></>
                             : <></>} */}
-                    </>
+                    </div>
                     : <></>}
             </div>
         </div>

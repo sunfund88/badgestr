@@ -1,61 +1,60 @@
-.b_badge {
+.b-badge {
     display: flex;
-    width: var(--width);
+    width: var(--root-width);
     padding: 20px;
     background-color: var(--sub-color);
     border-radius: 20px;
 }
 
-.b_badge img {
+.b-badge-profile img {
     width: 300px;
     height: 300px;
     object-fit: cover;
     border-radius: 15px;
 }
 
-.b_badge_info {
+.b-badge-info {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin-left: 20px;
-    position: relative;
+    /* row-gap column gap */
 }
 
-.b_badge_name {
+.b-badge-name {
     font-size: 60px;
 }
 
-.b_badge_description {
+.b-badge-description {
+    flex: 1;
     margin-top: 10px;
 }
 
-.b_badge_owner {
-    position: absolute;
+.b-badge-owner {
     display: flex;
-    right: 0px;
-    bottom: 0px;
+    align-self: flex-end;
     align-items: center;
 }
 
-.b_badge_owner_span {
+.b-badge-owner-span {
     display: flex;
     background-color: var(--grey-color);
     padding: 10px;
     height: 40px;
     align-items: center;
     border-radius: 10px;
-    margin-left: 10px;
 }
 
-.b_badge_owner_span_name {
+.b-badge-owner-span-name {
     display: flex;
     background-color: var(--grey-color);
     padding: 10px;
     height: 40px;
     align-items: center;
     border-radius: 10px;
-    margin-left: 10px;
 }
 
-.b_badge_owner_span_name img {
+.b-badge-owner-span-name img {
     width: 30px;
     height: 30px;
     object-fit: cover;
@@ -87,6 +86,10 @@
     justify-content: center;
     padding: 5px;
     width: var(--width)-40px;
+}
+
+.b-badge-recieved-header h4 {
+    margin-top: 15px;
 }
 
 /* custom scrollbar */
