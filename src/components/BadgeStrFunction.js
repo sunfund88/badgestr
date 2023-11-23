@@ -10,10 +10,10 @@ export const init_relays = [
 ].map(r => [r, { read: true, write: true }])
 
 // relays
-export async function findRelays() {
+export async function findRelays(pubkey) {
     let events = await window.pool.list(getAllRelays(), [{
         kinds: [3, 10_002],
-        authors: [await window.nostr.getPublicKey()]
+        authors: [pubkey]
     }])
 
     if (events.length > 0) {
