@@ -83,16 +83,17 @@ function Badge() {
                                 <div className='b-badge-name'>{badgeData?.name}</div>
                                 <div className='b-badge-description'>{badgeData?.description}</div>
                                 <div className='b-badge-owner gap'>
-                                    Created at:
+                                    <label>Created at:</label>
+
                                     <div className='b-badge-owner-span'>
-                                        <div className='b_badge_owner_txt'>{convertTime(badgeData?.created_at)}</div>
+                                        <div className='b-badge-owner-txt'>{convertTime(badgeData?.created_at)}</div>
                                     </div>
                                     <div className='b-badge-owner-span-name' onClick={() => clickedPubkey(badgeData?.owner)}>
                                         <img
                                             src={ownerData?.picture}
                                             alt={ownerData?.display_name}
                                         />
-                                        <div className='b_badge_owner_txt'>{getUserName(ownerData)}</div>
+                                        <div className='b-badge-owner-txt'>{getUserName(ownerData)}</div>
                                     </div>
                                 </div>
                             </div>

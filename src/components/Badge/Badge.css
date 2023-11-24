@@ -62,11 +62,11 @@
 }
 
 
-.b_badge_owner_span_name:hover {
+.b-badge-owner-span-name:hover {
     background-color: var(--main-color);
 }
 
-.b_badge_owner_txt {
+.b-badge-owner-txt {
     margin-left: 5px;
     margin-right: 5px;
     font-size: 18px;
