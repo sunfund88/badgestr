@@ -29,6 +29,25 @@ const BadgeManageCreatedItem = ({ badge }) => {
 
     }
 
+    function handleAward() {
+        console.log('handleAward')
+        const badge_data = badgeItem.badge_id.split(':')
+        const relays = getAllRelays()
+
+        const event = {
+            pubkey: badge_data[1],
+            relays,
+            identifier: badge_data[2],
+            kind: badge_data[0],
+        }
+        const naddr = nip19.naddrEncode(event)
+        // console.log(naddr);
+
+        const url = '/b/' + naddr
+
+        navigate(url)
+    }
+
     return (
         <div className='badge-created-item'>
             <div>
@@ -41,7 +60,7 @@ const BadgeManageCreatedItem = ({ badge }) => {
                 </div>
                 <div className='div-button2'>
                     <button className='darkgrey-btn' type="button" onClick={() => handleEdit()} >Edit</button>
-                    <button className='darkgrey-btn' type="button" >Award</button>
+                    <button className='darkgrey-btn' type="button" onClick={() => handleAward()} >Award</button>
                 </div>
             </div>
 
