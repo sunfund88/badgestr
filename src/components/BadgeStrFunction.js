@@ -431,7 +431,6 @@ export async function getCreatedBadges(pubkey) {
     }
 }
 
-
 export async function fetchBadgeInfoById(badgeId) {
     const bid = badgeId
     badgeId = badgeId.split(':')
@@ -496,6 +495,80 @@ export function getBadgeItem(badgeObj) {
     return badgeInfo
 }
 
+// award
+export async function fetchFollowing(pubkey) {
+    let events = await window.pool.list(getReadRelays(), [{
+        kinds: [3],
+        // '#p': [pubkey],
+        authors: [pubkey]
+    }])
+
+    events.sort((a, b) => b.created_at - a.created_at)
+
+    const pubs = events[0].tags.map(m => m[1])
+    // console.log(pubs)
+
+
+    const pf = await getProfileArray(pubs)
+    // console.log(pf)
+
+    let pfarray = []
+    pf.forEach(p => {
+        let obj = [p.pubkey, JSON.parse(p.content)]
+        pfarray.push(obj)
+    })
+    // console.log(pfarray)
+
+    const findProfile = (pk) => pfarray.filter(pfa => pk === pfa[0])[0]
+
+    // console.log(findProfile(unique[0]))
+
+    const unique_pf = pubs.map(pk => findProfile(pk))
+
+    unique_pf.filter(f => f !== undefined)
+    // console.log(unique_pf)
+
+    return unique_pf
+
+
+
+    // console.log(events[0].tags.map(m => [m[1]]))
+    // return pfarray
+}
+
+export function findDiffList(list, recieved) {
+    let u = []
+    let r = []
+
+    list.forEach(l => {
+        if (l !== undefined) {
+            let found = false
+            recieved.forEach(r => {
+                if (l[0] === r[0]) {
+                    found = true
+                }
+            })
+
+            if (found) {
+                l.push(true)
+                r.push(l)
+            }
+            else {
+                l.push(false)
+                u.push(l)
+            }
+        }
+    })
+
+    // console.log(u)
+    // console.log(r)
+
+    const combinedArray = u.concat(r);
+    console.log(combinedArray)
+
+
+    return combinedArray
+}
 
 export async function sendNewEvent(kind, content, tags) {
     let new_event = {
