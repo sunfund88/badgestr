@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { getUsersRecievedBadge, getBadgeItem, getAllRelays, fetchFollowing, findDiffList, getUserName } from '../BadgeStrFunction';
+import { fetchFollowing, findDiffList, fetchFollower } from '../BadgeStrFunction';
 import { useCookies } from 'react-cookie';
 import BadgeAwardItem from './BadgeAwardItem';
-import BadgeUserItem from './BadgeUserItem';
+import BadgeAwardUserItem from './BadgeAwardUserItem';
 
 const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     const [selectListTxt, setSelectListTxt] = useState('-- Select List --');
@@ -15,11 +15,10 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
 
     const [cookies, setCookie] = useCookies(['user']);
 
-    const init_load = useRef(true)
-
     useEffect(() => {
         if (selectListTxt === 'Following') {
             console.log('selectFollowing')
+            setLists([])
             setListLoading(true)
 
             const fetchList = async () => {
@@ -29,6 +28,20 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                 setListLoading(false)
             }
             fetchList()
+        }
+        else if (selectListTxt === 'Follower') {
+            console.log('selectFollower')
+            setLists([])
+            setListLoading(true)
+
+            const fetchList = async () => {
+                const fl = await fetchFollower(cookies.user.pubkey)
+                const list = findDiffList(fl, recieved)
+                setLists(list)
+                setListLoading(false)
+            }
+            fetchList()
+
         }
         else {
             setLists([])
@@ -79,19 +92,21 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
 
     return (
         <div className='award-modal-content' onClick={() => { }}>
+
             <span className="close" onClick={() => handleClose()}>&times;</span>
-            <h1>Award Badge</h1>
+            <h1>Award : </h1>
             <h3>{badge?.name}</h3>
-
-            <div className='award-container'>
+            <div className='award-container gap-2'>
                 <div className='award-left'>
-                    <h2>Add by pubkey</h2>
-                    <input type='text' id='npub'></input>
+                    <div className='b-input'>
+                        <h3>Add by pubkey</h3>
+                        <input type='text' id='npub' placeholder='pubkey or npub'></input>
+                    </div>
 
-                    <h2>Add from List</h2>
+                    <h3>Add from List</h3>
 
                     <div className='dropdown'>
-                        <button className='dropdown-button' onClick={handleToggle}>{selectListTxt}</button>
+                        <button className='dropdown-button' onClick={handleToggle}>{selectListTxt} </button>
                         {open && (
                             <ul className="dropdown-menu">
                                 {options.map((option) => (
@@ -102,6 +117,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                             </ul>
                         )}
                     </div>
+                    <span>{lists?.length} User(s)</span>
                     <div className='award-list'>
                         {(lists !== undefined && lists.length !== 0)
                             ? <>
@@ -117,14 +133,14 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
 
                 </div>
                 <div className='award-right'>
-                    <h2>Award List <span>{awardList.length} User(s)</span></h2>
+                    <h3>Award List <span>{awardList.length} User(s)</span></h3>
 
                     <div className='award-awardlist-container'>
                         <div className='award-awardlist'>
                             {(awardList !== undefined && awardList.length !== 0)
                                 ? <>
                                     {awardList.map((u, i) => (
-                                        <BadgeUserItem key={i} user={u} />
+                                        <BadgeAwardUserItem key={i} user={u} handleRemove={handleRemove} />
                                     ))}
                                 </>
                                 : <>No data.</>}

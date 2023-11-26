@@ -120,8 +120,7 @@ const BadgeManage = () => {
             </div>
 
             <div className={`award-modal ${showAwardModal ? 'show' : ''}`} >
-                {/* <div className='award-modal-content' onClick={() => { }}>
-                    <span className="close" onClick={() => handleClose()}>&times;</span> */}
+                {/* <div className='award-screen'> */}
                 <BadgeAward badge={awarding} recieved={recieve} handleCloseParent={handleCloseParent} />
                 {/* </div> */}
             </div>

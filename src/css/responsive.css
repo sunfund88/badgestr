@@ -175,11 +175,19 @@
         text-align: center;
     }
 
+    /* .main .award-modal {
+        margin-top: 40px;
+    } */
+
+    /* .main .award-screen {
+        margin-top: 100px;
+        width: 95%;
+    } */
+
     .main .award-model-content {
         width: 100%;
-        /* margin-top: 150px;
-        margin-right: 10px;
-        margin-left: 10px; */
+        /* height: 140%; */
+        /* margin-top: 250px; */
     }
 
     .main .award-container {

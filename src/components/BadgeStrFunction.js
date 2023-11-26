@@ -536,27 +536,55 @@ export async function fetchFollowing(pubkey) {
     // return pfarray
 }
 
+export async function fetchFollower(mypubkey) {
+    let events = await window.pool.list(getReadRelays(), [{
+        kinds: [3],
+        '#p': [mypubkey]
+    }])
+
+    // events.sort((a, b) => b.created_at - a.created_at)
+
+    const pubs = events.map(e => e.pubkey)
+    const unique = pubs.filter((value, index, array) => array.indexOf(value) === index);
+
+    // console.log('u...', unique.length)
+
+    const pf = await getProfileArray(unique)
+    // console.log(pf)
+
+    const findProfile = (pk) => pf.filter(p => pk === p.pubkey)[0]
+
+    let pfarray = []
+    unique.filter(pk => pk !== undefined).forEach(u => {
+        const p = findProfile(u)
+        if (p !== undefined) {
+            const obj = [u, JSON.parse(p.content)]
+            pfarray.push(obj)
+        }
+    })
+    // console.log(pfarray)
+    return pfarray
+}
+
 export function findDiffList(list, recieved) {
     let u = []
     let r = []
 
-    list.forEach(l => {
-        if (l !== undefined) {
-            let found = false
-            recieved.forEach(r => {
-                if (l[0] === r[0]) {
-                    found = true
-                }
-            })
+    list.filter(f => f !== undefined).forEach(l => {
+        let found = false
+        recieved.forEach(r => {
+            if (l[0] === r[0]) {
+                found = true
+            }
+        })
 
-            if (found) {
-                l.push(true)
-                r.push(l)
-            }
-            else {
-                l.push(false)
-                u.push(l)
-            }
+        if (found) {
+            l.push(true)
+            r.push(l)
+        }
+        else {
+            l.push(false)
+            u.push(l)
         }
     })
 
@@ -568,6 +596,10 @@ export function findDiffList(list, recieved) {
 
 
     return combinedArray
+}
+
+export async function awardBadge(pubkey, tags) {
+    console.log('awardBadge')
 }
 
 export async function sendNewEvent(kind, content, tags) {
@@ -609,7 +641,8 @@ export async function test_query(kind) {
     let events = await window.pool.list(getReadRelays(), [{
         kinds: [kind],
         // '#p': [pubkey],
-        authors: [await window.nostr.getPublicKey()]
+        '#p': [await window.nostr.getPublicKey()]
+        // authors: [await window.nostr.getPublicKey()]
     }])
 
     console.log(events)
@@ -737,6 +770,6 @@ window.getAllRelays = getAllRelays
 window.getWriteRelays = getWriteRelays
 window.getReadRelays = getReadRelays
 window.test_query = test_query
-window.getCreatedBadges = getCreatedBadges
+window.fetchFollower = fetchFollower
 // window.getAllRecievedBadges = getAllRecievedBadges
 window.test_sendNewEvent = test_sendNewEvent
