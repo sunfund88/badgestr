@@ -93,8 +93,8 @@
 }
 
 /* custom scrollbar */
-/* ::-webkit-scrollbar {
-    width: 20px;
+::-webkit-scrollbar {
+    width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -110,7 +110,7 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: #818181;
-} */
+}
 
 .b-badge-item {
     display: flex;
@@ -266,6 +266,249 @@
 .badge-created-btn {
     display: flex;
     margin-top: 10px;
+}
+
+.award-modal {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+.award-modal-content {
+    background-color: var(--bg-color);
+    /* margin: 100px; */
+    border: 1px solid #888;
+    /* height: 800px; */
+    z-index: 999;
+    width: 95%;
+    max-width: var(--root-width);
+    /* position: fixed; */
+    /* margin-top: 50px; */
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.award-container {
+    display: flex;
+    padding: 10px;
+}
+
+.award-left {
+    width: 40%;
+    /* background-color: cadetblue; */
+}
+
+.award-header-close {
+    position: absolute;
+    width: 95%;
+    align-self: center;
+    height: 20px;
+    max-width: var(--root-width);
+}
+
+.award-header {
+    height: 30px;
+    margin: 10px;
+    border-bottom: var(--main-color) solid;
+}
+
+.award-right {
+    width: 60%;
+}
+
+.award-right span {
+    font-size: 16px;
+}
+
+.award-list {
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: solid 2px var(--darkgrey-color);
+    border-radius: 5px;
+}
+
+.award-list-msg {
+    text-align: center;
+}
+
+.award-awardlist-container {
+    background-color: lavender;
+    border-radius: 5px;
+    height: 570px;
+
+}
+
+.award-awardlist {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 100%;
+}
+
+.award-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--grey-color);
+    margin: 3px;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.award-item-name img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 25px;
+}
+
+.award-item-name {
+    display: flex;
+    align-items: center;
+}
+
+.award-item-name h3 {
+    margin-left: 10px;
+}
+
+.award-item-status {
+    align-items: center;
+    right: 0;
+}
+
+.b-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.b-input input {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    padding: 10px;
+    background-color: #e6f7ff;
+    font-size: 14px;
+}
+
+.award-button {
+    background-color: var(--main-color);
+    color: #fff;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.award-award-button {
+    background-color: var(--darkgreen-color);
+    color: #fff;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.award-reset-button {
+    background-color: var(--darkgrey-color);
+    color: #fff;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.show {
+    display: flex;
+}
+
+.hidden {
+    display: none;
+}
+
+.disable {
+    /* background-color: var(--darkgrey-color); */
+    opacity: 0.4;
+}
+
+.add {
+    background-color: var(--green-color);
+}
+
+/* The Close Button */
+.close {
+    position: relative;
+    color: #000;
+    right: 10px;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: darkred;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-button {
+    background-color: var(--sub-color);
+    /* color: rgb(25, 27, 146); */
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 30px;
+    font-size: 20px;
+    background-color: lavender;
+    width: 90%;
+    border-radius: 5px;
+    list-style: none;
+    text-align: center;
 }
 
 /* .badge-created-btn button {

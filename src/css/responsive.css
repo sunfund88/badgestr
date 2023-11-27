@@ -1,6 +1,10 @@
 @media (max-width: 1200px) {}
 
-@media (max-width: 992px) {}
+@media (max-width: 992px) {
+    .relay {
+        display: none;
+    }
+}
 
 @media (max-width: 768px) {}
 
@@ -87,10 +91,6 @@
         width: 22.5%;
     }
 
-    .relay {
-        display: none;
-    }
-
     .main .home .home-input {
         width: 90%;
     }
@@ -175,9 +175,37 @@
         text-align: center;
     }
 
-
-    /* .main .badges-edit-header {
+    /* .main .award-modal {
+        margin-top: 40px;
     } */
+
+    /* .main .award-screen {
+        margin-top: 100px;
+        width: 95%;
+    } */
+
+    .main .award-model-content {
+        width: 100%;
+        /* height: 140%; */
+        /* margin-top: 250px; */
+    }
+
+    .main .award-container {
+        flex-direction: column;
+    }
+
+    .main .award-list {
+        height: 300px;
+    }
+
+    .main .award-awardlist-container {
+        height: 180px;
+    }
+
+    .main .award-left,
+    .main .award-right {
+        width: 100%;
+    }
 
     /* .newbadge-row h3 {
         width: 100%;
@@ -189,4 +217,13 @@
     } */
 }
 
-@media (max-width: 380px) {}
+@media (max-width: 380px) {
+    nav {
+        z-index: 1;
+    }
+
+    .main .award-header-close,
+    .main .award-header {
+        margin-top: 150px;
+    }
+}

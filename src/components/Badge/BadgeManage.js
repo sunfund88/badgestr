@@ -1,13 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getCreatedBadges, getProfile, getUserName } from '../BadgeStrFunction';
+import { getCreatedBadges, getProfile, getUserName, getUsersRecievedBadge } from '../BadgeStrFunction';
 import BadgeManageCreatedItem from './BadgeManageCreatedItem';
 import { useCookies } from 'react-cookie';
+import BadgeAward from './BadgeAward';
 
 const BadgeManage = () => {
     // const [login, setLogin] = useState(false);
     const [profile, setProfile] = useState(undefined);
     const [createdBadges, setCreatedBadges] = useState(undefined);
+
+    const [showAwardModal, setShowAwardModal] = useState(false);
+    const [awarding, setAwarding] = useState(undefined)
+    const [recieve, setRecieve] = useState(undefined);
+
     const [cookies, setCookie] = useCookies(['user']);
 
     const init_Load = useRef(true)
@@ -60,6 +66,27 @@ const BadgeManage = () => {
         navigate('/new')
     }
 
+    async function handleAward(badge) {
+        console.log('handleAward on manage')
+        console.log(badge.pubkey)
+
+        setShowAwardModal(true)
+        setAwarding(badge)
+
+        const fetchRecieve = async () => {
+            const r = await getUsersRecievedBadge(badge.badge_id)
+
+            // console.log(r)
+            setRecieve(r)
+        }
+        fetchRecieve()
+    }
+
+    function handleCloseParent() {
+        setShowAwardModal(false)
+
+    }
+
     return (
         <div className='main'>
             <div className='badge-manage'>
@@ -84,12 +111,18 @@ const BadgeManage = () => {
                         <h2>Created Badge</h2>
                         <div className='badge-created'>
                             {createdBadges.map((b, i) =>
-                                <BadgeManageCreatedItem key={i} badge={b} />
+                                <BadgeManageCreatedItem key={i} badge={b} handleAward={handleAward} />
                             )}
                         </div>
                     </>
                     : <></>
                 }
+            </div>
+
+            <div className={`award-modal ${showAwardModal ? 'show' : ''}`} >
+                {/* <div className='award-screen'> */}
+                <BadgeAward badge={awarding} recieved={recieve} handleCloseParent={handleCloseParent} />
+                {/* </div> */}
             </div>
         </div>
     );

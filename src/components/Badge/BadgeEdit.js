@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useCookies } from 'react-cookie';
 import { nip19 } from "nostr-tools";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchBadgeInfoById, getWindowPubkey, sendNewEvent } from '../BadgeStrFunction';
@@ -20,6 +21,8 @@ const BadgeEdit = () => {
 
     const init_load = useRef(true)
 
+    const [cookies, setCookie] = useCookies(['user']);
+
     useEffect(() => {
         if (init_load) {
             init_load.current = false
@@ -37,9 +40,9 @@ const BadgeEdit = () => {
 
     async function onSubmit(e) {
         e.preventDefault()
-        const wpubkey = await getWindowPubkey()
-        console.log(badgeData.owner)
-        console.log(wpubkey)
+        const wpubkey = cookies.user.pubkey
+        // console.log(badgeData.owner)
+        // console.log(wpubkey)
 
         if (wpubkey === badgeData.owner) {
 
@@ -51,7 +54,7 @@ const BadgeEdit = () => {
             tags.push(["thumb", badge_thumb.current.value, "256x256"])
 
 
-            await sendNewEvent(30_009, '', tags)
+            await sendNewEvent(wpubkey, 30_009, '', tags)
 
             navigate('/manage')
         }

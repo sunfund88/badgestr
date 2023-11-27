@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { sendNewEvent } from '../BadgeStrFunction';
+import { useCookies } from 'react-cookie';
 
 const BadgeNew = () => {
     const [isDisabled, setIsDisabled] = useState(false);
@@ -11,6 +12,8 @@ const BadgeNew = () => {
     const badge_description = useRef('');
     const badge_image = useRef('');
     const badge_thumb = useRef('');
+
+    const [cookies, setCookie] = useCookies(['user']);
 
     function onSubmit(e) {
         e.preventDefault()
@@ -40,7 +43,7 @@ const BadgeNew = () => {
 
         console.log(tags)
 
-        await sendNewEvent(30_009, '', tags)
+        await sendNewEvent(cookies.user.pubkey, 30_009, '', tags)
 
         navigate('/manage')
     }
