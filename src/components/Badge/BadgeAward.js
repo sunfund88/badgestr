@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { fetchFollowing, findDiffList, fetchFollower } from '../BadgeStrFunction';
+import { fetchFollowing, findDiffList, fetchFollower, getPubKey, getProfile, sendNewEvent } from '../BadgeStrFunction';
 import { useCookies } from 'react-cookie';
 import BadgeAwardItem from './BadgeAwardItem';
 import BadgeAwardUserItem from './BadgeAwardUserItem';
 
 const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     const [selectListTxt, setSelectListTxt] = useState('-- Select List --');
+    // const [inputPub, setInputPub] = useState('');
     const [lists, setLists] = useState(undefined);
     const [awardList, setAwardList] = useState([]);
     const [listLoading, setListLoading] = useState(false);
@@ -14,6 +15,8 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     const options = ['-- Select List --', 'Following', 'Follower'];
 
     const [cookies, setCookie] = useCookies(['user']);
+
+    const inputRef = useRef(null);
 
     useEffect(() => {
         if (selectListTxt === 'Following') {
@@ -90,19 +93,61 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         handleCloseParent()
     }
 
+    async function handleAddByPubKey() {
+        const pubkey = inputRef.current.value;
+        const pk = getPubKey(pubkey)
+        inputRef.current.value = 'Loading ...'
+
+        const pf = await getProfile(pk)
+
+        const obj = [pk, pf, false]
+        console.log(obj)
+        handleAdd(obj)
+        inputRef.current.value = ''
+    }
+
+    async function handleAward() {
+        const wpubkey = cookies.user.pubkey
+        if (badge.owner === wpubkey) {
+            const tags = [['a', badge.badge_id]]
+
+            awardList.forEach(u => {
+                tags.push(['p', u[0]])
+            });
+
+            console.log(tags)
+
+            await sendNewEvent(wpubkey, 8, '', tags)
+            handleClose()
+        }
+
+    }
+
+    function handleReset() {
+        setSelectListTxt('-- Select List --')
+        const e = []
+        setLists(e)
+        setAwardList(e)
+
+    }
+
     return (
         <div className='award-modal-content' onClick={() => { }}>
+            <div className='award-header-close'>
+                <span className="close" onClick={() => handleClose()}>&times;</span>
+            </div>
+            <div className='award-header'>
+                <h2>Award : {badge?.name}</h2>
+            </div>
 
-            <span className="close" onClick={() => handleClose()}>&times;</span>
-            <h1>Award : </h1>
-            <h3>{badge?.name}</h3>
             <div className='award-container gap-2'>
                 <div className='award-left'>
+                    <h3>Add by pubkey</h3>
                     <div className='b-input'>
-                        <h3>Add by pubkey</h3>
-                        <input type='text' id='npub' placeholder='pubkey or npub'></input>
+                        <input type='text' ref={inputRef} id='pubkey ' placeholder='pubkey or npub'></input>
                     </div>
-
+                    <button className='award-button' onClick={() => handleAddByPubKey()}>Add to Award List</button>
+                    {/* <h5>- or -</h5> */}
                     <h3>Add from List</h3>
 
                     <div className='dropdown'>
@@ -146,7 +191,8 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                                 : <>No data.</>}
                         </div>
                     </div>
-                    <h2>Award Btn</h2>
+                    <button className='award-award-button' onClick={() => handleAward()}>Award</button>
+                    <button className='award-reset-button' onClick={() => handleReset()}>Reset</button>
 
                 </div>
             </div>

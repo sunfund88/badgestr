@@ -199,7 +199,7 @@
     }
 
     .main .award-awardlist-container {
-        height: 200px;
+        height: 180px;
     }
 
     .main .award-left,
@@ -217,4 +217,13 @@
     } */
 }
 
-@media (max-width: 380px) {}
+@media (max-width: 380px) {
+    nav {
+        z-index: 1;
+    }
+
+    .main .award-header-close,
+    .main .award-header {
+        margin-top: 150px;
+    }
+}

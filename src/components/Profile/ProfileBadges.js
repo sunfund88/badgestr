@@ -191,11 +191,13 @@ const ProfileBadges = ({ id }) => {
         // console.log(id)
         // console.log(await getWindowPubkey())
 
-        if (id === await getWindowPubkey()) {
+        const pubkey = cookies.user.pubkey
+
+        if (id === pubkey) {
             const tags = getNewAcceptBadgesTags(acceptedBadges)
             console.log(tags)
 
-            await sendNewEvent(30_008, '', tags)
+            await sendNewEvent(pubkey, 30_008, '', tags)
 
             setEditMode(false)
             setContainerClassName("badges-container")

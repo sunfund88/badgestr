@@ -314,6 +314,20 @@
     /* background-color: cadetblue; */
 }
 
+.award-header-close {
+    position: absolute;
+    width: 95%;
+    align-self: center;
+    height: 20px;
+    max-width: var(--root-width);
+}
+
+.award-header {
+    height: 30px;
+    margin: 10px;
+    border-bottom: var(--main-color) solid;
+}
+
 .award-right {
     width: 60%;
 }
@@ -335,9 +349,9 @@
 }
 
 .award-awardlist-container {
-    background-color: var(--sub-color);
+    background-color: lavender;
     border-radius: 5px;
-    height: 500px;
+    height: 570px;
 
 }
 
@@ -396,6 +410,42 @@
     font-size: 14px;
 }
 
+.award-button {
+    background-color: var(--main-color);
+    color: #fff;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.award-award-button {
+    background-color: var(--darkgreen-color);
+    color: #fff;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.award-reset-button {
+    background-color: var(--darkgrey-color);
+    color: #fff;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
 .show {
     display: flex;
 }
@@ -415,16 +465,17 @@
 
 /* The Close Button */
 .close {
-    color: darkred;
+    position: relative;
+    color: #000;
+    right: 10px;
     float: right;
     font-size: 35px;
     font-weight: bold;
-    padding-right: 10px;
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: darkred;
     text-decoration: none;
     cursor: pointer;
 }
@@ -439,21 +490,21 @@
 }
 
 .dropdown-button {
-    background-color: cornflowerblue;
+    background-color: var(--sub-color);
     /* color: rgb(25, 27, 146); */
     padding: 5px;
     border: none;
     cursor: pointer;
     width: 100%;
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .dropdown-menu {
     position: absolute;
     top: 30px;
     font-size: 20px;
-    background-color: var(--edit-color);
+    background-color: lavender;
     width: 90%;
     border-radius: 5px;
     list-style: none;

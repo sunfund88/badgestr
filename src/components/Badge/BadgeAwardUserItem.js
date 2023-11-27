@@ -15,7 +15,8 @@ const BadgeAwardUserItem = ({ user, handleRemove }) => {
     }
 
     return (
-        <div className='b-badge-item' onClick={() => handleClick()}>
+        // <div className='b-badge-item' onClick={() => handleClick()}>
+        <div className='b-badge-item' >
             <img
                 src={img}
                 alt={user[1]?.name}

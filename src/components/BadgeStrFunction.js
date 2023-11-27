@@ -602,13 +602,13 @@ export async function awardBadge(pubkey, tags) {
     console.log('awardBadge')
 }
 
-export async function sendNewEvent(kind, content, tags) {
+export async function sendNewEvent(pubkey, kind, content, tags) {
     let new_event = {
         kind: kind,
         created_at: Math.floor(Date.now() / 1000),
         tags: tags,
         content: content,
-        pubkey: await window.nostr.getPublicKey(),
+        pubkey: pubkey,
     }
 
     new_event.id = getEventHash(new_event)
