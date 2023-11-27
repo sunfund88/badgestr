@@ -95,15 +95,17 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
 
     async function handleAddByPubKey() {
         const pubkey = inputRef.current.value;
-        const pk = getPubKey(pubkey)
-        inputRef.current.value = 'Loading ...'
+        if (pubkey !== '') {
+            const pk = getPubKey(pubkey)
+            inputRef.current.value = 'Loading ...'
 
-        const pf = await getProfile(pk)
+            const pf = await getProfile(pk)
 
-        const obj = [pk, pf, false]
-        console.log(obj)
-        handleAdd(obj)
-        inputRef.current.value = ''
+            const obj = [pk, pf, false]
+            console.log(obj)
+            handleAdd(obj)
+            inputRef.current.value = ''
+        }
     }
 
     async function handleAward() {
