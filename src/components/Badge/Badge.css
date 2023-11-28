@@ -500,6 +500,11 @@
     font-size: 18px;
 }
 
+.dropdown-button:disabled {
+    cursor: not-allowed;
+}
+
+
 .dropdown-menu {
     position: absolute;
     top: 30px;

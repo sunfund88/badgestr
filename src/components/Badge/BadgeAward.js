@@ -10,6 +10,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     const [lists, setLists] = useState(undefined);
     const [awardList, setAwardList] = useState([]);
     const [listLoading, setListLoading] = useState(false);
+    const [recievedLoadFinish, setRecievedLoadFinish] = useState(false);
 
     const [open, setOpen] = useState(false);
     const options = ['-- Select List --', 'Following', 'Follower'];
@@ -19,6 +20,14 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     const inputRef = useRef(null);
 
     useEffect(() => {
+        if (recieved !== undefined) {
+            setRecievedLoadFinish(true)
+        } else {
+            setRecievedLoadFinish(false)
+        }
+    }, [recieved])
+
+    useEffect(() => {
         if (selectListTxt === 'Following') {
             console.log('selectFollowing')
             setLists([])
@@ -26,6 +35,8 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
 
             const fetchList = async () => {
                 const fl = await fetchFollowing(cookies.user.pubkey)
+                console.log('fl', fl)
+
                 const list = findDiffList(fl, recieved)
                 setLists(list)
                 setListLoading(false)
@@ -39,6 +50,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
 
             const fetchList = async () => {
                 const fl = await fetchFollower(cookies.user.pubkey)
+                console.log('follower', fl)
                 const list = findDiffList(fl, recieved)
                 setLists(list)
                 setListLoading(false)
@@ -90,6 +102,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         const e = []
         setLists(e)
         setAwardList(e)
+        setRecievedLoadFinish(false)
         handleCloseParent()
     }
 
@@ -102,7 +115,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
             const pf = await getProfile(pk)
 
             const obj = [pk, pf, false]
-            console.log(obj)
+            // console.log(obj)
             handleAdd(obj)
             inputRef.current.value = ''
         }
@@ -130,7 +143,6 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         const e = []
         setLists(e)
         setAwardList(e)
-
     }
 
     return (
@@ -153,7 +165,8 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                     <h3>Add from List</h3>
 
                     <div className='dropdown'>
-                        <button className='dropdown-button' onClick={handleToggle}>{selectListTxt} </button>
+                        {/* <div className={`award-item ${user[2] ? 'disable' : add ? 'add' : ''}`} */}
+                        <button disabled={!recievedLoadFinish} className='dropdown-button' onClick={handleToggle}>{selectListTxt} </button>
                         {open && (
                             <ul className="dropdown-menu">
                                 {options.map((option) => (
