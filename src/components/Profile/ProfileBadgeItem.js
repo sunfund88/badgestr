@@ -74,7 +74,7 @@ const ProfileBadgeItem = ({ id, index, badgeItem, type, editMode, handleEdit }) 
     return (
         (badgeItem !== undefined)
             ? <div className={cssItem} key={id} onClick={handleClick} >
-                <img class="image" src={badgeItem?.thumb} title={badgeItem?.name} alt={badgeItem?.name}
+                <img className="image" src={badgeItem?.thumb} title={badgeItem?.name} alt={badgeItem?.name}
                     onError={event => {
                         event.target.src = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
                         event.onerror = null

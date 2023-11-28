@@ -506,16 +506,18 @@ export async function fetchFollowing(pubkey) {
     events.sort((a, b) => b.created_at - a.created_at)
 
     const pubs = events[0].tags.map(m => m[1])
-    // console.log(pubs)
+    // console.log('pubs', pubs)
 
 
     const pf = await getProfileArray(pubs)
-    // console.log(pf)
+    // console.log('profile...', pf)
 
     let pfarray = []
     pf.forEach(p => {
-        let obj = [p.pubkey, JSON.parse(p.content)]
-        pfarray.push(obj)
+        if (p.content !== undefined) {
+            let obj = [p.pubkey, JSON.parse(p.content)]
+            pfarray.push(obj)
+        }
     })
     // console.log(pfarray)
 
@@ -525,10 +527,12 @@ export async function fetchFollowing(pubkey) {
 
     const unique_pf = pubs.map(pk => findProfile(pk))
 
-    unique_pf.filter(f => f !== undefined)
-    // console.log(unique_pf)
+    const filteredArray = unique_pf.filter((element) => {
+        return element !== undefined;
+    });
+    // console.log('filteredArray', filteredArray)
 
-    return unique_pf
+    return filteredArray
 
 
 
@@ -562,8 +566,13 @@ export async function fetchFollower(mypubkey) {
             pfarray.push(obj)
         }
     })
+
+    const filteredArray = pfarray.filter((element) => {
+        return element !== undefined;
+    });
+    // console.log('filteredArray', filteredArray)
     // console.log(pfarray)
-    return pfarray
+    return filteredArray
 }
 
 export function findDiffList(list, recieved) {
@@ -572,7 +581,7 @@ export function findDiffList(list, recieved) {
 
     list.filter(f => f !== undefined).forEach(l => {
         let found = false
-        recieved.filter(t => t !== undefined).forEach(r => {
+        recieved.forEach(r => {
             if (l[0] === r[0]) {
                 found = true
             }
