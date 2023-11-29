@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { getUserName } from '../BadgeStrFunction';
 
 const BadgeAwardItem = ({ index, user, handleAdd, handleRemove, listadd }) => {
-    const [add, setAdd] = useState(false)
 
     const default_img = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
     let img
@@ -16,24 +15,10 @@ const BadgeAwardItem = ({ index, user, handleAdd, handleRemove, listadd }) => {
     function handleClick() {
         if (listadd) {
             handleRemove(user, index)
-            // setAdd(!add)
         }
         else {
             handleAdd(user, index)
-            // setAdd(!add)
         }
-    }
-
-    // React.useImperativeHandle(ref, () => ({
-    //     handleChildAdd,
-    //     handleChildRemove
-    // }));
-
-    const handleChildAdd = () => {
-        setAdd(true)
-    }
-    const handleChildRemove = () => {
-        setAdd(false)
     }
 
     return (

@@ -29,6 +29,24 @@ const BadgeManageCreatedItem = ({ badge, handleAward }) => {
 
     }
 
+    function handleClick() {
+        const relays = getAllRelays()
+
+        const event = {
+            pubkey: badge.pubkey,
+            relays,
+            identifier: badgeItem.d,
+            kind: badge.kind,
+        }
+        const naddr = nip19.naddrEncode(event)
+        // console.log(naddr);
+
+        const url = '/b/' + naddr
+
+        navigate(url)
+
+    }
+
     // function handleAward() {
     //     console.log('handleAward')
 
@@ -53,10 +71,10 @@ const BadgeManageCreatedItem = ({ badge, handleAward }) => {
     return (
         <div className='badge-created-item'>
             <div>
-                <img src={badgeItem.thumb} alt={badgeItem.name} />
+                <img src={badgeItem.thumb} alt={badgeItem.name} onClick={handleClick} />
             </div>
             <div className='badge-created-text'>
-                <h4>{badgeItem.name}</h4>
+                <h4 onClick={handleClick} >{badgeItem.name}</h4>
                 <div className='badge-created-description'>
                     {badgeItem.description}
                 </div>
