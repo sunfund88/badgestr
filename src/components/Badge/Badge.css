@@ -336,6 +336,11 @@
     font-size: 16px;
 }
 
+.award-select {
+    display: flex;
+    justify-content: space-between;
+}
+
 .award-list {
     height: 500px;
     overflow-y: scroll;
@@ -504,7 +509,6 @@
     cursor: not-allowed;
 }
 
-
 .dropdown-menu {
     position: absolute;
     top: 30px;
@@ -514,6 +518,7 @@
     border-radius: 5px;
     list-style: none;
     text-align: center;
+    cursor: pointer;
 }
 
 /* .badge-created-btn button {

@@ -9,8 +9,12 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     // const [inputPub, setInputPub] = useState('');
     const [lists, setLists] = useState(undefined);
     const [awardList, setAwardList] = useState([]);
+    const [listsAdd, setListsAdd] = useState([])
     const [listLoading, setListLoading] = useState(false);
+    const [isSelectAll, setIsSelectAll] = useState(false);
     const [recievedLoadFinish, setRecievedLoadFinish] = useState(false);
+
+    // const childRefs = useRef([]);
 
     const [open, setOpen] = useState(false);
     const options = ['-- Select List --', 'Following', 'Follower'];
@@ -18,6 +22,16 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     const [cookies, setCookie] = useCookies(['user']);
 
     const inputRef = useRef(null);
+
+    // const addToListAdd = () => {
+    //     setListsAdd([...listsAdd, false])
+    // }
+    // const revealRef = useRef([])
+    // revealRef.current = []
+
+    // const addToRef = (el) => {
+    //     console.log('el', el)
+    // }
 
     useEffect(() => {
         if (recieved !== undefined) {
@@ -31,6 +45,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         if (selectListTxt === 'Following') {
             console.log('selectFollowing')
             setLists([])
+            setListsAdd([])
             setListLoading(true)
 
             const fetchList = async () => {
@@ -39,6 +54,10 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
 
                 const list = findDiffList(fl, recieved)
                 setLists(list)
+
+                const la = list.map(item => false)
+
+                setListsAdd(la)
                 setListLoading(false)
             }
             fetchList()
@@ -53,6 +72,10 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                 console.log('follower', fl)
                 const list = findDiffList(fl, recieved)
                 setLists(list)
+
+                const la = list.map(item => false)
+
+                setListsAdd(la)
                 setListLoading(false)
             }
             fetchList()
@@ -62,6 +85,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
             setLists([])
         }
         setAwardList([])
+        setIsSelectAll(false)
     }, [selectListTxt])
 
     const handleToggle = () => {
@@ -74,15 +98,20 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         setOpen(false);
     };
 
-    const handleAdd = (user) => {
+    const handleAdd = (user, index) => {
         if (!user[2]) {
             console.log('add')
-            console.log(user)
+            console.log(index)
             setAwardList([...awardList, user])
+
+            let a = listsAdd
+            a[index] = true
+            setListsAdd(a)
+
         }
     }
 
-    const handleRemove = (user) => {
+    const handleRemove = (user, i) => {
         if (!user[2]) {
             console.log('remove')
 
@@ -93,6 +122,10 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                 a.splice(index, 1)
                 console.log(a)
                 setAwardList(a)
+
+                const la = listsAdd
+                la[i] = false
+                setListsAdd(la)
             }
         }
     }
@@ -103,6 +136,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         setLists(e)
         setAwardList(e)
         setRecievedLoadFinish(false)
+        setIsSelectAll(false)
         handleCloseParent()
     }
 
@@ -145,6 +179,29 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         setAwardList(e)
     }
 
+    function handleSelectAll() {
+        if (!isSelectAll) {
+            const u = lists.filter(l => l[2] === false)
+            setAwardList(u)
+            const l = listsAdd.map(item => true)
+            setListsAdd(l)
+            // childRefs[0].current.handleChildAdd()
+            // childRefs.current.forEach((ref) => {
+            //     ref.handleChildAdd();
+            // });
+        }
+        else {
+            setAwardList([])
+            const l = listsAdd.map(item => false)
+            setListsAdd(l)
+            // childRefs.current.forEach((ref) => {
+            //     ref.handleChildRemove();
+            // });
+
+        }
+        setIsSelectAll(!isSelectAll)
+    }
+
     return (
         <div className='award-modal-content' onClick={() => { }}>
             <div className='award-header-close'>
@@ -165,8 +222,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                     <h3>Add from List</h3>
 
                     <div className='dropdown'>
-                        {/* <div className={`award-item ${user[2] ? 'disable' : add ? 'add' : ''}`} */}
-                        <button disabled={!recievedLoadFinish} className='dropdown-button' onClick={handleToggle}>{selectListTxt} </button>
+                        <button disabled={!recievedLoadFinish} className='dropdown-button' onClick={handleToggle}>{(recievedLoadFinish) ? selectListTxt : 'Loading...'} </button>
                         {open && (
                             <ul className="dropdown-menu">
                                 {options.map((option) => (
@@ -177,12 +233,18 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                             </ul>
                         )}
                     </div>
-                    <span>{lists?.length} User(s)</span>
+                    <div className='award-select'>
+                        <span>{lists?.length} User(s)</span>
+                        <div>
+                            <input type="checkbox" checked={isSelectAll} onChange={handleSelectAll} />
+                            <label> Select All</label>
+                        </div>
+                    </div>
                     <div className='award-list'>
                         {(lists !== undefined && lists.length !== 0)
                             ? <>
                                 {lists.map((u, i) => (
-                                    <BadgeAwardItem key={i} user={u} handleAdd={handleAdd} handleRemove={handleRemove} />
+                                    <BadgeAwardItem key={i} index={i} user={u} handleAdd={handleAdd} handleRemove={handleRemove} listadd={listsAdd[i]} />
                                 ))}
                             </>
                             : <div className='award-list-msg'>{(listLoading)
