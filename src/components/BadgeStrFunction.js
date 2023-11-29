@@ -601,7 +601,7 @@ export function findDiffList(list, recieved) {
     // console.log(r)
 
     const combinedArray = u.concat(r);
-    console.log(combinedArray)
+    // console.log(combinedArray)
 
 
     return combinedArray
