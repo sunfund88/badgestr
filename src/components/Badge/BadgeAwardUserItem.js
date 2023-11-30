@@ -1,6 +1,6 @@
 import { getUserName } from '../BadgeStrFunction';
 
-const BadgeAwardUserItem = ({ user, handleRemove }) => {
+const BadgeAwardUserItem = ({ user, index, handleRemove }) => {
     const default_img = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
     let img
 
@@ -11,12 +11,11 @@ const BadgeAwardUserItem = ({ user, handleRemove }) => {
     }
 
     function handleClick() {
-        handleRemove(user)
+        handleRemove(user, index)
     }
 
     return (
-        // <div className='b-badge-item' onClick={() => handleClick()}>
-        <div className='b-badge-item' >
+        <div className='b-badge-item' onClick={() => handleClick()}>
             <img
                 src={img}
                 alt={user[1]?.name}
