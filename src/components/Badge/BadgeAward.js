@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { fetchFollowing, findDiffList, fetchFollower, getPubKey, getProfile, sendNewEvent } from '../BadgeStrFunction';
+import { fetchFollowing, findDiffList, fetchFollower, getPubKey, getProfile, sendNewEvent, getUserName } from '../BadgeStrFunction';
 import { useCookies } from 'react-cookie';
 import BadgeAwardItem from './BadgeAwardItem';
 import BadgeAwardUserItem from './BadgeAwardUserItem';
@@ -9,9 +9,14 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     // const [inputPub, setInputPub] = useState('');
     const [lists, setLists] = useState(undefined);
     const [awardList, setAwardList] = useState([]);
-    const [listsAdd, setListsAdd] = useState([])
+    const [searchTxt, setSearchTxt] = useState('');
+    const [searchLists, setSearchLists] = useState([]);
+    // const [listsAdd, setListsAdd] = useState([]);
+    const [indexAdded, setIndexAdded] = useState([]);
     const [listLoading, setListLoading] = useState(false);
     const [isSelectAll, setIsSelectAll] = useState(false);
+    const [selectAllEnable, setSelectAllEnable] = useState(true);
+    const [inputEnable, setInputEnable] = useState(true);
     const [recievedLoadFinish, setRecievedLoadFinish] = useState(false);
 
     // const childRefs = useRef([]);
@@ -39,14 +44,15 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         } else {
             setRecievedLoadFinish(false)
         }
-    }, [recieved])
+    }, [recieved]);
 
     useEffect(() => {
         if (selectListTxt === 'Following') {
             console.log('selectFollowing')
             setLists([])
-            setListsAdd([])
+            setIndexAdded([])
             setListLoading(true)
+            setInputEnable(false)
 
             const fetchList = async () => {
                 const fl = await fetchFollowing(cookies.user.pubkey)
@@ -55,10 +61,11 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                 const list = findDiffList(fl, recieved)
                 setLists(list)
 
-                const la = list.map(item => false)
+                // const la = list.map(item => false)
 
-                setListsAdd(la)
+                // setListsAdd(la)
                 setListLoading(false)
+                setInputEnable(true)
             }
             fetchList()
         }
@@ -66,6 +73,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
             console.log('selectFollower')
             setLists([])
             setListLoading(true)
+            setInputEnable(false)
 
             const fetchList = async () => {
                 const fl = await fetchFollower(cookies.user.pubkey)
@@ -73,20 +81,43 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                 const list = findDiffList(fl, recieved)
                 setLists(list)
 
-                const la = list.map(item => false)
+                // const la = list.map(item => false)
 
-                setListsAdd(la)
+                // setListsAdd(la)
                 setListLoading(false)
+                setInputEnable(true)
             }
             fetchList()
 
         }
         else {
             setLists([])
+            setInputEnable(false)
         }
         setAwardList([])
         setIsSelectAll(false)
-    }, [selectListTxt])
+        setSelectAllEnable(true)
+    }, [selectListTxt]);
+
+    useEffect(() => {
+        console.log(searchTxt)
+
+        if (searchTxt !== '') {
+            setSelectAllEnable(false)
+
+            const sl = lists.filter((user) => {
+                return getUserName(user[1]).trim().toLowerCase().includes(searchTxt.trim().toLowerCase())
+            })
+
+            // const sl = lists.filter((user)=>
+            // getUserName(user[1]).trim().toLowerCase().includes(searchTxt.trim().toLowerCase()))
+
+            setSearchLists(sl)
+        } else {
+
+            setSelectAllEnable(true)
+        }
+    }, [searchTxt]);
 
     const handleToggle = () => {
         setOpen(!open);
@@ -104,9 +135,11 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
             console.log(index)
             setAwardList([...awardList, user])
 
-            let a = listsAdd
-            a[index] = true
-            setListsAdd(a)
+            // let a = listsAdd
+            // a[index] = true
+            // setListsAdd(a)
+
+            setIndexAdded([...indexAdded, index])
 
         }
     }
@@ -123,9 +156,16 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                 console.log(a)
                 setAwardList(a)
 
-                const la = listsAdd
-                la[i] = false
-                setListsAdd(la)
+                const sindex = indexAdded.indexOf(i)
+                if (sindex !== -1) {
+                    const aa = [...indexAdded]
+                    aa.splice(sindex, 1)
+                    setIndexAdded(aa)
+                }
+
+                // const la = listsAdd
+                // la[i] = false
+                // setListsAdd(la)
             }
         }
     }
@@ -135,8 +175,10 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         const e = []
         setLists(e)
         setAwardList(e)
+        setIndexAdded(e)
         setRecievedLoadFinish(false)
         setIsSelectAll(false)
+        setSearchTxt('')
         handleCloseParent()
     }
 
@@ -177,29 +219,50 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         const e = []
         setLists(e)
         setAwardList(e)
+        setIndexAdded(e)
+        setSearchTxt('')
     }
 
     function handleSelectAll() {
         if (!isSelectAll) {
-            const u = lists.filter(l => l[2] === false)
-            setAwardList(u)
-            const l = listsAdd.map(item => true)
-            setListsAdd(l)
-            // childRefs[0].current.handleChildAdd()
-            // childRefs.current.forEach((ref) => {
-            //     ref.handleChildAdd();
-            // });
+            if (searchTxt === '') {
+                const u = lists.filter(l => l[2] === false)
+                setAwardList(u)
+
+                const sa = u.map((user, i) => i)
+                setIndexAdded(sa)
+            }
+            else {
+                const u = searchLists.filter(l => l[2] === false)
+                setAwardList(u)
+
+                const sa = u.map((user, i) => user[3])
+                setIndexAdded(sa)
+            }
         }
         else {
-            setAwardList([])
-            const l = listsAdd.map(item => false)
-            setListsAdd(l)
-            // childRefs.current.forEach((ref) => {
-            //     ref.handleChildRemove();
-            // });
+            if (searchTxt === '') {
+                setAwardList([])
+                setIndexAdded([])
+            }
+            else {
+
+            }
+            // const l = listsAdd.map(item => false)
+            // setListsAdd(l)
 
         }
         setIsSelectAll(!isSelectAll)
+    }
+
+
+    function findSelectedElement(index) {
+        let seclected = false
+
+        if (indexAdded.indexOf(index) !== -1) {
+            seclected = true
+        }
+        return seclected
     }
 
     return (
@@ -234,19 +297,28 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                         )}
                     </div>
                     <div className='award-select'>
-                        <span>{lists?.length} User(s)</span>
+                        <span>{(searchTxt === '') ? lists?.length : searchLists?.length} User(s)</span>
                         <div>
-                            <input type="checkbox" checked={isSelectAll} onChange={handleSelectAll} />
+                            <input type="checkbox" checked={isSelectAll} disabled={!selectAllEnable} onChange={handleSelectAll} />
                             <label> Select All</label>
                         </div>
                     </div>
+                    <div className='b-input'>
+                        <input type='text' disabled={!inputEnable} onChange={(e) => setSearchTxt(e.target.value)} placeholder='Search ...'></input>
+                    </div>
                     <div className='award-list'>
                         {(lists !== undefined && lists.length !== 0)
-                            ? <>
-                                {lists.map((u, i) => (
-                                    <BadgeAwardItem key={i} index={i} user={u} handleAdd={handleAdd} handleRemove={handleRemove} listadd={listsAdd[i]} />
-                                ))}
-                            </>
+                            ? (searchTxt === '')
+                                ? <>
+                                    {lists.map((u, i) => (
+                                        <BadgeAwardItem key={i} index={u[3]} user={u} handleAdd={handleAdd} handleRemove={handleRemove} listadd={findSelectedElement(u[3])} />
+                                    ))}
+                                </>
+                                : <>
+                                    {searchLists.map((u, i) => (
+                                        <BadgeAwardItem key={i} index={u[3]} user={u} handleAdd={handleAdd} handleRemove={handleRemove} listadd={findSelectedElement(u[3])} />
+                                    ))}
+                                </>
                             : <div className='award-list-msg'>{(listLoading)
                                 ? <label>Loading List ...</label>
                                 : <label>No data.</label>}
@@ -262,7 +334,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                             {(awardList !== undefined && awardList.length !== 0)
                                 ? <>
                                     {awardList.map((u, i) => (
-                                        <BadgeAwardUserItem key={i} user={u} handleRemove={handleRemove} />
+                                        <BadgeAwardUserItem key={i} index={u[3]} user={u} handleRemove={handleRemove} />
                                     ))}
                                 </>
                                 : <>No data.</>}

@@ -347,7 +347,7 @@
 }
 
 .award-list {
-    height: 500px;
+    height: 460px;
     overflow-y: scroll;
     overflow-x: hidden;
     border: solid 2px var(--darkgrey-color);
@@ -418,6 +418,11 @@
     padding: 10px;
     background-color: #e6f7ff;
     font-size: 14px;
+}
+
+.b-input input:disabled {
+    background-color: var(--grey-color);
+    border: 2px solid var(--darkgrey-color);
 }
 
 .award-button {
