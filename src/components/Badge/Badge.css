@@ -529,6 +529,18 @@
     list-style: none;
     text-align: center;
     cursor: pointer;
+    z-index: 999;
+}
+
+.dropdown-menu li:hover {
+    background-color: thistle;
+}
+
+.divider {
+    height: 1px;
+    margin: 3px 0;
+    overflow: hidden;
+    background-color: #616161;
 }
 
 /* .badge-created-btn button {

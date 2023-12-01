@@ -34,7 +34,7 @@ function App() {
       </Router>
 
       <footer>
-        Made with 💜 by ... <a href="https://next.nostrudel.ninja/#/u/npub12r5wuvggeh77ft00aycf8nfchkrf9avly5xnaepffm6xmsgz7dcqrvm6se" target="_blank">Suntoshi⚡️</a>
+        Made with 💜 by ... <a href="https://njump.me/npub12r5wuvggeh77ft00aycf8nfchkrf9avly5xnaepffm6xmsgz7dcqrvm6se" target="_blank">Suntoshi⚡️</a>
       </footer>
     </div>
   );

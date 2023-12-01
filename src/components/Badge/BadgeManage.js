@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getCreatedBadges, getProfile, getUserName, getUsersRecievedBadge } from '../BadgeStrFunction';
+import { getCreatedBadges, getProfile, getUserName, getUsersRecievedBadge, fetchPeopleList, getTitlePeopleList, getPeopleListFormat, } from '../BadgeStrFunction';
 import BadgeManageCreatedItem from './BadgeManageCreatedItem';
 import { useCookies } from 'react-cookie';
 import BadgeAward from './BadgeAward';
@@ -13,6 +13,9 @@ const BadgeManage = () => {
     const [showAwardModal, setShowAwardModal] = useState(false);
     const [awarding, setAwarding] = useState(undefined)
     const [recieve, setRecieve] = useState(undefined);
+
+    const [peopleList, setPeopleList] = useState(undefined);
+    const [titlePeopleList, setTitlePeopleList] = useState(undefined);
 
     const [cookies, setCookie] = useCookies(['user']);
 
@@ -40,8 +43,14 @@ const BadgeManage = () => {
                     const created = await getCreatedBadges(cookies.user.pubkey);
                     setCreatedBadges(created)
                 }
-
                 fetchCreatedBadges()
+
+                const fetchPList = async () => {
+                    const people_list = await fetchPeopleList(cookies.user.pubkey);
+                    setTitlePeopleList(getTitlePeopleList(people_list))
+                    setPeopleList(await getPeopleListFormat(people_list))
+                }
+                fetchPList()
             }
         }
     }, []);
@@ -76,7 +85,6 @@ const BadgeManage = () => {
         const fetchRecieve = async () => {
             const r = await getUsersRecievedBadge(badge.badge_id)
 
-            // console.log(r)
             setRecieve(r)
         }
         fetchRecieve()
@@ -84,7 +92,6 @@ const BadgeManage = () => {
 
     function handleCloseParent() {
         setShowAwardModal(false)
-
     }
 
     return (
@@ -121,7 +128,7 @@ const BadgeManage = () => {
 
             <div className={`award-modal ${showAwardModal ? 'show' : ''}`} >
                 {/* <div className='award-screen'> */}
-                <BadgeAward badge={awarding} recieved={recieve} handleCloseParent={handleCloseParent} />
+                <BadgeAward badge={awarding} recieved={recieve} handleCloseParent={handleCloseParent} titlePeopleList={titlePeopleList} peopleList={peopleList} />
                 {/* </div> */}
             </div>
         </div>
