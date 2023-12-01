@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import BadgeAwardItem from './BadgeAwardItem';
 import BadgeAwardUserItem from './BadgeAwardUserItem';
 
-const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
+const BadgeAward = ({ badge, recieved, handleCloseParent, titlePeopleList, peopleList }) => {
     const [selectListTxt, setSelectListTxt] = useState('-- Select List --');
     // const [inputPub, setInputPub] = useState('');
     const [lists, setLists] = useState(undefined);
@@ -15,9 +15,13 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     const [indexAdded, setIndexAdded] = useState([]);
     const [listLoading, setListLoading] = useState(false);
     const [isSelectAll, setIsSelectAll] = useState(false);
+
     const [selectAllEnable, setSelectAllEnable] = useState(true);
     const [inputEnable, setInputEnable] = useState(true);
     const [recievedLoadFinish, setRecievedLoadFinish] = useState(false);
+
+    const [usePeopleList, setUsePeopleList] = useState(false);
+
 
     // const childRefs = useRef([]);
 
@@ -27,16 +31,6 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     const [cookies, setCookie] = useCookies(['user']);
 
     const inputRef = useRef(null);
-
-    // const addToListAdd = () => {
-    //     setListsAdd([...listsAdd, false])
-    // }
-    // const revealRef = useRef([])
-    // revealRef.current = []
-
-    // const addToRef = (el) => {
-    //     console.log('el', el)
-    // }
 
     useEffect(() => {
         if (recieved !== undefined) {
@@ -79,11 +73,8 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                 const fl = await fetchFollower(cookies.user.pubkey)
                 console.log('follower', fl)
                 const list = findDiffList(fl, recieved)
+
                 setLists(list)
-
-                // const la = list.map(item => false)
-
-                // setListsAdd(la)
                 setListLoading(false)
                 setInputEnable(true)
             }
@@ -91,8 +82,22 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
 
         }
         else {
-            setLists([])
-            setInputEnable(false)
+            if (usePeopleList) {
+                const index = titlePeopleList.indexOf(selectListTxt)
+                console.log('peopleListIndex...', index)
+                setLists([])
+                setListLoading(true)
+                setInputEnable(false)
+
+                const list = findDiffList(peopleList[index], recieved)
+
+                setLists(list)
+                setListLoading(false)
+                setInputEnable(true)
+            } else {
+                setLists([])
+                setInputEnable(false)
+            }
         }
         setAwardList([])
         setIsSelectAll(false)
@@ -123,9 +128,10 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
         setOpen(!open);
     };
 
-    const handleSelect = (option) => {
+    const handleSelect = (option, isPeopleList) => {
         console.log('Selected option:', option);
         setSelectListTxt(option)
+        setUsePeopleList(isPeopleList)
         setOpen(false);
     };
 
@@ -171,6 +177,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
     }
 
     function handleClose() {
+        setUsePeopleList(false)
         setSelectListTxt('-- Select List --')
         const e = []
         setLists(e)
@@ -289,8 +296,15 @@ const BadgeAward = ({ badge, recieved, handleCloseParent }) => {
                         {open && (
                             <ul className="dropdown-menu">
                                 {options.map((option) => (
-                                    <li key={option} onClick={() => handleSelect(option)}>
+                                    <li key={option} onClick={() => handleSelect(option, false)}>
                                         {option}
+                                    </li>
+
+                                ))}
+                                <li className="divider"></li>
+                                {titlePeopleList.map((title, i) => (
+                                    <li key={i} onClick={() => handleSelect(title, true)}>
+                                        {title}
                                     </li>
                                 ))}
                             </ul>

@@ -129,20 +129,16 @@ export async function getProfileArray(pubkey_arr) {
             authors: pubkey_arr
         }])
 
-        return events
+        events.sort((a, b) => b.created_at - a.created_at)
+
+
+
+        // const findProfile = (pk) => events.filter(e => e.pubkey === pk)[0]
+        // const unique_pf = pubkey_arr.map(pk => findProfile(pk))
+
         // console.log(events)
+        return events
 
-
-        // if (events.length > 0) {
-        //     let p = {}
-        //     events.sort((a, b) => b.created_at - a.created_at)
-
-        //     p = JSON.parse(events[0].content)
-        //     // console.log(p)
-        //     return p
-        // }
-
-        // console.log(events.length)
     }
     catch (error) {
         // check what is logging here
@@ -514,7 +510,7 @@ export async function fetchFollowing(pubkey) {
 
     let pfarray = []
     pf.forEach(p => {
-        if (p.content !== undefined) {
+        if (p?.content !== undefined) {
             let obj = [p.pubkey, JSON.parse(p.content)]
             pfarray.push(obj)
         }
@@ -608,6 +604,71 @@ export function findDiffList(list, recieved) {
     return combinedArray
 }
 
+export async function fetchPeopleList(pubkey) {
+    let events = await window.pool.list(getReadRelays(), [{
+        kinds: [30_000],
+        authors: [pubkey]
+    }])
+
+    events.sort((a, b) => b.created_at - a.created_at)
+
+    const pp_events = events.filter(e => {
+        const index = e.tags.map(t => t[0]).indexOf('p')
+        if (index !== -1) {
+            return true
+        }
+        else return false
+    })
+    const pp_list = pp_events.map(p => p.tags)
+
+    return pp_list
+}
+
+export function getTitlePeopleList(pp_list) {
+    const title = (list) => list.filter(t => t[0] === 'title')[0][1]
+    const title_list = pp_list.map(l => title(l))
+
+    // console.log(title_list)
+    return title_list
+}
+
+export async function getPeopleListFormat(pp_list) {
+
+    const people = (list) => list.filter(t => t[0] === 'p').map(p => p[1])
+    const people_list = pp_list.map(l => people(l))
+
+    // console.log(people_list)
+    // 
+
+    const getFormat = async (pubkeys) => {
+        const pf = await getProfileArray(pubkeys)
+
+        let pfarray = []
+        pf.forEach(p => {
+            if (p?.content !== undefined) {
+                let obj = [p.pubkey, JSON.parse(p.content)]
+                pfarray.push(obj)
+            }
+        })
+
+        const findProfile = (pk) => pfarray.filter(pfa => pk === pfa[0])[0]
+        const unique_pf = pubkeys.map(pk => findProfile(pk))
+
+        return unique_pf
+        // console.log(unique_pf)
+
+    };
+
+    const format = []
+
+    for (const pubkeys of people_list) {
+        const data = await getFormat(pubkeys);
+        format.push(data)
+    }
+
+    return format
+}
+
 export async function awardBadge(pubkey, tags) {
     console.log('awardBadge')
 }
@@ -645,17 +706,29 @@ export async function sendNewEvent(pubkey, kind, content, tags) {
     }
 }
 
-
 // test
 export async function test_query(kind) {
     let events = await window.pool.list(getReadRelays(), [{
         kinds: [kind],
         // '#p': [pubkey],
-        '#p': [await window.nostr.getPublicKey()]
-        // authors: [await window.nostr.getPublicKey()]
+        // '#a': ["30009:50e8ee3108cdfde4adefe93093cd38bd8692f59f250d3ee4294ef46dc102f370:purple-planet"]
+        authors: [await window.nostr.getPublicKey()]
     }])
 
-    console.log(events)
+    events.sort((a, b) => b.created_at - a.created_at)
+
+    const pp_list = events.filter(e => {
+        const index = e.tags.map(t => t[0]).indexOf('p')
+        if (index !== -1) {
+            return true
+        }
+        else return false
+    })
+
+    const tags = pp_list.map(p => p.tags)
+    console.log(tags)
+
+    getPeopleListFormat(tags)
 }
 
 export async function test_sendNewEvent(pubkey) {
