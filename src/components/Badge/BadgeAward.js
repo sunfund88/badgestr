@@ -99,6 +99,7 @@ const BadgeAward = ({ badge, recieved, handleCloseParent, titlePeopleList, peopl
                 setInputEnable(false)
             }
         }
+        setIndexAdded([])
         setAwardList([])
         setIsSelectAll(false)
         setSelectAllEnable(true)

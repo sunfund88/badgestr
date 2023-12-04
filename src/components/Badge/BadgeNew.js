@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { sendNewEvent } from '../BadgeStrFunction';
 import { useCookies } from 'react-cookie';
@@ -14,6 +14,19 @@ const BadgeNew = () => {
     const badge_thumb = useRef('');
 
     const [cookies, setCookie] = useCookies(['user']);
+    const init_load = useRef(true)
+
+    useEffect(() => {
+        if (init_load.current) {
+            init_load.current = false;
+
+            if (cookies.user === '' || cookies.user === undefined) {
+                console.log('Not Login')
+                navigate('/')
+                window.location.reload()
+            }
+        }
+    }, [])
 
     function onSubmit(e) {
         e.preventDefault()
