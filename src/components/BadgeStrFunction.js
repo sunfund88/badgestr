@@ -95,21 +95,33 @@ export function getPubKey(id) {
 export async function getProfile(pubkey) {
     try {
         // console.log("try...", pubKeyRef.current)
-        const events = await window.pool.list(getReadRelays(), [{
+        const events = await window.pool.list(getAllRelays(), [{
             kinds: [0],
             authors: [pubkey]
         }])
-        // console.log(events)
+        console.log(events)
+
+        let p = {
+            "name": "New User",
+            "picture": "",
+            "display_name": "",
+            "about": "",
+            "nip05": "",
+            "lud16": "",
+            "displayName": "",
+            "pubkey": "",
+            "npub": "",
+            "banner": ""
+        }
 
 
         if (events.length > 0) {
-            let p = {}
             events.sort((a, b) => b.created_at - a.created_at)
 
             p = JSON.parse(events[0].content)
             // console.log(p)
-            return p
         }
+        return p
 
         // console.log(events.length)
     }
