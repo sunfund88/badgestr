@@ -389,7 +389,7 @@ export async function getUsersRecievedBadge(badge_id) {
 
 
         //  pfarray.filter((value, index, array) => array.indexOf(value) === index);
-        // console.log(unique_pf)
+        console.log(unique_pf)
         return unique_pf
     }
     catch (error) {

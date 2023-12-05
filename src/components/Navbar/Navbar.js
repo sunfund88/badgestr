@@ -55,11 +55,10 @@ function Navbar() {
 
                 async function fetchRelays() {
                     window.relays = await findRelays(cookies.user.pubkey);
-                    setRelays(getAllRelays)
+                    setRelays(getAllRelays())
                 }
 
                 fetchRelays()
-
             }
         }
     }, []);
@@ -155,7 +154,7 @@ function Navbar() {
             setUserLogin(u)
             setCookie('user', JSON.stringify(u))
             window.relays = await findRelays(cookies.user.pubkey);
-            setRelays(getAllRelays)
+            setRelays(getAllRelays())
             // localStorage.setItem('user', JSON.stringify(u));
         }
         else {
@@ -163,7 +162,7 @@ function Navbar() {
             setUserLogin(undefined)
             setCookie('user', JSON.stringify(''))
             window.relays = init_relays;
-            setRelays(getAllRelays)
+            setRelays(getAllRelays())
         }
 
         // console.log(login)
