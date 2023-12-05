@@ -347,7 +347,6 @@ export function getNewAcceptBadgesTags(newAcceptBadges) {
 // badge
 export async function getUsersRecievedBadge(badge_id) {
     try {
-        // console.log("try...", pubKeyRef.current)
         const events = await window.pool.list(getReadRelays(), [{
             kinds: [8],
             // authors: [pubkey]
@@ -395,7 +394,7 @@ export async function getUsersRecievedBadge(badge_id) {
     }
     catch (error) {
         // check what is logging here
-        console.log("error in fetchLogin", error)
+        console.log("error in fetchRecievedBadge", error)
         return error.response;
     }
 }
@@ -589,6 +588,8 @@ export function findDiffList(list, recieved) {
 
     list.filter(f => f !== undefined).forEach(l => {
         let found = false
+
+        console.log(recieved)
         recieved.forEach(r => {
             if (l[0] === r[0]) {
                 found = true
