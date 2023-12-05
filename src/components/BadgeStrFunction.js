@@ -586,12 +586,14 @@ export function findDiffList(list, recieved) {
     let u = []
     let r = []
 
+    recieved.filter(k => k !== undefined)
+
     console.log('r...', recieved)
 
     list.filter(f => f !== undefined).forEach(l => {
         let found = false
 
-        recieved.filter(k => k !== undefined).forEach(r => {
+        recieved.forEach(r => {
             if (l[0] === r[0]) {
                 found = true
             }
